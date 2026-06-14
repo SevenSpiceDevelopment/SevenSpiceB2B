@@ -73,14 +73,14 @@ module.exports = {
         "container-max": "1280px"
       },
       fontFamily: {
-        "headline-md": ["Playfair Display", "serif"],
-        "display-lg-mobile": ["Playfair Display", "serif"],
-        "body-lg": ["Inter", "sans-serif"],
-        "headline-md-mobile": ["Playfair Display", "serif"],
-        "body-md": ["Inter", "sans-serif"],
-        "display-lg": ["Playfair Display", "serif"],
-        "title-lg": ["Inter", "sans-serif"],
-        "label-md": ["Inter", "sans-serif"]
+        "headline-md": ["Google Sans", "sans-serif"],
+        "display-lg-mobile": ["Google Sans", "sans-serif"],
+        "body-lg": ["Google Sans", "sans-serif"],
+        "headline-md-mobile": ["Google Sans", "sans-serif"],
+        "body-md": ["Google Sans", "sans-serif"],
+        "display-lg": ["Google Sans", "sans-serif"],
+        "title-lg": ["Google Sans", "sans-serif"],
+        "label-md": ["Google Sans", "sans-serif"]
       },
       fontSize: {
         "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "600" }],
