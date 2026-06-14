@@ -44,8 +44,8 @@ export default function AdminLoginPage() {
         setError("Invalid administrative credentials. Please try again.");
         setLoading(false);
       } else {
-        router.push("/admin/dashboard");
-        router.refresh();
+        // Hard navigation to ensure middleware picks up the fresh session cookie
+        window.location.href = "/admin/dashboard";
       }
     } catch (err) {
       setError("An unexpected authentication error occurred.");
@@ -53,11 +53,20 @@ export default function AdminLoginPage() {
     }
   };
 
-  if (status === "loading" || status === "authenticated") {
+  if (status === "loading") {
     return (
       <div className="flex flex-col items-center justify-center p-6 text-on-surface-variant font-mono text-sm">
         <Loader2 className="animate-spin text-primary w-8 h-8 mb-2" />
         Checking Session Authorization...
+      </div>
+    );
+  }
+
+  if (status === "authenticated") {
+    return (
+      <div className="flex flex-col items-center justify-center p-6 text-on-surface-variant font-mono text-sm">
+        <Loader2 className="animate-spin text-primary w-8 h-8 mb-2" />
+        Access Granted — Redirecting to Dashboard...
       </div>
     );
   }
