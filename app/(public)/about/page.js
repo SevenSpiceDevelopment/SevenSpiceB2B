@@ -64,7 +64,7 @@ export default function AboutPage() {
           {/* Visual Area */}
           <div className="lg:col-span-5 relative h-96 rounded-lg border border-on-surface/10 overflow-hidden bg-surface-container shadow-sm">
             <img 
-              src="https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800" 
+              src="https://images.unsplash.com/photo-1602237514002-c2d8ae2da393?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
               alt="Artisanal spice sorting process, showcasing premium dry herbs and spices." 
               className="w-full h-full object-cover"
             />
