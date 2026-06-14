@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Environment variables (NEVER commit)
+.env
+.env.local
+.env.production
+.env*.local
+
+# Local mock database
+lib/mockDb.json
+
+# Debug / IDE / OS
+.DS_Store
+*.log
+.vscode/
+.idea/
+Thumbs.db
+
+# Vercel
+.vercel
+
+# Development scaffolding
+stitch_thesevenspice_b2b_landing_page/
+Doc.txt
