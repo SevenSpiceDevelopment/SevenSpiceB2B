@@ -30,16 +30,22 @@ export default async function HomePage() {
   return (
     <div className="flex flex-col w-full">
       {/* 1. HERO SECTION */}
-      <section className="bg-surface border-b border-on-surface/10 py-16 md:py-28 relative overflow-hidden bg-subtle-pattern">
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center relative z-10">
-          <div className="lg:col-span-8 flex flex-col items-start gap-stack-md text-left">
-            <span className="font-label-md text-label-md text-secondary uppercase tracking-widest bg-secondary/10 px-3 py-1 rounded">
+      <section 
+        className="relative overflow-hidden py-20 md:py-32 bg-cover bg-center border-b border-on-surface/10"
+        style={{ backgroundImage: `url('https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=1600')` }}
+      >
+        {/* Dark overlay for text legibility */}
+        <div className="absolute inset-0 bg-black/60 z-0"></div>
+
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+          <div className="max-w-3xl flex flex-col items-start gap-stack-md text-left">
+            <span className="font-label-md text-label-md text-secondary-fixed uppercase tracking-widest bg-black/40 px-3 py-1 rounded border border-secondary-fixed/20">
               Global Wholesale Supplier
             </span>
-            <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary max-w-4xl tracking-tight leading-tight">
+            <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-white tracking-tight leading-tight">
               {settings.hero_title || "Exquisite Spices sourced globally, delivered reliably."}
             </h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+            <p className="font-body-lg text-body-lg text-white/85 max-w-2xl">
               {settings.hero_subtitle || "Partner with TheSevenSpice for premium bulk imports, custom formulations, and seamless international logistics."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto pt-2">
@@ -52,37 +58,9 @@ export default async function HomePage() {
               </Link>
               <Link 
                 href="/products" 
-                className="border border-primary text-primary font-label-md text-label-md px-8 py-4 rounded hover:bg-primary/5 transition-all text-center flex items-center justify-center"
+                className="border border-white/40 text-white font-label-md text-label-md px-8 py-4 rounded hover:bg-white/10 transition-all text-center flex items-center justify-center"
               >
                 Browse Catalog
-              </Link>
-            </div>
-          </div>
-
-          {/* Graphical side elements reflecting high-end logistics */}
-          <div className="lg:col-span-4 hidden lg:flex flex-col gap-6 bg-surface-container-lowest border border-on-surface/10 rounded-lg p-6 shadow-sm relative">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-secondary-fixed opacity-20 rounded-full blur-2xl"></div>
-            <div className="border-b border-on-surface/5 pb-4">
-              <span className="text-xs font-mono text-on-surface-variant/60 block mb-1">LOGISTICS HUB</span>
-              <p className="font-headline-md-mobile text-primary font-semibold text-lg">Silk Road Portal</p>
-            </div>
-            <div className="space-y-4 text-xs font-mono">
-              <div className="flex justify-between border-b border-on-surface/5 pb-2">
-                <span className="text-on-surface-variant">ACTIVE INQUIRIES</span>
-                <span className="text-primary font-bold">100% SECURE</span>
-              </div>
-              <div className="flex justify-between border-b border-on-surface/5 pb-2">
-                <span className="text-on-surface-variant">SHIPPING ROUTES</span>
-                <span className="text-on-surface font-semibold">GLOBAL PORT TO PORT</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-on-surface-variant">COMPLIANCE CODE</span>
-                <span className="text-secondary font-bold">FDA / ISO 3632</span>
-              </div>
-            </div>
-            <div className="pt-2">
-              <Link href="/about" className="text-xs text-secondary font-bold flex items-center gap-1 hover:underline">
-                Our Verification Process <ArrowRight size={12} />
               </Link>
             </div>
           </div>

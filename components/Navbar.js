@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ShieldAlert } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,11 +51,8 @@ export default function Navbar() {
 
         {/* CTA Button */}
         <div className="hidden md:flex items-center gap-4">
-          <Link href="/products" className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded hover:bg-primary/90 transition-colors">
-            Request a Quote
-          </Link>
-          <Link href="/admin/dashboard" title="Admin Portal" className="text-on-surface-variant hover:text-primary transition-colors p-2" aria-label="Admin Portal">
-            <ShieldAlert size={20} />
+          <Link href="/contact" className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded hover:bg-primary/90 transition-colors">
+            Contact Us
           </Link>
         </div>
 
@@ -91,18 +88,11 @@ export default function Navbar() {
           })}
           <div className="flex flex-col gap-4 pt-4 border-t border-on-surface/10">
             <Link
-              href="/products"
+              href="/contact"
               onClick={() => setIsOpen(false)}
               className="bg-primary text-on-primary text-center font-label-md text-label-md px-6 py-3 rounded hover:bg-primary/90 transition-colors w-full"
             >
-              Request a Quote
-            </Link>
-            <Link
-              href="/admin/dashboard"
-              onClick={() => setIsOpen(false)}
-              className="border border-on-surface/20 text-on-surface-variant text-center font-label-md text-label-md px-6 py-3 rounded hover:bg-on-surface/5 transition-colors w-full flex items-center justify-center gap-2"
-            >
-              <ShieldAlert size={16} /> Admin Portal
+              Contact Us
             </Link>
           </div>
         </div>
