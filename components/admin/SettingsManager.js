@@ -190,6 +190,7 @@ export default function SettingsManager({ initialSettings }) {
             <input type="hidden" name="social_twitter" value={initialSettings?.social_twitter || ""} />
             <input type="hidden" name="social_instagram" value={initialSettings?.social_instagram || ""} />
             <input type="hidden" name="social_linkedin" value={initialSettings?.social_linkedin || ""} />
+            <input type="hidden" name="social_youtube" value={initialSettings?.social_youtube || ""} />
 
             <div className="pt-4 border-t border-on-surface/5 flex justify-end">
               <button
@@ -317,6 +318,22 @@ export default function SettingsManager({ initialSettings }) {
                   name="social_instagram"
                   placeholder="https://instagram.com/thesevenspice"
                   defaultValue={initialSettings?.social_instagram || ""}
+                  disabled={loading}
+                  className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface-variant text-sm font-mono"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="flex flex-col">
+                <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="soc-youtube">
+                  YouTube Channel
+                </label>
+                <input
+                  id="soc-youtube"
+                  name="social_youtube"
+                  placeholder="https://youtube.com/@thesevenspice"
+                  defaultValue={initialSettings?.social_youtube || ""}
                   disabled={loading}
                   className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface-variant text-sm font-mono"
                 />

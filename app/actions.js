@@ -291,6 +291,7 @@ export async function saveSiteSettingsAction(formData) {
     const social_twitter = formData.get("social_twitter");
     const social_instagram = formData.get("social_instagram");
     const social_linkedin = formData.get("social_linkedin");
+    const social_youtube = formData.get("social_youtube");
 
     if (!hero_title || !hero_subtitle || !hero_cta_text || !hero_cta_link || !business_address || !business_phone || !business_email) {
       return { success: false, error: "Please fill in all required settings fields." };
@@ -307,7 +308,8 @@ export async function saveSiteSettingsAction(formData) {
       social_facebook,
       social_twitter,
       social_instagram,
-      social_linkedin
+      social_linkedin,
+      social_youtube
     };
 
     await saveSiteSettings(settings);
