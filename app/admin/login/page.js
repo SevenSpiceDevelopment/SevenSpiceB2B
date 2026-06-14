@@ -18,9 +18,9 @@ export default function AdminLoginPage() {
   // If already logged in, redirect to dashboard
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/admin/dashboard");
+      window.location.href = "/admin/dashboard";
     }
-  }, [status, router]);
+  }, [status]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -6,6 +6,11 @@ export default withAuth(
     return NextResponse.next();
   },
   {
+    cookies: {
+      sessionToken: {
+        name: "next-auth.session-token",
+      },
+    },
     callbacks: {
       authorized: ({ token, req }) => {
         // Allow public access to the login page
