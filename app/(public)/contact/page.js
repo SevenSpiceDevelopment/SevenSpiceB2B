@@ -82,21 +82,6 @@ export default async function ContactPage() {
               </div>
             </div>
           </div>
-
-          {/* Illustrative Map Area */}
-          <div className="h-64 rounded-lg border border-on-surface/10 overflow-hidden relative bg-surface-container-highest">
-            <img 
-              alt="Global trade routes and logistical HQ" 
-              className="w-full h-full object-cover opacity-80 mix-blend-multiply" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHP-AKEGZ74C4kkxuTINSAcJOjAZrx6z3RMAKPiUdm9OsJHf_6H1dZaQWpJKQv0UHWoNramh2CHHXKkdIE7teMFsC9N9b2LF-xelN_GQMMJjdjQCe0rLVZk5qDAoNsp9vWeBmVNsDWbD6-mr5PdpaNzo1152xUX4a_cj3RLhrS9X3hThW4CY3C5lMY-VWY7q3JOyD7z8A__lOQ5lAefqCLPRE6Iy0jYaSUybVyAob97U7ARhICuinS69c8MK39iwLM0NrnQz5ufQ"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-surface/50 to-transparent"></div>
-            <div className="absolute bottom-4 left-4 bg-surface/90 backdrop-blur-sm px-3 py-1 rounded border border-on-surface/10 shadow-[0_2px_8px_rgba(26,26,26,0.03)]">
-              <span className="font-label-md text-label-md text-primary flex items-center gap-1">
-                <span className="material-symbols-outlined text-[14px]">pin_drop</span> NY HQ
-              </span>
-            </div>
-          </div>
         </div>
       </div>
     </div>

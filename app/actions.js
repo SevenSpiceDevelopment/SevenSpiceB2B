@@ -109,6 +109,48 @@ export async function submitQuoteRequest(prevState, formData) {
   }
 }
 
+// Request password reset instructions
+export async function forgotPasswordAction(prevState, formData) {
+  try {
+    const email = formData.get("email");
+    if (!email) {
+      return { success: false, error: "Please enter your administrative email address." };
+    }
+
+    const adminEmail = process.env.ADMIN_EMAIL;
+    if (!adminEmail) {
+      console.error("[AUTH] ADMIN_EMAIL environment variable is not set.");
+      return { success: false, error: "Authentication system is misconfigured." };
+    }
+
+    if (email !== adminEmail) {
+      console.log(`[PASSWORD RESET BLOCKED] Password reset request for unregistered email: ${email}`);
+      return { success: true, message: "If this email is registered, password recovery instructions have been logged to the server console." };
+    }
+
+    const adminPassword = process.env.ADMIN_PASSWORD || "No password configured";
+    console.log(`
+========================================================================
+[PASSWORD RECOVERY LOG]
+Admin requested credentials recovery.
+Registered Admin Email: \x1b[32m${adminEmail}\x1b[0m
+Configured Admin Password (Env): \x1b[33m${adminPassword}\x1b[0m
+
+NOTE: If you have modified the password from the admin settings dashboard,
+the updated password is stored as a secure bcrypt hash in the database.
+To reset or overwrite the database password, you may delete the 
+"admin_password" column value in the site_settings table or restart 
+the application with a new ADMIN_PASSWORD env value.
+========================================================================
+`);
+
+    return { success: true, message: "Password recovery instructions have been successfully logged to the server console log. Please check your terminal/logs to proceed." };
+  } catch (err) {
+    console.error("Error in forgotPasswordAction:", err);
+    return { success: false, error: "An unexpected error occurred. Please try again." };
+  }
+}
+
 // --- ADMIN ACTIONS ---
 
 // Create or Update Product
@@ -120,8 +162,8 @@ export async function saveProductAction(formData) {
     const name = formData.get("name");
     const category = formData.get("category");
     const description = formData.get("description");
-    const price_moq = formData.get("price_moq");
-    const packaging_info = formData.get("packaging_info");
+    const price_moq = formData.get("price_moq") || "";
+    const packaging_info = formData.get("packaging_info") || "";
     const is_visible = formData.get("is_visible") === "true";
     
     const imageFile = formData.get("image");
@@ -132,7 +174,7 @@ export async function saveProductAction(formData) {
       image_url = await fileToBase64(imageFile);
     }
 
-    if (!name || !category || !description || !price_moq || !packaging_info) {
+    if (!name || !category || !description) {
       return { success: false, error: "Please fill in all required product fields." };
     }
 

@@ -130,10 +130,12 @@ export default async function HomePage() {
                       <p className="text-sm text-on-surface-variant line-clamp-3">{product.description}</p>
                     </div>
                     <div className="border-t border-on-surface/5 pt-4">
-                      <div className="flex justify-between items-center text-xs font-mono text-on-surface-variant/80 mb-4">
-                        <span>Pack: {product.packaging_info}</span>
-                        <span className="text-primary font-bold">{product.price_moq}</span>
-                      </div>
+                      {(product.packaging_info || product.price_moq) && (
+                        <div className="flex justify-between items-center text-xs font-mono text-on-surface-variant/80 mb-4">
+                          {product.packaging_info ? <span>Pack: {product.packaging_info}</span> : <span></span>}
+                          {product.price_moq ? <span className="text-primary font-bold">{product.price_moq}</span> : <span></span>}
+                        </div>
+                      )}
                       <Link 
                         href={`/products?quoteProduct=${encodeURIComponent(product.name)}&productId=${product.id}`}
                         className="w-full bg-primary text-on-primary py-3 rounded text-center font-label-md hover:bg-primary/90 transition-colors block text-sm"

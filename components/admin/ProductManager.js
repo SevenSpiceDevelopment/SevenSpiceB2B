@@ -144,8 +144,6 @@ export default function ProductManager({ initialProducts }) {
               <tr className="bg-surface-container-low border-b border-on-surface/10 font-mono text-xs text-on-surface-variant/80 uppercase">
                 <th className="px-6 py-4">Product</th>
                 <th className="px-6 py-4">Category</th>
-                <th className="px-6 py-4">Rate & MOQ</th>
-                <th className="px-6 py-4">Packaging</th>
                 <th className="px-6 py-4 text-center">Status</th>
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
@@ -169,12 +167,6 @@ export default function ProductManager({ initialProducts }) {
                     </td>
                     <td className="px-6 py-4 font-semibold text-on-surface-variant">
                       {product.category}
-                    </td>
-                    <td className="px-6 py-4 font-mono text-xs text-primary font-bold">
-                      {product.price_moq}
-                    </td>
-                    <td className="px-6 py-4 text-on-surface-variant text-xs">
-                      {product.packaging_info}
                     </td>
                     <td className="px-6 py-4 text-center">
                       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold ${
@@ -298,39 +290,7 @@ export default function ProductManager({ initialProducts }) {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* Price / MOQ */}
-                <div className="flex flex-col">
-                  <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="prod-price">
-                    Price / MOQ Specification *
-                  </label>
-                  <input
-                    id="prod-price"
-                    name="price_moq"
-                    required
-                    placeholder="e.g. $8.50/gram (MOQ: 500g)"
-                    defaultValue={editingProduct?.price_moq || ""}
-                    disabled={loading}
-                    className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
-                  />
-                </div>
 
-                {/* Packaging Info */}
-                <div className="flex flex-col">
-                  <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="prod-packaging">
-                    Packaging Info *
-                  </label>
-                  <input
-                    id="prod-packaging"
-                    name="packaging_info"
-                    required
-                    placeholder="e.g. 25kg double-layered PP bags"
-                    defaultValue={editingProduct?.packaging_info || ""}
-                    disabled={loading}
-                    className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
-                  />
-                </div>
-              </div>
 
               {/* Image upload with preview */}
               <div className="flex flex-col gap-2">

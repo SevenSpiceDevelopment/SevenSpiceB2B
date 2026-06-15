@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import QuoteModal from "./QuoteModal";
 import { Search, SlidersHorizontal, Tag } from "lucide-react";
 
-export default function ProductCatalog({ initialProducts }) {
+export default function ProductCatalog({ initialProducts, businessPhone, businessEmail }) {
   const searchParams = useSearchParams();
   
   // State
@@ -109,18 +109,24 @@ export default function ProductCatalog({ initialProducts }) {
 
               {/* Specs and CTAs */}
               <div className="px-6 pb-6 pt-2">
-                <div className="border-t border-on-surface/5 pt-4 mb-4">
-                  <div className="flex flex-col gap-1.5 text-xs font-mono text-on-surface-variant/80">
-                    <div className="flex justify-between">
-                      <span>PACKAGING SPEC</span>
-                      <span className="text-on-surface font-semibold">{product.packaging_info}</span>
-                    </div>
-                    <div className="flex justify-between border-t border-on-surface/5 pt-1.5 mt-1">
-                      <span>BASE RATE / MOQ</span>
-                      <span className="text-primary font-bold">{product.price_moq}</span>
+                {(product.packaging_info || product.price_moq) && (
+                  <div className="border-t border-on-surface/5 pt-4 mb-4">
+                    <div className="flex flex-col gap-1.5 text-xs font-mono text-on-surface-variant/80">
+                      {product.packaging_info && (
+                        <div className="flex justify-between">
+                          <span>PACKAGING SPEC</span>
+                          <span className="text-on-surface font-semibold">{product.packaging_info}</span>
+                        </div>
+                      )}
+                      {product.price_moq && (
+                        <div className={`flex justify-between ${product.packaging_info ? "border-t border-on-surface/5 pt-1.5 mt-1" : ""}`}>
+                          <span>BASE RATE / MOQ</span>
+                          <span className="text-primary font-bold">{product.price_moq}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
+                )}
 
                 <button
                   onClick={() => openQuote(product)}
@@ -155,6 +161,8 @@ export default function ProductCatalog({ initialProducts }) {
         }}
         productName={modalProduct.name}
         productId={modalProduct.id}
+        businessPhone={businessPhone}
+        businessEmail={businessEmail}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import { getProducts } from "@/lib/db";
+import { getProducts, getSiteSettings } from "@/lib/db";
 import ProductCatalog from "@/components/ProductCatalog";
 import { Suspense } from "react";
 
@@ -12,6 +12,9 @@ export const revalidate = 60;
 
 export default async function ProductsPage() {
   const products = await getProducts();
+  const settings = await getSiteSettings();
+  const businessPhone = settings?.business_phone || "+1 (800) 555-SPICE";
+  const businessEmail = settings?.business_email || "sales@thesevenspice.com";
 
   return (
     <div className="flex-grow flex flex-col pt-stack-lg pb-stack-lg w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop gap-stack-lg">
@@ -34,7 +37,11 @@ export default async function ProductsPage() {
           Retrieving wholesale specifications...
         </div>
       }>
-        <ProductCatalog initialProducts={products} />
+        <ProductCatalog 
+          initialProducts={products} 
+          businessPhone={businessPhone}
+          businessEmail={businessEmail}
+        />
       </Suspense>
     </div>
   );
