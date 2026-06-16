@@ -48,57 +48,57 @@ export default async function BlogPage() {
               : "Draft";
 
             return (
-              <article 
-                key={post.id} 
-                className="bg-surface border border-on-surface/10 rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-[0_12px_35px_rgba(26,26,26,0.03)] hover:-translate-y-0.5 transition-all duration-300 group"
+              <Link 
+                key={post.id}
+                href={`/blog/${post.slug}`}
+                className="bg-surface border border-on-surface/10 rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-[0_12px_35px_rgba(26,26,26,0.03)] hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer"
               >
-                <div>
-                  {/* Thumbnail */}
-                  <div className="h-52 overflow-hidden bg-surface-container relative">
-                    <img 
-                      src={post.featured_image || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"} 
-                      alt={post.title} 
-                      className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
-                    />
-                    <span className="absolute top-4 left-4 bg-primary text-on-primary text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded shadow-sm">
-                      {post.category}
-                    </span>
-                  </div>
-
-                  {/* Body Content */}
-                  <div className="p-6 space-y-3">
-                    <div className="flex items-center gap-4 text-xs text-on-surface-variant/70 font-mono">
-                      <span className="flex items-center gap-1">
-                        <Calendar size={12} /> {dateStr}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <User size={12} /> {post.author.split(",")[0]}
+                <article className="flex flex-col justify-between h-full">
+                  <div>
+                    {/* Thumbnail */}
+                    <div className="h-52 overflow-hidden bg-surface-container relative">
+                      <img 
+                        src={post.featured_image || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"} 
+                        alt={post.title} 
+                        className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
+                      />
+                      <span className="absolute top-4 left-4 bg-primary text-on-primary text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded shadow-sm">
+                        {post.category}
                       </span>
                     </div>
 
-                    <Link href={`/blog/${post.slug}`} className="block group-hover:text-primary transition-colors">
-                      <h3 className="font-title-lg text-title-lg text-primary font-semibold leading-tight line-clamp-2">
+                    {/* Body Content */}
+                    <div className="p-6 space-y-3">
+                      <div className="flex items-center gap-4 text-xs text-on-surface-variant/70 font-mono">
+                        <span className="flex items-center gap-1">
+                          <Calendar size={12} /> {dateStr}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <User size={12} /> {post.author.split(",")[0]}
+                        </span>
+                      </div>
+
+                      <h3 className="font-title-lg text-title-lg text-primary font-semibold leading-tight line-clamp-2 group-hover:text-primary transition-colors">
                         {post.title}
                       </h3>
-                    </Link>
 
-                    <p className="text-on-surface-variant text-sm leading-relaxed line-clamp-3">
-                      {excerpt}
-                    </p>
+                      <p className="text-on-surface-variant text-sm leading-relaxed line-clamp-3">
+                        {excerpt}
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                {/* Footer Link */}
-                <div className="px-6 pb-6 pt-2">
-                  <Link 
-                    href={`/blog/${post.slug}`} 
-                    className="text-xs font-bold text-secondary flex items-center gap-1 hover:underline"
-                  >
-                    Read Full Article
-                    <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
-                  </Link>
-                </div>
-              </article>
+                  {/* Footer Link */}
+                  <div className="px-6 pb-6 pt-2">
+                    <span 
+                      className="text-xs font-bold text-secondary flex items-center gap-1 group-hover:underline"
+                    >
+                      Read Full Article
+                      <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                    </span>
+                  </div>
+                </article>
+              </Link>
             );
           })
         ) : (

@@ -111,17 +111,20 @@ export default async function BlogPostPage({ params }) {
             {relatedPosts.length > 0 ? (
               <div className="space-y-4">
                 {relatedPosts.map((rPost) => (
-                  <div key={rPost.id} className="group border-b border-on-surface/5 pb-4 last:border-b-0 last:pb-0">
+                  <Link 
+                    key={rPost.id} 
+                    href={`/blog/${rPost.slug}`}
+                    className="group border-b border-on-surface/5 pb-4 last:border-b-0 last:pb-0 block cursor-pointer"
+                  >
                     <span className="text-[10px] font-mono text-secondary uppercase tracking-wider block mb-1">
                       {rPost.category}
                     </span>
-                    <Link 
-                      href={`/blog/${rPost.slug}`}
+                    <span
                       className="font-semibold text-sm text-primary group-hover:text-secondary leading-tight block line-clamp-2 transition-colors"
                     >
                       {rPost.title}
-                    </Link>
-                  </div>
+                    </span>
+                  </Link>
                 ))}
               </div>
             ) : (

@@ -83,7 +83,8 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
           filteredProducts.map((product) => (
             <div 
               key={product.id} 
-              className="bg-surface-container-lowest border border-on-surface/10 rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-[0_12px_40px_rgba(26,26,26,0.04)] hover:-translate-y-0.5 transition-all duration-300 group"
+              onClick={() => openQuote(product)}
+              className="bg-surface-container-lowest border border-on-surface/10 rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-[0_12px_40px_rgba(26,26,26,0.04)] hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer"
             >
               <div>
                 {/* Image Frame */}
@@ -130,7 +131,7 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
 
                 <button
                   onClick={() => openQuote(product)}
-                  className="w-full bg-primary text-on-primary py-3 rounded text-center font-label-md hover:bg-primary/90 transition-colors text-sm flex items-center justify-center gap-2"
+                  className="w-full bg-primary text-on-primary py-3 rounded text-center font-label-md hover:bg-primary/90 group-hover:bg-primary/90 transition-colors text-sm flex items-center justify-center gap-2"
                 >
                   Request Commercial Quote
                 </button>

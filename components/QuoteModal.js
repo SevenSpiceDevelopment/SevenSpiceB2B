@@ -311,7 +311,7 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                       <Mail className="w-5 h-5 text-secondary mt-0.5 shrink-0" />
                       <div>
                         <span className="text-xs font-mono text-on-surface-variant uppercase tracking-wider block">DIRECT EMAIL</span>
-                        <a href={`mailto:${businessEmail}`} className="text-sm font-semibold text-primary hover:underline block mt-1">
+                        <a href={`mailto:${businessEmail}`} className="text-sm font-semibold text-primary hover:underline block mt-1 break-all">
                           {businessEmail}
                         </a>
                         <span className="text-xs text-on-surface-variant">Response in 1 business day</span>

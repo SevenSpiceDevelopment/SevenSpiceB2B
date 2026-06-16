@@ -113,12 +113,16 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
             {featuredProducts.length > 0 ? (
               featuredProducts.map((product) => (
-                <div key={product.id} className="bg-surface border border-on-surface/10 rounded-lg overflow-hidden flex flex-col hover:shadow-[0px_20px_40px_rgba(26,26,26,0.03)] transition-all duration-300">
+                <Link 
+                  key={product.id} 
+                  href={`/products?quoteProduct=${encodeURIComponent(product.name)}&productId=${product.id}`}
+                  className="bg-surface border border-on-surface/10 rounded-lg overflow-hidden flex flex-col hover:shadow-[0px_20px_40px_rgba(26,26,26,0.03)] transition-all duration-300 group cursor-pointer"
+                >
                   <div className="h-64 overflow-hidden relative bg-surface-container">
                     <img 
                       src={product.image_url || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"} 
                       alt={product.name} 
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-4 left-4 bg-secondary text-on-secondary text-xs uppercase tracking-wider font-bold px-3 py-1 rounded">
                       {product.category}
@@ -126,25 +130,24 @@ export default async function HomePage() {
                   </div>
                   <div className="p-6 flex-grow flex flex-col justify-between gap-4">
                     <div className="space-y-2">
-                      <h3 className="font-title-lg text-title-lg text-primary line-clamp-1">{product.name}</h3>
+                      <h3 className="font-title-lg text-title-lg text-primary line-clamp-1 group-hover:text-primary transition-colors">{product.name}</h3>
                       <p className="text-sm text-on-surface-variant line-clamp-3">{product.description}</p>
                     </div>
-                    <div className="border-t border-on-surface/5 pt-4">
+                    <div className="border-t border-on-surface/5 pt-4 w-full">
                       {(product.packaging_info || product.price_moq) && (
                         <div className="flex justify-between items-center text-xs font-mono text-on-surface-variant/80 mb-4">
                           {product.packaging_info ? <span>Pack: {product.packaging_info}</span> : <span></span>}
                           {product.price_moq ? <span className="text-primary font-bold">{product.price_moq}</span> : <span></span>}
                         </div>
                       )}
-                      <Link 
-                        href={`/products?quoteProduct=${encodeURIComponent(product.name)}&productId=${product.id}`}
-                        className="w-full bg-primary text-on-primary py-3 rounded text-center font-label-md hover:bg-primary/90 transition-colors block text-sm"
+                      <span 
+                        className="w-full bg-primary text-on-primary py-3 rounded text-center font-label-md group-hover:bg-primary/90 transition-colors block text-sm"
                       >
                         Request Quote
-                      </Link>
+                      </span>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))
             ) : (
               <p className="col-span-3 text-center text-on-surface-variant py-12">No products loaded yet. Create them in the Admin Dashboard!</p>

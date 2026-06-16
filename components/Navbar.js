@@ -69,34 +69,41 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {isOpen && (
-        <div className="md:hidden bg-surface border-b border-on-surface/10 w-full px-margin-mobile py-6 flex flex-col gap-6 animate-fadeIn">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href;
-            return (
+        <>
+          {/* Backdrop overlay to close drawer on click outside */}
+          <div 
+            className="fixed inset-0 bg-inverse-surface/20 backdrop-blur-sm z-40 md:hidden" 
+            onClick={() => setIsOpen(false)}
+          />
+          <div className="relative z-50 md:hidden bg-surface border-b border-on-surface/10 w-full px-margin-mobile py-6 flex flex-col gap-6 animate-fadeIn">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`text-lg font-medium transition-colors duration-200 py-1 ${
+                    isActive
+                      ? "text-primary border-l-4 border-primary pl-3 font-bold"
+                      : "text-on-surface-variant hover:text-primary"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
+            <div className="flex flex-col gap-4 pt-4 border-t border-on-surface/10">
               <Link
-                key={link.href}
-                href={link.href}
+                href="/contact"
                 onClick={() => setIsOpen(false)}
-                className={`text-lg font-medium transition-colors duration-200 py-1 ${
-                  isActive
-                    ? "text-primary border-l-4 border-primary pl-3 font-bold"
-                    : "text-on-surface-variant hover:text-primary"
-                }`}
+                className="bg-primary text-on-primary text-center font-label-md text-label-md px-6 py-3 rounded hover:bg-primary/90 transition-colors w-full"
               >
-                {link.name}
+                Contact Us
               </Link>
-            );
-          })}
-          <div className="flex flex-col gap-4 pt-4 border-t border-on-surface/10">
-            <Link
-              href="/contact"
-              onClick={() => setIsOpen(false)}
-              className="bg-primary text-on-primary text-center font-label-md text-label-md px-6 py-3 rounded hover:bg-primary/90 transition-colors w-full"
-            >
-              Contact Us
-            </Link>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </nav>
   );
