@@ -73,6 +73,7 @@ module.exports = {
         "container-max": "1280px"
       },
       fontFamily: {
+        serif: ["Playfair Display", "Georgia", "serif"],
         "headline-md": ["Google Sans", "sans-serif"],
         "display-lg-mobile": ["Google Sans", "sans-serif"],
         "body-lg": ["Google Sans", "sans-serif"],

@@ -9,9 +9,9 @@ export default async function Footer() {
     <footer className="bg-surface-container-highest w-full border-t border-on-surface/10">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
         {/* Top Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
           {/* Column 1: Brand / Description */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 lg:col-span-2">
             <Link href="/" className="font-headline-md text-headline-md text-on-surface font-semibold hover:text-primary transition-colors">
               TheSevenSpice
             </Link>

@@ -23,7 +23,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-surface w-full top-0 sticky border-b border-on-surface/10 z-50 shadow-[0_1px_3px_rgba(87,0,19,0.02)]">
+    <nav className="bg-surface/80 backdrop-blur-md w-full top-0 sticky border-b border-on-surface/10 z-50 shadow-[0_4px_30px_rgba(87,0,19,0.02)]">
       <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
         {/* Brand Name */}
         <Link href="/" className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md font-semibold text-primary hover:opacity-90 transition-opacity">
