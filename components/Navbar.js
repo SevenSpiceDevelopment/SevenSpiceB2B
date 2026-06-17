@@ -23,58 +23,65 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-surface/80 backdrop-blur-md w-full top-0 sticky border-b border-on-surface/10 z-50 shadow-[0_4px_30px_rgba(87,0,19,0.02)]">
-      <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
-        {/* Brand Name */}
-        <Link href="/" className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md font-semibold text-primary hover:opacity-90 transition-opacity">
-          TheSevenSpice
-        </Link>
-
-        {/* Desktop Links */}
-        <div className="hidden md:flex gap-gutter items-center">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`font-medium transition-colors duration-200 ${
-                  isActive
-                    ? "text-primary border-b-2 border-primary pb-1 font-bold"
-                    : "text-on-surface-variant hover:text-primary"
-                }`}
-              >
-                {link.name}
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* CTA Button */}
-        <div className="hidden md:flex items-center gap-4">
-          <Link href="/contact" className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded hover:bg-primary/90 transition-colors">
-            Contact Us
-          </Link>
-        </div>
-
-        {/* Mobile Hamburguer Button */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-on-surface p-2 focus:outline-none"
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Mobile Drawer */}
+    <>
+      {/* Backdrop overlay to close drawer on click outside */}
       {isOpen && (
-        <>
-          {/* Backdrop overlay to close drawer on click outside */}
-          <div 
-            className="fixed inset-0 bg-inverse-surface/20 backdrop-blur-sm z-40 md:hidden" 
+        <div 
+          className="fixed inset-0 bg-inverse-surface/20 backdrop-blur-sm z-40 md:hidden" 
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      <nav className="bg-surface/80 backdrop-blur-md w-full top-0 sticky border-b border-on-surface/10 z-50 shadow-[0_4px_30px_rgba(87,0,19,0.02)]">
+        <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
+          {/* Brand Name */}
+          <Link
+            href="/"
             onClick={() => setIsOpen(false)}
-          />
+            className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md font-semibold text-primary hover:opacity-90 transition-opacity"
+          >
+            TheSevenSpice
+          </Link>
+
+          {/* Desktop Links */}
+          <div className="hidden md:flex gap-gutter items-center">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`font-medium transition-colors duration-200 ${
+                    isActive
+                      ? "text-primary border-b-2 border-primary pb-1 font-bold"
+                      : "text-on-surface-variant hover:text-primary"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* CTA Button */}
+          <div className="hidden md:flex items-center gap-4">
+            <Link href="/contact" className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded hover:bg-primary/90 transition-colors">
+              Contact Us
+            </Link>
+          </div>
+
+          {/* Mobile Hamburguer Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden text-on-surface p-2 focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        {/* Mobile Drawer */}
+        {isOpen && (
           <div className="relative z-50 md:hidden bg-surface border-b border-on-surface/10 w-full px-margin-mobile py-6 flex flex-col gap-6 animate-fadeIn">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
@@ -103,8 +110,8 @@ export default function Navbar() {
               </Link>
             </div>
           </div>
-        </>
-      )}
-    </nav>
+        )}
+      </nav>
+    </>
   );
 }
