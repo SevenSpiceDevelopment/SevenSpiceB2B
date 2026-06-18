@@ -54,7 +54,7 @@ export default async function BlogPostPage({ params }) {
             {post.title}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-6 text-sm text-on-surface-variant font-mono">
+          <div className="flex flex-wrap items-center gap-6 text-sm text-on-surface-variant font-semibold">
             <span className="flex items-center gap-2">
               <Calendar size={15} className="text-secondary" /> {dateStr}
             </span>
@@ -91,9 +91,9 @@ export default async function BlogPostPage({ params }) {
           {post.tags && post.tags.length > 0 && (
             <div className="border-t border-on-surface/10 pt-6 mt-8 flex flex-wrap items-center gap-2">
               <Tag size={14} className="text-on-surface-variant/60" />
-              <span className="text-xs text-on-surface-variant/60 font-mono mr-2">TAGS:</span>
+              <span className="text-xs text-on-surface-variant/60 font-semibold mr-2">TAGS:</span>
               {post.tags.map((tag) => (
-                <span key={tag} className="bg-surface-container border border-on-surface/10 px-2.5 py-1 rounded text-xs text-on-surface-variant font-mono">
+                <span key={tag} className="bg-surface-container border border-on-surface/10 px-2.5 py-1 rounded text-xs text-on-surface-variant font-semibold">
                   #{tag}
                 </span>
               ))}
@@ -116,7 +116,7 @@ export default async function BlogPostPage({ params }) {
                     href={`/blog/${rPost.slug}`}
                     className="group border-b border-on-surface/5 pb-4 last:border-b-0 last:pb-0 block cursor-pointer"
                   >
-                    <span className="text-[10px] font-mono text-secondary uppercase tracking-wider block mb-1">
+                    <span className="text-[10px] font-semibold text-secondary uppercase tracking-wider block mb-1">
                       {rPost.category}
                     </span>
                     <span
@@ -128,7 +128,7 @@ export default async function BlogPostPage({ params }) {
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-on-surface-variant/80 font-mono">No matching category logs found.</p>
+              <p className="text-xs text-on-surface-variant/80 font-semibold">No matching category logs found.</p>
             )}
           </div>
 

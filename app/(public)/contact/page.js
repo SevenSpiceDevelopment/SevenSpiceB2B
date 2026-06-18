@@ -53,7 +53,7 @@ export default async function ContactPage() {
                   <p className="font-label-md text-label-md text-on-surface mb-1">Wholesale Sales Line</p>
                   <a 
                     href={`tel:${settings.business_phone || "+1-800-555-7742"}`} 
-                    className="font-body-md text-body-md text-on-surface-variant font-mono hover:text-primary transition-colors hover:underline"
+                    className="font-body-md text-body-md text-on-surface-variant font-semibold hover:text-primary transition-colors hover:underline"
                   >
                     {settings.business_phone || "+1 (800) 555-SPICE"}
                   </a>
@@ -78,7 +78,7 @@ export default async function ContactPage() {
               <Clock className="text-secondary w-5 h-5 mt-1 shrink-0" />
               <div>
                 <p className="font-label-md text-label-md text-on-surface mb-1">Operating Hours (EST)</p>
-                <p className="font-body-md text-body-md text-on-surface-variant font-mono">Mon - Fri: 8:00 AM - 6:00 PM</p>
+                <p className="font-body-md text-body-md text-on-surface-variant font-semibold">Mon - Fri: 8:00 AM - 6:00 PM</p>
               </div>
             </div>
           </div>

@@ -65,7 +65,7 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
         {/* Modal Header */}
         <div className="relative z-10 p-6 border-b border-on-surface/10 flex justify-between items-center bg-surface-container-low">
           <div>
-            <span className="text-xs font-mono text-secondary font-bold uppercase tracking-wider">B2B QUOTE REQUEST</span>
+            <span className="text-xs font-semibold text-secondary uppercase tracking-wider">B2B QUOTE REQUEST</span>
             <h3 className="font-title-lg text-title-lg text-primary mt-1">Request Wholesale Pricing</h3>
           </div>
           <button 
@@ -100,7 +100,7 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
             <div className="space-y-6">
               {/* Product detail reminder */}
               <div className="bg-surface-container border border-on-surface/5 p-3.5 rounded text-sm">
-                <span className="text-xs text-on-surface-variant font-mono block animate-pulse">PRODUCT OF INTEREST</span>
+                <span className="text-xs text-on-surface-variant font-semibold block animate-pulse">PRODUCT OF INTEREST</span>
                 <span className="font-semibold text-primary">{productName}</span>
               </div>
 
@@ -300,7 +300,7 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                     <div className="bg-surface-container-low border border-on-surface/10 p-4 rounded flex items-start gap-3">
                       <Clock className="w-5 h-5 text-secondary mt-0.5 shrink-0" />
                       <div>
-                        <span className="text-xs font-mono text-on-surface-variant uppercase tracking-wider block">OFFICE HOURS</span>
+                        <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">OFFICE HOURS</span>
                         <span className="text-sm font-semibold text-primary block mt-1">Mon - Fri: 8:00 AM - 6:00 PM EST</span>
                         <span className="text-xs text-on-surface-variant">Closed on holidays</span>
                       </div>
@@ -310,7 +310,7 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                     <div className="bg-surface-container-low border border-on-surface/10 p-4 rounded flex items-start gap-3">
                       <Mail className="w-5 h-5 text-secondary mt-0.5 shrink-0" />
                       <div>
-                        <span className="text-xs font-mono text-on-surface-variant uppercase tracking-wider block">DIRECT EMAIL</span>
+                        <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">DIRECT EMAIL</span>
                         <a href={`mailto:${businessEmail}`} className="text-sm font-semibold text-primary hover:underline block mt-1 break-all">
                           {businessEmail}
                         </a>

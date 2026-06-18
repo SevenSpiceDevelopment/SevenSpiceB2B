@@ -69,7 +69,7 @@ export default async function BlogPage() {
 
                     {/* Body Content */}
                     <div className="p-6 space-y-3">
-                      <div className="flex items-center gap-4 text-xs text-on-surface-variant/70 font-mono">
+                      <div className="flex items-center gap-4 text-xs text-on-surface-variant/70 font-semibold">
                         <span className="flex items-center gap-1">
                           <Calendar size={12} /> {dateStr}
                         </span>

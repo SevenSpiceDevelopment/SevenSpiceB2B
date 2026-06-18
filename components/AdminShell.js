@@ -57,7 +57,7 @@ export default function AdminShell({ children }) {
           <UserCheck className="text-secondary-fixed-dim" size={24} />
           <div>
             <h1 className="font-bold text-sm tracking-wide leading-tight">TheSevenSpice</h1>
-            <span className="text-[10px] text-on-primary-container/80 uppercase font-mono tracking-widest font-semibold block">Control Panel</span>
+            <span className="text-[10px] text-on-primary-container/80 uppercase tracking-widest font-semibold block">Control Panel</span>
           </div>
         </div>
 
@@ -86,13 +86,13 @@ export default function AdminShell({ children }) {
         {/* Sidebar Footer */}
         <div className="p-4 border-t border-on-primary-container/10 space-y-2">
           {session?.user && (
-            <div className="px-4 py-2 text-xs text-on-primary-container/60 truncate font-mono">
+            <div className="px-4 py-2 text-xs text-on-primary-container/60 truncate font-medium">
               Role: Admin ({session.user.email})
             </div>
           )}
           <Link 
             href="/" 
-            className="flex items-center gap-3 px-4 py-2 text-xs text-on-primary/70 hover:text-on-primary transition-colors font-mono"
+            className="flex items-center gap-3 px-4 py-2 text-xs text-on-primary/70 hover:text-on-primary transition-colors font-medium"
             target="_blank"
           >
             <Globe size={14} /> View Live Website
@@ -112,12 +112,12 @@ export default function AdminShell({ children }) {
         {/* Breadcrumb banner */}
         <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-on-surface/10 pb-4 gap-2">
           <div>
-            <span className="text-xs font-mono text-on-surface-variant/70 uppercase">Administration Workspace</span>
+            <span className="text-xs font-semibold text-on-surface-variant/70 uppercase">Administration Workspace</span>
             <h2 className="font-headline-md-mobile text-primary font-semibold capitalize mt-0.5">
               {pathname?.split("/").pop()} Profile
             </h2>
           </div>
-          <div className="text-xs font-mono text-on-surface-variant bg-surface border border-on-surface/10 rounded px-3 py-1.5 shadow-sm">
+          <div className="text-xs font-semibold text-on-surface-variant bg-surface border border-on-surface/10 rounded px-3 py-1.5 shadow-sm">
             UTC: {new Date().toISOString().substring(0, 10)}
           </div>
         </div>

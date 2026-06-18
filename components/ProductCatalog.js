@@ -112,7 +112,7 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
               <div className="px-6 pb-6 pt-2">
                 {(product.packaging_info || product.price_moq) && (
                   <div className="border-t border-on-surface/5 pt-4 mb-4">
-                    <div className="flex flex-col gap-1.5 text-xs font-mono text-on-surface-variant/80">
+                    <div className="flex flex-col gap-1.5 text-xs font-semibold text-on-surface-variant/80">
                       {product.packaging_info && (
                         <div className="flex justify-between">
                           <span>PACKAGING SPEC</span>

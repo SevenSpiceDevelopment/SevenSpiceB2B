@@ -33,7 +33,7 @@ export default async function ProductsPage() {
 
       {/* Main interactive catalog with Suspense fallback */}
       <Suspense fallback={
-        <div className="text-center py-20 text-on-surface-variant font-mono text-sm">
+        <div className="text-center py-20 text-on-surface-variant font-semibold text-sm">
           Retrieving wholesale specifications...
         </div>
       }>

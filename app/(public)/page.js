@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { getSiteSettings, getProducts, getBlogPosts } from "@/lib/db";
 import { ShieldCheck, Truck, Droplets, ArrowRight } from "lucide-react";
+import AnimatedStat from "@/components/AnimatedStat";
 
 export default async function HomePage() {
   const settings = await getSiteSettings();
   const products = await getProducts();
   const blogPosts = await getBlogPosts();
-  
+
   // Get the single latest published blog post
   const latestPost = blogPosts.length > 0 ? blogPosts[0] : null;
-  
+
   // Show first 3 visible products as featured
   const featuredProducts = products.slice(0, 3);
 
@@ -34,7 +35,7 @@ export default async function HomePage() {
   return (
     <div className="flex flex-col w-full">
       {/* 1. HERO SECTION */}
-      <section 
+      <section
         className="relative overflow-hidden py-20 md:py-32 bg-cover bg-center border-b border-on-surface/10"
         style={{ backgroundImage: `url('/images/remove_the_smoke_202604271432.jpeg')` }}
       >
@@ -53,15 +54,15 @@ export default async function HomePage() {
               {settings.hero_subtitle || "Partner with TheSevenSpice for premium bulk imports, custom formulations, and seamless international logistics."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto pt-2">
-              <Link 
-                href={settings.hero_cta_link || "/contact"} 
+              <Link
+                href={settings.hero_cta_link || "/contact"}
                 className="bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded hover:bg-primary/90 transition-all text-center flex items-center justify-center gap-2 shadow-sm"
               >
                 {settings.hero_cta_text || "Submit Wholesale Inquiry"}
                 <ArrowRight size={16} />
               </Link>
-              <Link 
-                href="/products" 
+              <Link
+                href="/products"
                 className="border border-white/40 text-white font-label-md text-label-md px-8 py-4 rounded hover:bg-white/10 transition-all text-center flex items-center justify-center"
               >
                 Browse Catalog
@@ -94,17 +95,17 @@ export default async function HomePage() {
               <div className="flex flex-row gap-12 sm:gap-16 pt-4 border-t border-on-surface/10">
                 <div>
                   <div className="text-4xl sm:text-5xl font-bold text-primary mb-2">
-                    0%
+                    <AnimatedStat targetValue={0} startValue={0} suffix="%" />
                   </div>
-                  <div className="font-mono text-xs uppercase tracking-widest text-on-surface-variant font-bold">
+                  <div className="text-xs uppercase tracking-widest text-on-surface-variant font-bold">
                     Adulterants
                   </div>
                 </div>
                 <div>
                   <div className="text-4xl sm:text-5xl font-bold text-primary mb-2">
-                    100%
+                    <AnimatedStat targetValue={100} startValue={0} suffix="%" />
                   </div>
-                  <div className="font-mono text-xs uppercase tracking-widest text-on-surface-variant font-bold">
+                  <div className="text-xs uppercase tracking-widest text-on-surface-variant font-bold">
                     Organic Sourcing
                   </div>
                 </div>
@@ -149,7 +150,7 @@ export default async function HomePage() {
               We close the gap between agricultural producers and global food distributors through strict quality-control layers.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
             {trustSignals.map((signal, index) => (
               <div key={index} className="bg-surface-container-lowest border border-on-surface/10 rounded-lg p-8 hover:shadow-[0_8px_30px_rgba(26,26,26,0.03)] transition-all duration-300 flex flex-col gap-4">
@@ -184,15 +185,15 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
             {featuredProducts.length > 0 ? (
               featuredProducts.map((product) => (
-                <Link 
-                  key={product.id} 
+                <Link
+                  key={product.id}
                   href={`/products?quoteProduct=${encodeURIComponent(product.name)}&productId=${product.id}`}
                   className="bg-surface border border-on-surface/10 rounded-lg overflow-hidden flex flex-col hover:shadow-[0px_20px_40px_rgba(26,26,26,0.03)] transition-all duration-300 group cursor-pointer"
                 >
                   <div className="h-64 overflow-hidden relative bg-surface-container">
-                    <img 
-                      src={product.image_url || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"} 
-                      alt={product.name} 
+                    <img
+                      src={product.image_url || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"}
+                      alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-4 left-4 bg-secondary text-on-secondary text-xs uppercase tracking-wider font-bold px-3 py-1 rounded">
@@ -206,12 +207,12 @@ export default async function HomePage() {
                     </div>
                     <div className="border-t border-on-surface/5 pt-4 w-full">
                       {(product.packaging_info || product.price_moq) && (
-                        <div className="flex justify-between items-center text-xs font-mono text-on-surface-variant/80 mb-4">
+                        <div className="flex justify-between items-center text-xs font-semibold text-on-surface-variant/80 mb-4">
                           {product.packaging_info ? <span>Pack: {product.packaging_info}</span> : <span></span>}
                           {product.price_moq ? <span className="text-primary font-bold">{product.price_moq}</span> : <span></span>}
                         </div>
                       )}
-                      <span 
+                      <span
                         className="w-full bg-primary text-on-primary py-3 rounded text-center font-label-md group-hover:bg-primary/90 transition-colors block text-sm"
                       >
                         Request Quote
@@ -260,13 +261,13 @@ export default async function HomePage() {
                 {/* Content */}
                 <div className="p-8 md:p-12 flex flex-col justify-between gap-6">
                   <div className="space-y-4">
-                    <span className="text-xs font-mono text-on-surface-variant/70 block">
+                    <span className="text-xs font-semibold text-on-surface-variant/70 block">
                       Published: {latestPost.published_at ? new Date(latestPost.published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : new Date(latestPost.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                     </span>
                     <h3 className="font-title-lg text-xl md:text-2xl text-primary font-bold line-clamp-2 leading-tight group-hover:text-primary/90 transition-colors">
                       {latestPost.title}
                     </h3>
-                    <div 
+                    <div
                       className="text-on-surface-variant text-sm md:text-base line-clamp-3 leading-relaxed"
                       dangerouslySetInnerHTML={{ __html: latestPost.content }}
                     />
@@ -274,7 +275,7 @@ export default async function HomePage() {
 
                   <div className="border-t border-on-surface/5 pt-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
-                      <p className="text-xs font-mono text-on-surface-variant/80 uppercase tracking-widest">Written By</p>
+                      <p className="text-xs font-semibold text-on-surface-variant/80 uppercase tracking-widest">Written By</p>
                       <p className="text-sm font-semibold text-primary mt-0.5">{latestPost.author}</p>
                     </div>
                     <Link
@@ -300,7 +301,7 @@ export default async function HomePage() {
           </p>
           <div>
             <h4 className="font-title-lg text-title-lg text-on-surface font-semibold">David Jenkins</h4>
-            <p className="text-sm text-on-surface-variant font-mono uppercase tracking-widest mt-1">
+            <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-widest mt-1.5">
               VP of Operations, Global Seasoning Ltd (London)
             </p>
           </div>
@@ -308,14 +309,14 @@ export default async function HomePage() {
       </section>
 
       {/* 5. CTA SECTION */}
-      <section 
+      <section
         className="py-24 bg-cover bg-center relative overflow-hidden"
         style={{ backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGs7PSssUtW3maoaQQQ10GCm2EfzCCJxZWGMdIi_UYtw&s=10')` }}
       >
         {/* Deep brand overlay for rich contrast and legibility */}
         <div className="absolute inset-0 bg-primary/70 z-0"></div>
         <div className="absolute inset-0 bg-subtle-pattern opacity-10 z-0"></div>
-        
+
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center relative z-10 flex flex-col items-center gap-6">
           <span className="font-label-md text-label-md text-secondary-fixed uppercase tracking-widest bg-black/40 px-3 py-1 rounded border border-secondary-fixed/20">
             Global Bulk Distribution
@@ -327,14 +328,14 @@ export default async function HomePage() {
             Get in touch with our B2B account managers today to establish bulk pricing, custom product testing specifications, or logistical contracts.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mt-4 w-full sm:w-auto">
-            <Link 
-              href="/contact" 
+            <Link
+              href="/contact"
               className="bg-secondary-container text-on-secondary-container font-label-md text-label-md px-8 py-4 rounded hover:opacity-90 transition-all flex items-center justify-center gap-2"
             >
               Contact Sales Team
               <ArrowRight size={16} />
             </Link>
-            <a 
+            <a
               href={`tel:${settings.business_phone}`}
               className="border border-on-primary/30 text-on-primary font-label-md text-label-md px-8 py-4 rounded hover:bg-on-primary/10 transition-all flex items-center justify-center gap-2"
             >

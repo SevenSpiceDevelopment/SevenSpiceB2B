@@ -115,7 +115,7 @@ export default function AdminLoginPage() {
 
   if (status === "loading") {
     return (
-      <div className="flex flex-col items-center justify-center p-6 text-on-surface-variant font-mono text-sm">
+      <div className="flex flex-col items-center justify-center p-6 text-on-surface-variant font-semibold text-sm">
         <Loader2 className="animate-spin text-primary w-8 h-8 mb-2" />
         Checking Session Authorization...
       </div>
@@ -124,7 +124,7 @@ export default function AdminLoginPage() {
 
   if (status === "authenticated") {
     return (
-      <div className="flex flex-col items-center justify-center p-6 text-on-surface-variant font-mono text-sm">
+      <div className="flex flex-col items-center justify-center p-6 text-on-surface-variant font-semibold text-sm">
         <Loader2 className="animate-spin text-primary w-8 h-8 mb-2" />
         Access Granted — Redirecting to Dashboard...
       </div>
@@ -143,7 +143,7 @@ export default function AdminLoginPage() {
             <Mail size={24} />
           </div>
           <h2 className="font-headline-md-mobile text-primary font-bold">Recover Admin Password</h2>
-          <p className="text-xs text-on-surface-variant mt-1 font-mono uppercase tracking-wider">
+          <p className="text-xs text-on-surface-variant mt-1 font-semibold uppercase tracking-wider">
             Password Reset Request
           </p>
         </div>
@@ -203,7 +203,7 @@ export default function AdminLoginPage() {
                 setForgotError("");
                 setForgotSuccess("");
               }}
-              className="text-xs text-secondary hover:text-primary transition-colors font-medium font-mono uppercase tracking-wider"
+              className="text-xs text-secondary hover:text-primary transition-colors font-semibold uppercase tracking-wider"
             >
               Back to Login
             </button>
@@ -224,7 +224,7 @@ export default function AdminLoginPage() {
           <Lock size={24} />
         </div>
         <h2 className="font-headline-md-mobile text-primary font-bold">Admin Portal Login</h2>
-        <p className="text-xs text-on-surface-variant mt-1 font-mono uppercase tracking-wider">
+        <p className="text-xs text-on-surface-variant mt-1 font-semibold uppercase tracking-wider">
           TheSevenSpice Logistics Control
         </p>
       </div>
