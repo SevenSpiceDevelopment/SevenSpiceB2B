@@ -37,3 +37,12 @@ a.btn,
 p {
   @apply leading-relaxed;
 }
+
+/* Hide scrollbars for chrome, safari, edge, firefox */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

@@ -29,7 +29,7 @@ export default async function BlogPage() {
       </header>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter mt-4">
+      <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-gutter mt-4">
         {posts.length > 0 ? (
           posts.map((post) => {
             // Strip HTML to make excerpt
@@ -51,7 +51,7 @@ export default async function BlogPage() {
               <Link 
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="bg-surface border border-on-surface/10 rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-[0_12px_35px_rgba(26,26,26,0.03)] hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer"
+                className="min-w-[85vw] sm:min-w-[320px] snap-align-center md:min-w-0 flex-shrink-0 bg-surface border border-on-surface/10 rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-[0_12px_35px_rgba(26,26,26,0.03)] hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer"
               >
                 <article className="flex flex-col justify-between h-full">
                   <div>
@@ -102,7 +102,7 @@ export default async function BlogPage() {
             );
           })
         ) : (
-          <div className="col-span-1 md:col-span-2 lg:col-span-3 text-center py-20 bg-surface-container-low border border-on-surface/10 rounded-lg">
+          <div className="w-full flex-shrink-0 col-span-1 md:col-span-2 lg:col-span-3 text-center py-20 bg-surface-container-low border border-on-surface/10 rounded-lg">
             <BookOpen size={40} className="text-on-surface-variant/40 mx-auto mb-2" />
             <p className="font-body-lg text-on-surface-variant">No blog posts published yet.</p>
           </div>
