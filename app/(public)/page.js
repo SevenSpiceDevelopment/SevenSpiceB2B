@@ -147,11 +147,11 @@ export default async function HomePage() {
             {/* Right Column: Image and Overlapping Card */}
             <div className="lg:col-span-5 relative mt-8 lg:mt-12 mb-8 lg:mb-0 flex justify-center">
               <div className="relative w-full max-w-md lg:max-w-none h-96">
-                {/* Turmeric Mortar Image */}
+                {/* Methi Featured Product Image */}
                 <div className="rounded-2xl overflow-hidden shadow-2xl h-full w-full">
                   <img
-                    src="/images/turmeric_mortar.png"
-                    alt="Turmeric powder in a stone mortar and pestle representing ancient spice purity standards"
+                    src="/images/Methi%20Featured%20Product%20Image.jpg"
+                    alt="Methi (Fenugreek) featured product representing premium quality spice standards"
                     className="w-full h-full object-cover"
                   />
                 </div>
