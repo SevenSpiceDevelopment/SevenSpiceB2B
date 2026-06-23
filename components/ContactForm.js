@@ -57,33 +57,38 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-stack-md relative z-10">
-      <h2 className="font-headline-md-mobile text-headline-md-mobile md:font-headline-md md:text-headline-md text-primary mb-stack-md">
-        Wholesale Inquiry
-      </h2>
+    <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+      <div className="border-b border-on-surface/10 pb-4 mb-6">
+        <h2 className="font-headline-md-mobile text-headline-md-mobile md:font-headline-md md:text-headline-md text-primary font-bold">
+          B2B Wholesale Inquiry
+        </h2>
+        <p className="text-sm text-on-surface-variant mt-1.5 leading-relaxed">
+          Fill out the secure B2B request form below. Our global wholesale logistics and procurement account specialists will review your requirements and respond within one business day.
+        </p>
+      </div>
 
       {result?.error && (
-        <div className="bg-error-container border border-error/20 text-on-error-container p-4 rounded flex items-center gap-3 text-sm">
+        <div className="bg-error-container border border-error/20 text-on-error-container p-4 rounded flex items-center gap-3 text-sm animate-fadeIn">
           <AlertCircle className="w-5 h-5 shrink-0 text-error" />
-          <span>{result.error}</span>
+          <span className="font-semibold">{result.error}</span>
         </div>
       )}
 
       {validationError && (
-        <div className="bg-error-container border border-error/20 text-on-error-container p-4 rounded flex items-center gap-3 text-sm">
+        <div className="bg-error-container border border-error/20 text-on-error-container p-4 rounded flex items-center gap-3 text-sm animate-fadeIn">
           <AlertCircle className="w-5 h-5 shrink-0 text-error" />
-          <span>{validationError}</span>
+          <span className="font-semibold">{validationError}</span>
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Name */}
         <div className="flex flex-col">
-          <label className="font-label-md text-label-md text-on-surface-variant mb-base" htmlFor="name">
-            Full Name *
+          <label className="font-label-md text-label-md text-on-surface font-semibold mb-2" htmlFor="name">
+            Full Name <span className="text-error">*</span>
           </label>
           <input
-            className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface placeholder:text-on-surface/40 transition-colors"
+            className="w-full bg-surface border border-on-surface/15 hover:border-on-surface/30 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 rounded px-4 py-3 font-body-md text-on-surface placeholder:text-on-surface/35 transition-all duration-200 outline-none disabled:opacity-60"
             id="name"
             name="name"
             placeholder="John Doe"
@@ -95,29 +100,28 @@ export default function ContactForm() {
         
         {/* Company */}
         <div className="flex flex-col">
-          <label className="font-label-md text-label-md text-on-surface-variant mb-base" htmlFor="company">
-            Company Name *
+          <label className="font-label-md text-label-md text-on-surface font-semibold mb-2" htmlFor="company">
+            Company Name <span className="text-on-surface-variant/50 text-xs font-normal">(Optional)</span>
           </label>
           <input
-            className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface placeholder:text-on-surface/40 transition-colors"
+            className="w-full bg-surface border border-on-surface/15 hover:border-on-surface/30 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 rounded px-4 py-3 font-body-md text-on-surface placeholder:text-on-surface/35 transition-all duration-200 outline-none disabled:opacity-60"
             id="company"
             name="company"
-            placeholder="Acme Foods Inc."
-            required
+            placeholder="e.g. Acme Foods Inc. (if applicable)"
             type="text"
             disabled={loading}
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Email */}
         <div className="flex flex-col">
-          <label className="font-label-md text-label-md text-on-surface-variant mb-base" htmlFor="email">
-            Corporate Email *
+          <label className="font-label-md text-label-md text-on-surface font-semibold mb-2" htmlFor="email">
+            Corporate Email <span className="text-error">*</span>
           </label>
           <input
-            className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface placeholder:text-on-surface/40 transition-colors"
+            className="w-full bg-surface border border-on-surface/15 hover:border-on-surface/30 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 rounded px-4 py-3 font-body-md text-on-surface placeholder:text-on-surface/35 transition-all duration-200 outline-none disabled:opacity-60"
             id="email"
             name="email"
             placeholder="john@acmefoods.com"
@@ -129,11 +133,11 @@ export default function ContactForm() {
         
         {/* Phone */}
         <div className="flex flex-col">
-          <label className="font-label-md text-label-md text-on-surface-variant mb-base" htmlFor="phone">
-            Phone Number
+          <label className="font-label-md text-label-md text-on-surface font-semibold mb-2" htmlFor="phone">
+            Phone Number <span className="text-on-surface-variant/50 text-xs font-normal">(Optional)</span>
           </label>
           <input
-            className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface placeholder:text-on-surface/40 transition-colors"
+            className="w-full bg-surface border border-on-surface/15 hover:border-on-surface/30 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 rounded px-4 py-3 font-body-md text-on-surface placeholder:text-on-surface/35 transition-all duration-200 outline-none disabled:opacity-60"
             id="phone"
             name="phone"
             placeholder="+1 (555) 000-0000"
@@ -145,11 +149,11 @@ export default function ContactForm() {
 
       {/* Product Interest */}
       <div className="flex flex-col">
-        <label className="font-label-md text-label-md text-on-surface-variant mb-base" htmlFor="interest">
-          Primary Product Interest *
+        <label className="font-label-md text-label-md text-on-surface font-semibold mb-2" htmlFor="interest">
+          Primary Product Interest <span className="text-error">*</span>
         </label>
         <select
-          className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface transition-colors cursor-pointer"
+          className="w-full bg-surface border border-on-surface/15 hover:border-on-surface/30 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 rounded px-4 py-3 font-body-md text-on-surface transition-all duration-200 outline-none cursor-pointer disabled:opacity-60"
           id="interest"
           name="product_interest"
           required
@@ -167,14 +171,14 @@ export default function ContactForm() {
 
       {/* Message */}
       <div className="flex flex-col">
-        <label className="font-label-md text-label-md text-on-surface-variant mb-base" htmlFor="message">
-          Project Details / Message *
+        <label className="font-label-md text-label-md text-on-surface font-semibold mb-2" htmlFor="message">
+          Project Details / Message <span className="text-error">*</span>
         </label>
         <textarea
-          className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface placeholder:text-on-surface/40 transition-colors resize-y min-h-[100px]"
+          className="w-full bg-surface border border-on-surface/15 hover:border-on-surface/30 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 rounded px-4 py-3 font-body-md text-on-surface placeholder:text-on-surface/35 transition-all duration-200 outline-none resize-y min-h-[120px] disabled:opacity-60"
           id="message"
           name="message"
-          placeholder="Briefly describe your volume requirements or formulation specs..."
+          placeholder="Briefly describe your volume requirements, customization requests, or timeline specifications..."
           rows={4}
           required
           disabled={loading}
@@ -182,15 +186,15 @@ export default function ContactForm() {
       </div>
 
       {/* Submit Button */}
-      <div className="pt-stack-sm">
+      <div className="pt-2">
         <button
-          className="w-full md:w-auto bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:bg-primary/60 disabled:cursor-not-allowed"
+          className="w-full md:w-auto bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded hover:bg-primary/95 transition-all duration-200 flex items-center justify-center gap-2 disabled:bg-primary/60 disabled:cursor-not-allowed shadow-sm hover:shadow active:scale-[0.99]"
           type="submit"
           disabled={loading}
         >
           {loading ? (
             <>
-              Submitting...
+              Submitting Secure Form...
               <Loader2 className="animate-spin w-4 h-4" />
             </>
           ) : (

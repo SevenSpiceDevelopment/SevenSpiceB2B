@@ -29,13 +29,13 @@ export default function AboutPage() {
     <div className="flex flex-col w-full pb-stack-lg">
       {/* Hero Section */}
       <section 
-        className="relative overflow-hidden py-20 md:py-28 bg-cover bg-center border-b border-on-surface/10 w-full"
+        className="relative overflow-hidden py-20 md:py-28 bg-cover bg-center border-b border-on-surface/10 w-full flex items-center min-h-[400px] md:min-h-[520px]"
         style={{ backgroundImage: `url('/images/About%20Us%20Hero.png')` }}
       >
         {/* Dark overlay for text legibility */}
         <div className="absolute inset-0 bg-black/60 z-0"></div>
 
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10 text-left">
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10 text-left w-full">
           <div className="max-w-3xl flex flex-col gap-3">
             <span className="font-label-md text-label-md text-secondary-fixed uppercase tracking-widest bg-black/40 px-3 py-1 rounded border border-secondary-fixed/20 w-fit">
               Our Heritage

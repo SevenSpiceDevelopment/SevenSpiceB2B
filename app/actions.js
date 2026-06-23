@@ -38,13 +38,13 @@ async function fileToBase64(file) {
 export async function submitInquiry(prevState, formData) {
   try {
     const name = formData.get("name");
-    const company = formData.get("company");
+    const company = formData.get("company") || "N/A";
     const email = formData.get("email");
     const phone = formData.get("phone") || null;
     const product_interest = formData.get("product_interest");
     const message = formData.get("message");
 
-    if (!name || !company || !email || !product_interest || !message) {
+    if (!name || !email || !product_interest || !message) {
       return { success: false, error: "Please fill in all required fields." };
     }
 
