@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, ShieldCheck, Award, HeartHandshake } from "lucide-react";
 import { cookies } from "next/headers";
 import { t } from "@/lib/translations";
+import AboutHeroCarousel from "@/components/AboutHeroCarousel";
 
 export const metadata = {
   title: "About Our Heritage & Quality",
@@ -34,26 +35,29 @@ export default function AboutPage() {
     <div className="flex flex-col w-full pb-stack-lg animate-fadeIn">
       {/* Hero Section */}
       <section 
-        className="relative overflow-hidden py-20 md:py-28 bg-cover bg-center border-b border-on-surface/10 w-full flex items-center min-h-[400px] md:min-h-[520px]"
-        style={{ backgroundImage: `url('/images/About%20Us%20Hero.png')` }}
+        className="relative overflow-hidden py-24 md:py-32 border-b border-on-surface/10 w-full flex items-center min-h-[460px] md:min-h-[520px]"
       >
-        {/* Dark overlay for text legibility */}
-        <div className="absolute inset-0 bg-black/60 z-0"></div>
+        {/* Background Carousel */}
+        <AboutHeroCarousel />
 
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10 text-left w-full">
-          <div className="max-w-3xl flex flex-col gap-3">
-            <span className="font-label-md text-label-md text-secondary-fixed uppercase tracking-widest bg-black/40 px-3 py-1 rounded border border-secondary-fixed/20 w-fit">
-              {t("about_hero_span", locale)}
-            </span>
-            <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-white leading-tight">
+        {/* Subtle decorative overlays for premium depth */}
+        <div className="absolute inset-0 bg-subtle-pattern opacity-5 pointer-events-none z-10"></div>
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-secondary-fixed/5 blur-3xl z-10 pointer-events-none"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-primary-container/10 blur-3xl z-10 pointer-events-none"></div>
+
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-20 text-left w-full">
+          {/* Glassmorphism Card for text readability, keeping the rest of the image completely original and clear */}
+          <div className="max-w-2xl bg-black/40 backdrop-blur-md p-6 md:p-10 rounded-2xl border border-white/15 text-white flex flex-col gap-4 shadow-2xl">
+            <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-white leading-tight font-bold">
               {t("about_hero_title", locale)}
             </h1>
-            <p className="font-body-lg text-body-lg text-white/95 max-w-2xl">
+            <p className="font-body-lg text-body-lg text-white/95 max-w-xl leading-relaxed">
               {t("about_hero_desc", locale)}
             </p>
           </div>
         </div>
       </section>
+
 
       {/* Brand Story (2 Columns) */}
       <section className="py-20 bg-background max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">

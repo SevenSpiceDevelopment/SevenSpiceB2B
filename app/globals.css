@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gulzar&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -19,12 +20,12 @@ html[lang="ur"] input,
 html[lang="ur"] select,
 html[lang="ur"] textarea,
 html[lang="ur"] button {
-  font-family: 'Noto Sans Arabic', 'Google Sans', system-ui, sans-serif !important;
+  font-family: 'Gulzar', 'Noto Sans Arabic', 'Google Sans', system-ui, sans-serif !important;
 }
 
 html[lang="ur"] .font-serif,
 html[lang="ur"] font-serif {
-  font-family: 'Noto Nastaliq Urdu', 'Playfair Display', Georgia, serif !important;
+  font-family: 'Gulzar', 'Noto Nastaliq Urdu', 'Playfair Display', Georgia, serif !important;
 }
 
 /* RTL layout adjustments to handle standard margin/padding/borders */
