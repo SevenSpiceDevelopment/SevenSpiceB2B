@@ -4,9 +4,11 @@ import { ShieldCheck, Truck, Droplets, ArrowRight } from "lucide-react";
 import AnimatedStat from "@/components/AnimatedStat";
 
 export default async function HomePage() {
-  const settings = await getSiteSettings();
-  const products = await getProducts();
-  const blogPosts = await getBlogPosts();
+  const [settings, products, blogPosts] = await Promise.all([
+    getSiteSettings(),
+    getProducts(),
+    getBlogPosts(),
+  ]);
 
   // Get the single latest published blog post
   const latestPost = blogPosts.length > 0 ? blogPosts[0] : null;

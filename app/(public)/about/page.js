@@ -27,18 +27,26 @@ export default function AboutPage() {
 
   return (
     <div className="flex flex-col w-full pb-stack-lg">
-      {/* Header Banner */}
-      <section className="bg-surface border-b border-on-surface/10 py-16 md:py-24 bg-subtle-pattern text-center md:text-left">
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-          <span className="font-label-md text-label-md text-secondary uppercase tracking-widest bg-secondary/10 px-3 py-1 rounded">
-            Our Heritage
-          </span>
-          <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary max-w-3xl mt-4 leading-tight">
-            Bridging the gap between origin growers and global food manufacturers.
-          </h1>
-          <p className="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mt-6">
-            For over two decades, TheSevenSpice has pioneered secure global logistics routes for premium spices. We serve culinary innovators, large scale food manufacturers, and boutique retailers.
-          </p>
+      {/* Hero Section */}
+      <section 
+        className="relative overflow-hidden py-20 md:py-28 bg-cover bg-center border-b border-on-surface/10 w-full"
+        style={{ backgroundImage: `url('/images/About%20Us%20Hero.png')` }}
+      >
+        {/* Dark overlay for text legibility */}
+        <div className="absolute inset-0 bg-black/60 z-0"></div>
+
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10 text-left">
+          <div className="max-w-3xl flex flex-col gap-3">
+            <span className="font-label-md text-label-md text-secondary-fixed uppercase tracking-widest bg-black/40 px-3 py-1 rounded border border-secondary-fixed/20 w-fit">
+              Our Heritage
+            </span>
+            <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-white leading-tight">
+              Bridging the gap between origin growers and global food manufacturers.
+            </h1>
+            <p className="font-body-lg text-body-lg text-white/95 max-w-2xl">
+              For over two decades, TheSevenSpice has pioneered secure global logistics routes for premium spices. We serve culinary innovators, large scale food manufacturers, and boutique retailers.
+            </p>
+          </div>
         </div>
       </section>
 

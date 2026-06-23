@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getBlogPostBySlug, getBlogPosts } from "@/lib/db";
+import { getBlogPostBySlug as dbGetBlogPostBySlug, getBlogPosts } from "@/lib/db";
 import { Calendar, User, ArrowLeft, ArrowRight, Tag } from "lucide-react";
+import { cache } from "react";
+
+// Cache database queries across metadata generation and page rendering
+const getBlogPostBySlug = cache(dbGetBlogPostBySlug);
 
 export async function generateMetadata({ params }) {
   const post = await getBlogPostBySlug(params.slug);
@@ -13,18 +17,28 @@ export async function generateMetadata({ params }) {
   };
 }
 
+// Enable static pre-rendering at build time for instant loading
+export async function generateStaticParams() {
+  const posts = await getBlogPosts();
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
 // Revalidate this path every 60 seconds
 export const revalidate = 60;
 
 export default async function BlogPostPage({ params }) {
-  const post = await getBlogPostBySlug(params.slug);
+  // Fetch post and related posts data in parallel to reduce network round-trips
+  const postPromise = getBlogPostBySlug(params.slug);
+  const allPostsPromise = getBlogPosts();
+
+  const [post, allPosts] = await Promise.all([postPromise, allPostsPromise]);
   
   if (!post) {
     notFound();
   }
 
-  // Fetch all posts to select related ones
-  const allPosts = await getBlogPosts();
   const relatedPosts = allPosts
     .filter(p => p.id !== post.id && p.category === post.category)
     .slice(0, 2);

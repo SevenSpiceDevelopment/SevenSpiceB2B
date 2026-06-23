@@ -11,8 +11,10 @@ export const metadata = {
 export const revalidate = 60;
 
 export default async function ProductsPage() {
-  const products = await getProducts();
-  const settings = await getSiteSettings();
+  const [products, settings] = await Promise.all([
+    getProducts(),
+    getSiteSettings()
+  ]);
   const businessPhone = settings?.business_phone || "+1 (800) 555-SPICE";
   const businessEmail = settings?.business_email || "sales@thesevenspice.com";
 
