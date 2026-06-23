@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { submitInquiry } from "@/app/actions";
 import { ArrowRight, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { t } from "@/lib/translations";
 
-export default function ContactForm() {
+export default function ContactForm({ locale = "en" }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [validationError, setValidationError] = useState("");
@@ -20,7 +21,7 @@ export default function ContactForm() {
     // Quick validation
     const email = formData.get("email");
     if (email && !email.includes("@")) {
-      setValidationError("Please enter a valid corporate email address.");
+      setValidationError(t("validation_email", locale));
       setLoading(false);
       return;
     }
@@ -32,38 +33,45 @@ export default function ContactForm() {
         e.target.reset();
       }
     } catch (err) {
-      setResult({ success: false, error: "Failed to send inquiry. Please try again later." });
+      setResult({ success: false, error: t("inquiry_send_error", locale) });
     } finally {
       setLoading(false);
     }
+  };
+
+  const getSuccessMessage = (originalMessage) => {
+    if (locale === "ur") {
+      return "شکریہ! آپ کی انکوائری کامیابی کے ساتھ جمع ہو گئی ہے۔ ہماری ٹیم جلد ہی آپ سے رابطہ کرے گی۔";
+    }
+    return originalMessage;
   };
 
   if (result?.success) {
     return (
       <div className="flex flex-col items-center justify-center text-center py-12 px-4 animate-fadeIn">
         <CheckCircle2 className="text-secondary w-16 h-16 mb-4 animate-bounce" />
-        <h3 className="font-headline-md-mobile text-primary mb-2">Inquiry Submitted</h3>
+        <h3 className="font-headline-md-mobile text-primary mb-2">{t("form_success_title", locale)}</h3>
         <p className="text-on-surface-variant max-w-md mb-6">
-          {result.message}
+          {getSuccessMessage(result.message)}
         </p>
         <button 
           onClick={() => setResult(null)} 
           className="border border-primary text-primary px-6 py-2 rounded hover:bg-primary/5 transition-colors font-label-md text-sm"
         >
-          Submit Another Inquiry
+          {t("form_success_btn", locale)}
         </button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+    <form onSubmit={handleSubmit} className="space-y-6 relative z-10 text-left">
       <div className="border-b border-on-surface/10 pb-4 mb-6">
         <h2 className="font-headline-md-mobile text-headline-md-mobile md:font-headline-md md:text-headline-md text-primary font-bold">
-          B2B Wholesale Inquiry
+          {t("form_title", locale)}
         </h2>
         <p className="text-sm text-on-surface-variant mt-1.5 leading-relaxed">
-          Fill out the secure B2B request form below. Our global wholesale logistics and procurement account specialists will review your requirements and respond within one business day.
+          {t("form_desc", locale)}
         </p>
       </div>
 
@@ -85,13 +93,13 @@ export default function ContactForm() {
         {/* Name */}
         <div className="flex flex-col">
           <label className="font-label-md text-label-md text-on-surface font-semibold mb-2" htmlFor="name">
-            Full Name <span className="text-error">*</span>
+            {t("form_label_name", locale)} <span className="text-error">{t("form_required_star", locale)}</span>
           </label>
           <input
             className="w-full bg-surface border border-on-surface/15 hover:border-on-surface/30 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 rounded px-4 py-3 font-body-md text-on-surface placeholder:text-on-surface/35 transition-all duration-200 outline-none disabled:opacity-60"
             id="name"
             name="name"
-            placeholder="John Doe"
+            placeholder={t("form_name_placeholder", locale)}
             required
             type="text"
             disabled={loading}
@@ -101,13 +109,13 @@ export default function ContactForm() {
         {/* Company */}
         <div className="flex flex-col">
           <label className="font-label-md text-label-md text-on-surface font-semibold mb-2" htmlFor="company">
-            Company Name <span className="text-on-surface-variant/50 text-xs font-normal">(Optional)</span>
+            {t("form_label_company", locale)} <span className="text-on-surface-variant/50 text-xs font-normal">{t("form_optional", locale)}</span>
           </label>
           <input
             className="w-full bg-surface border border-on-surface/15 hover:border-on-surface/30 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 rounded px-4 py-3 font-body-md text-on-surface placeholder:text-on-surface/35 transition-all duration-200 outline-none disabled:opacity-60"
             id="company"
             name="company"
-            placeholder="e.g. Acme Foods Inc. (if applicable)"
+            placeholder={t("form_company_placeholder", locale)}
             type="text"
             disabled={loading}
           />
@@ -118,7 +126,7 @@ export default function ContactForm() {
         {/* Email */}
         <div className="flex flex-col">
           <label className="font-label-md text-label-md text-on-surface font-semibold mb-2" htmlFor="email">
-            Corporate Email <span className="text-error">*</span>
+            {t("form_label_email", locale)} <span className="text-error">{t("form_required_star", locale)}</span>
           </label>
           <input
             className="w-full bg-surface border border-on-surface/15 hover:border-on-surface/30 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 rounded px-4 py-3 font-body-md text-on-surface placeholder:text-on-surface/35 transition-all duration-200 outline-none disabled:opacity-60"
@@ -134,13 +142,13 @@ export default function ContactForm() {
         {/* Phone */}
         <div className="flex flex-col">
           <label className="font-label-md text-label-md text-on-surface font-semibold mb-2" htmlFor="phone">
-            Phone Number <span className="text-on-surface-variant/50 text-xs font-normal">(Optional)</span>
+            {t("form_label_phone", locale)} <span className="text-on-surface-variant/50 text-xs font-normal">{t("form_optional", locale)}</span>
           </label>
           <input
             className="w-full bg-surface border border-on-surface/15 hover:border-on-surface/30 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 rounded px-4 py-3 font-body-md text-on-surface placeholder:text-on-surface/35 transition-all duration-200 outline-none disabled:opacity-60"
             id="phone"
             name="phone"
-            placeholder="+1 (555) 000-0000"
+            placeholder={t("form_phone_placeholder", locale)}
             type="tel"
             disabled={loading}
           />
@@ -150,7 +158,7 @@ export default function ContactForm() {
       {/* Product Interest */}
       <div className="flex flex-col">
         <label className="font-label-md text-label-md text-on-surface font-semibold mb-2" htmlFor="interest">
-          Primary Product Interest <span className="text-error">*</span>
+          {t("form_label_interest", locale)} <span className="text-error">{t("form_required_star", locale)}</span>
         </label>
         <select
           className="w-full bg-surface border border-on-surface/15 hover:border-on-surface/30 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 rounded px-4 py-3 font-body-md text-on-surface transition-all duration-200 outline-none cursor-pointer disabled:opacity-60"
@@ -160,25 +168,25 @@ export default function ContactForm() {
           defaultValue=""
           disabled={loading}
         >
-          <option value="" disabled>Select an option...</option>
-          <option value="Premium Saffron">Premium Saffron</option>
-          <option value="Bulk Spice Blends">Bulk Spice Blends</option>
-          <option value="Private Label Manufacturing">Private Label Manufacturing</option>
-          <option value="Raw Commodities">Raw Commodities</option>
-          <option value="Other Inquiry">Other Inquiry</option>
+          <option value="" disabled>{t("form_interest_placeholder", locale)}</option>
+          <option value="Premium Saffron">{t("form_interest_opt1", locale)}</option>
+          <option value="Bulk Spice Blends">{t("form_interest_opt2", locale)}</option>
+          <option value="Private Label Manufacturing">{t("form_interest_opt3", locale)}</option>
+          <option value="Raw Commodities">{t("form_interest_opt4", locale)}</option>
+          <option value="Other Inquiry">{t("form_interest_opt5", locale)}</option>
         </select>
       </div>
 
       {/* Message */}
       <div className="flex flex-col">
         <label className="font-label-md text-label-md text-on-surface font-semibold mb-2" htmlFor="message">
-          Project Details / Message <span className="text-error">*</span>
+          {t("form_label_message", locale)} <span className="text-error">{t("form_required_star", locale)}</span>
         </label>
         <textarea
           className="w-full bg-surface border border-on-surface/15 hover:border-on-surface/30 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/10 rounded px-4 py-3 font-body-md text-on-surface placeholder:text-on-surface/35 transition-all duration-200 outline-none resize-y min-h-[120px] disabled:opacity-60"
           id="message"
           name="message"
-          placeholder="Briefly describe your volume requirements, customization requests, or timeline specifications..."
+          placeholder={t("form_message_placeholder", locale)}
           rows={4}
           required
           disabled={loading}
@@ -194,13 +202,13 @@ export default function ContactForm() {
         >
           {loading ? (
             <>
-              Submitting Secure Form...
+              {t("form_submitting", locale)}
               <Loader2 className="animate-spin w-4 h-4" />
             </>
           ) : (
             <>
-              Submit Inquiry
-              <ArrowRight size={16} />
+              {t("form_submit", locale)}
+              <ArrowRight size={16} className={locale === "ur" ? "rotate-180" : ""} />
             </>
           )}
         </button>

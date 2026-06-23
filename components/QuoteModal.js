@@ -3,8 +3,17 @@
 import { useState, useEffect } from "react";
 import { submitQuoteRequest } from "@/app/actions";
 import { X, CheckCircle2, Loader2, AlertCircle, ClipboardList, Phone, Clock, Mail } from "lucide-react";
+import { t } from "@/lib/translations";
 
-export default function QuoteModal({ isOpen, onClose, productName, productId, businessPhone, businessEmail }) {
+export default function QuoteModal({ 
+  isOpen, 
+  onClose, 
+  productName, 
+  productId, 
+  businessPhone, 
+  businessEmail,
+  locale = "en"
+}) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [validationError, setValidationError] = useState("");
@@ -37,7 +46,7 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
     const email = formData.get("email");
 
     if (email && !email.includes("@")) {
-      setValidationError("Please enter a valid corporate email address.");
+      setValidationError(t("validation_email", locale));
       setLoading(false);
       return;
     }
@@ -49,11 +58,21 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
         e.target.reset();
       }
     } catch (err) {
-      setResult({ success: false, error: "Failed to submit quote request. Please try again." });
+      setResult({ success: false, error: t("modal_error", locale) });
     } finally {
       setLoading(false);
     }
   };
+
+  const successDesc = locale === "ur" ? (
+    <>
+      مصنوعات <strong>{productName}</strong> کے لیے آپ کی درخواست درج کر لی گئی ہے۔ ہماری تجارتی ٹیم 1 کاروباری دن کے اندر ریٹ شیٹ ای میل کرے گی۔
+    </>
+  ) : (
+    <>
+      Your request for <strong>{productName}</strong> has been logged. Our commercial accounts team will review margins and email a custom catalog rate sheet within 1 business day.
+    </>
+  );
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/40 backdrop-blur-sm p-4 animate-fadeIn">
@@ -64,9 +83,9 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
 
         {/* Modal Header */}
         <div className="relative z-10 p-6 border-b border-on-surface/10 flex justify-between items-center bg-surface-container-low">
-          <div>
-            <span className="text-xs font-semibold text-secondary uppercase tracking-wider">B2B QUOTE REQUEST</span>
-            <h3 className="font-title-lg text-title-lg text-primary mt-1">Request Wholesale Pricing</h3>
+          <div className="text-left">
+            <span className="text-xs font-semibold text-secondary uppercase tracking-wider">{t("modal_title_span", locale)}</span>
+            <h3 className="font-title-lg text-title-lg text-primary mt-1">{t("modal_title", locale)}</h3>
           </div>
           <button 
             onClick={onClose}
@@ -78,13 +97,13 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
         </div>
 
         {/* Modal Body */}
-        <div className="relative z-10 p-6 overflow-y-auto flex-grow">
+        <div className="relative z-10 p-6 overflow-y-auto flex-grow text-left">
           {result?.success ? (
             <div className="text-center py-8 flex flex-col items-center gap-4">
               <CheckCircle2 className="text-secondary w-16 h-16 animate-bounce" />
-              <h4 className="font-headline-md-mobile text-primary font-semibold">Request Received</h4>
+              <h4 className="font-headline-md-mobile text-primary font-semibold">{t("modal_success_title", locale)}</h4>
               <p className="text-on-surface-variant max-w-sm text-sm">
-                Your request for <strong>{productName}</strong> has been logged. Our commercial accounts team will review margins and email a custom catalog rate sheet within 1 business day.
+                {successDesc}
               </p>
               <button
                 onClick={() => {
@@ -93,14 +112,14 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                 }}
                 className="mt-4 bg-primary text-on-primary font-label-md text-label-md px-6 py-2.5 rounded hover:bg-primary/90 transition-colors"
               >
-                Close Window
+                {t("modal_success_close", locale)}
               </button>
             </div>
           ) : (
             <div className="space-y-6">
               {/* Product detail reminder */}
               <div className="bg-surface-container border border-on-surface/5 p-3.5 rounded text-sm">
-                <span className="text-xs text-on-surface-variant font-semibold block animate-pulse">PRODUCT OF INTEREST</span>
+                <span className="text-xs text-on-surface-variant font-semibold block animate-pulse">{t("modal_prod_interest", locale)}</span>
                 <span className="font-semibold text-primary">{productName}</span>
               </div>
 
@@ -116,7 +135,7 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                   }`}
                 >
                   <ClipboardList size={16} />
-                  Request via Form
+                  {t("modal_tab_form", locale)}
                 </button>
                 <button
                   type="button"
@@ -128,7 +147,7 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                   }`}
                 >
                   <Phone size={16} />
-                  Call Sales Team
+                  {t("modal_tab_call", locale)}
                 </button>
               </div>
 
@@ -154,7 +173,7 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                   {/* Name */}
                   <div className="flex flex-col">
                     <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="modal-name">
-                      Full Name *
+                      {t("modal_label_name", locale)}
                     </label>
                     <input
                       id="modal-name"
@@ -170,7 +189,7 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                   {/* Company */}
                   <div className="flex flex-col">
                     <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="modal-company">
-                      Company Name *
+                      {t("modal_label_company", locale)}
                     </label>
                     <input
                       id="modal-company"
@@ -187,7 +206,7 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                     {/* Email */}
                     <div className="flex flex-col">
                       <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="modal-email">
-                        Corporate Email *
+                        {t("modal_label_email", locale)}
                       </label>
                       <input
                         id="modal-email"
@@ -203,7 +222,7 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                     {/* Phone */}
                     <div className="flex flex-col">
                       <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="modal-phone">
-                        Phone Number
+                        {t("modal_label_phone", locale)}
                       </label>
                       <input
                         id="modal-phone"
@@ -219,13 +238,13 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                   {/* Quantity */}
                   <div className="flex flex-col">
                     <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="modal-qty">
-                      Target Volume / Quantity Needed *
+                      {t("modal_label_qty", locale)}
                     </label>
                     <input
                       id="modal-qty"
                       name="quantity"
                       required
-                      placeholder="e.g. 500 kg, 2 metric tons"
+                      placeholder={t("modal_qty_placeholder", locale)}
                       type="text"
                       disabled={loading}
                       className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-1.5 font-body-md text-on-surface placeholder:text-on-surface/40 text-sm transition-colors"
@@ -235,12 +254,12 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                   {/* Message */}
                   <div className="flex flex-col">
                     <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="modal-message">
-                      Volumetric requirements or Custom formulation requests
+                      {t("modal_label_message", locale)}
                     </label>
                     <textarea
                       id="modal-message"
                       name="message"
-                      placeholder="Add any specific packaging forms, shipping destinations, or regulatory audits required..."
+                      placeholder={t("modal_msg_placeholder", locale)}
                       rows={3}
                       disabled={loading}
                       className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-1.5 font-body-md text-on-surface placeholder:text-on-surface/40 text-sm transition-colors resize-y"
@@ -255,7 +274,7 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                       disabled={loading}
                       className="px-5 py-2.5 rounded border border-on-surface/20 font-label-md text-xs text-on-surface-variant hover:bg-on-surface/5 transition-colors disabled:opacity-50"
                     >
-                      Cancel
+                      {t("cancel", locale)}
                     </button>
                     <button
                       type="submit"
@@ -264,11 +283,11 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                     >
                       {loading ? (
                         <>
-                          Submitting...
+                          {locale === "ur" ? "جمع کرایا جا رہا ہے..." : "Submitting..."}
                           <Loader2 className="animate-spin w-3.5 h-3.5" />
                         </>
                       ) : (
-                        "Submit Request"
+                        locale === "ur" ? "درخواست جمع کروائیں" : "Submit Request"
                       )}
                     </button>
                   </div>
@@ -280,9 +299,9 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                       <Phone className="w-8 h-8 text-primary animate-pulse" />
                     </div>
                     <div className="space-y-1">
-                      <h4 className="font-title-lg text-primary font-bold">Speak Directly with a Broker</h4>
+                      <h4 className="font-title-lg text-primary font-bold">{t("modal_broker_title", locale)}</h4>
                       <p className="text-xs text-on-surface-variant max-w-xs mx-auto">
-                        Call our commercial trade desk for instant quotes, supply constraints, and customs clearing specifications.
+                        {t("modal_broker_desc", locale)}
                       </p>
                     </div>
                     
@@ -300,9 +319,9 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                     <div className="bg-surface-container-low border border-on-surface/10 p-4 rounded flex items-start gap-3">
                       <Clock className="w-5 h-5 text-secondary mt-0.5 shrink-0" />
                       <div>
-                        <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">OFFICE HOURS</span>
-                        <span className="text-sm font-semibold text-primary block mt-1">Mon - Fri: 8:00 AM - 6:00 PM EST</span>
-                        <span className="text-xs text-on-surface-variant">Closed on holidays</span>
+                        <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">{t("modal_hours_title", locale)}</span>
+                        <span className="text-sm font-semibold text-primary block mt-1">{t("modal_hours_val", locale)}</span>
+                        <span className="text-xs text-on-surface-variant">{t("modal_hours_closed", locale)}</span>
                       </div>
                     </div>
 
@@ -310,11 +329,11 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                     <div className="bg-surface-container-low border border-on-surface/10 p-4 rounded flex items-start gap-3">
                       <Mail className="w-5 h-5 text-secondary mt-0.5 shrink-0" />
                       <div>
-                        <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">DIRECT EMAIL</span>
+                        <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">{t("modal_direct_email", locale)}</span>
                         <a href={`mailto:${businessEmail}`} className="text-sm font-semibold text-primary hover:underline block mt-1 break-all">
                           {businessEmail}
                         </a>
-                        <span className="text-xs text-on-surface-variant">Response in 1 business day</span>
+                        <span className="text-xs text-on-surface-variant">{t("modal_email_response", locale)}</span>
                       </div>
                     </div>
                   </div>
@@ -325,7 +344,7 @@ export default function QuoteModal({ isOpen, onClose, productName, productId, bu
                       onClick={onClose}
                       className="px-6 py-2.5 rounded border border-on-surface/20 font-label-md text-xs text-on-surface-variant hover:bg-on-surface/5 transition-colors"
                     >
-                      Close
+                      {t("close", locale)}
                     </button>
                   </div>
                 </div>

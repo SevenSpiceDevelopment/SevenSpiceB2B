@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -24,16 +25,21 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const cookieStore = cookies();
+  const locale = cookieStore.get("locale")?.value || "en";
+  const direction = locale === "ur" ? "rtl" : "ltr";
+
   return (
-    <html lang="en" className="light scroll-smooth">
+    <html lang={locale} dir={direction} className="light scroll-smooth">
       <body className="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col selection:bg-primary/10 selection:text-primary">
-        <Navbar />
+        <Navbar locale={locale} />
         <main className="flex-grow flex flex-col">
           {children}
         </main>
         {/* @ts-expect-error Async Server Component */}
-        <Footer />
+        <Footer locale={locale} />
       </body>
     </html>
   );
 }
+

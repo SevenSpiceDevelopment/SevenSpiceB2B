@@ -2,13 +2,22 @@ import Link from "next/link";
 import { getSiteSettings, getProducts, getBlogPosts } from "@/lib/db";
 import { ShieldCheck, Truck, Droplets, ArrowRight } from "lucide-react";
 import AnimatedStat from "@/components/AnimatedStat";
+import { cookies } from "next/headers";
+import { t, translateProducts, translateBlogPosts } from "@/lib/translations";
 
 export default async function HomePage() {
-  const [settings, products, blogPosts] = await Promise.all([
+  const cookieStore = cookies();
+  const locale = cookieStore.get("locale")?.value || "en";
+
+  const [settings, rawProducts, rawBlogPosts] = await Promise.all([
     getSiteSettings(),
     getProducts(),
     getBlogPosts(),
   ]);
+
+  // Translate database objects dynamically if locale is 'ur'
+  const products = translateProducts(rawProducts, locale);
+  const blogPosts = translateBlogPosts(rawBlogPosts, locale);
 
   // Get the single latest published blog post
   const latestPost = blogPosts.length > 0 ? blogPosts[0] : null;
@@ -17,22 +26,42 @@ export default async function HomePage() {
   // Show first 3 visible products as featured
   const featuredProducts = products.slice(0, 3);
 
+  // Handle default site settings localizations
+  const heroTitle = settings.hero_title === "Exquisite Spices sourced globally, delivered reliably."
+    ? t("home_hero_title", locale)
+    : settings.hero_title;
+
+  const heroSubtitle = settings.hero_subtitle === "Partner with TheSevenSpice for premium bulk imports, custom formulations, and seamless international logistics."
+    ? t("home_hero_subtitle", locale)
+    : settings.hero_subtitle;
+
+  const heroCtaText = settings.hero_cta_text === "Submit Wholesale Inquiry"
+    ? t("home_hero_cta", locale)
+    : settings.hero_cta_text;
+
   const trustSignals = [
     {
       icon: <ShieldCheck className="text-secondary w-8 h-8" />,
-      title: "Grade-A Certified Sourcing",
-      desc: "All spices undergo thorough ISO 3632 testing for purity, coloring strength, and oil content. Direct origin verification protocols protect your brand."
+      title: t("home_trust_card1_title", locale),
+      desc: t("home_trust_card1_desc", locale)
     },
     {
       icon: <Truck className="text-secondary w-8 h-8" />,
-      title: "Logistical Precision",
-      desc: "Temperature-controlled cargo configurations and specialized moisture-barrier containers safeguard products during long transit cycles."
+      title: t("home_trust_card2_title", locale),
+      desc: t("home_trust_card2_desc", locale)
     },
     {
       icon: <Droplets className="text-secondary w-8 h-8" />,
-      title: "Custom Formulation",
-      desc: "From specific volatile oil concentrations to custom spice grinds and private-label packaging, our food scientists deliver precisely to your specs."
+      title: t("home_trust_card3_title", locale),
+      desc: t("home_trust_card3_desc", locale)
     }
+  ];
+
+  const faqList = [
+    { q: t("home_faq_q1", locale), a: t("home_faq_a1", locale) },
+    { q: t("home_faq_q2", locale), a: t("home_faq_a2", locale) },
+    { q: t("home_faq_q3", locale), a: t("home_faq_a3", locale) },
+    { q: t("home_faq_q4", locale), a: t("home_faq_a4", locale) }
   ];
 
   return (
@@ -48,27 +77,27 @@ export default async function HomePage() {
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
           <div className="max-w-3xl flex flex-col items-start gap-stack-md text-left">
             <span className="font-label-md text-label-md text-secondary-fixed uppercase tracking-widest bg-black/40 px-3 py-1 rounded border border-secondary-fixed/20">
-              Global Wholesale Supplier
+              {t("home_hero_span", locale)}
             </span>
             <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-white tracking-tight leading-tight">
-              {settings.hero_title || "Exquisite Spices sourced globally, delivered reliably."}
+              {heroTitle}
             </h1>
             <p className="font-body-lg text-body-lg text-white/85 max-w-2xl">
-              {settings.hero_subtitle || "Partner with TheSevenSpice for premium bulk imports, custom formulations, and seamless international logistics."}
+              {heroSubtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto pt-2">
               <Link
                 href={settings.hero_cta_link || "/contact"}
                 className="bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded hover:bg-primary/90 transition-all text-center flex items-center justify-center gap-2 shadow-sm"
               >
-                {settings.hero_cta_text || "Submit Wholesale Inquiry"}
-                <ArrowRight size={16} />
+                {heroCtaText}
+                <ArrowRight size={16} className={locale === "ur" ? "rotate-180" : ""} />
               </Link>
               <Link
                 href="/products"
                 className="border border-white/40 text-white font-label-md text-label-md px-8 py-4 rounded hover:bg-white/10 transition-all text-center flex items-center justify-center"
               >
-                Browse Catalog
+                {t("home_hero_browse", locale)}
               </Link>
             </div>
           </div>
@@ -82,16 +111,16 @@ export default async function HomePage() {
             {/* Left Content Column */}
             <div className="lg:col-span-7 flex flex-col justify-center text-left">
               <span className="font-label-md text-label-md text-secondary uppercase tracking-widest mb-4">
-                Our Heritage & Standards
+                {t("home_heritage_span", locale)}
               </span>
               <h2 className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-primary mb-6 leading-tight">
-                Bridging Ancient Alchemy with Modern Purity
+                {t("home_heritage_title", locale)}
               </h2>
               <p className="font-body-lg text-body-lg text-on-surface-variant mb-6 leading-relaxed">
-                At TheSevenSpice, we believe spices are more than ingredients—they are the soul of the kitchen. Our journey begins in the remote spice gardens of the Malabar Coast and the high valleys of Kashmir.
+                {t("home_heritage_p1", locale)}
               </p>
               <p className="font-body-lg text-body-lg text-on-surface-variant mb-8 leading-relaxed">
-                We combine traditional stone-grinding techniques that preserve essential oils with cutting-edge lab testing for 100% purity. No fillers, no artificial colors—just the raw, vibrant power of nature.
+                {t("home_heritage_p2", locale)}
               </p>
 
               {/* Statistics Grid */}
@@ -101,7 +130,7 @@ export default async function HomePage() {
                     <AnimatedStat targetValue={0} startValue={0} suffix="%" />
                   </div>
                   <div className="text-xs uppercase tracking-widest text-on-surface-variant font-bold">
-                    Adulterants
+                    {t("home_stats_adulterants", locale)}
                   </div>
                 </div>
                 <div>
@@ -109,7 +138,7 @@ export default async function HomePage() {
                     <AnimatedStat targetValue={100} startValue={0} suffix="%" />
                   </div>
                   <div className="text-xs uppercase tracking-widest text-on-surface-variant font-bold">
-                    Organic Sourcing
+                    {t("home_stats_organic", locale)}
                   </div>
                 </div>
               </div>
@@ -130,10 +159,10 @@ export default async function HomePage() {
                 {/* Overlapping Promise Card */}
                 <div className="absolute -bottom-8 left-6 md:-bottom-12 md:-left-12 bg-gradient-to-br from-white/90 via-white/80 to-white/50 backdrop-blur-lg p-6 rounded-xl border border-white/50 shadow-[0_20px_50px_rgba(87,0,19,0.15)] max-w-[280px] sm:max-w-xs transition-transform hover:scale-[1.02] duration-300 z-10">
                   <h3 className="font-serif text-lg font-bold text-primary mb-1.5">
-                    Our Promise
+                    {t("home_promise_title", locale)}
                   </h3>
                   <p className="font-serif italic text-on-surface-variant text-sm leading-relaxed">
-                    'From the earth to your hearth, we ensure every grain tells a story of integrity.'
+                    {t("home_promise_desc", locale)}
                   </p>
                 </div>
               </div>
@@ -147,10 +176,10 @@ export default async function HomePage() {
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-primary mb-4">
-              Enterprise-Grade Quality & Logistics
+              {t("home_trust_title", locale)}
             </h2>
             <p className="font-body-md text-body-md text-on-surface-variant">
-              We close the gap between agricultural producers and global food distributors through strict quality-control layers.
+              {t("home_trust_subtitle", locale)}
             </p>
           </div>
 
@@ -174,14 +203,14 @@ export default async function HomePage() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
             <div>
               <h2 className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-primary mb-2">
-                Featured Product Catalog
+                {t("home_featured_title", locale)}
               </h2>
               <p className="font-body-md text-body-md text-on-surface-variant max-w-2xl">
-                Sourced from certified growers, cleaned and packed under high sanitary standards.
+                {t("home_featured_subtitle", locale)}
               </p>
             </div>
             <Link href="/products" className="text-primary font-bold hover:text-primary/80 transition-colors flex items-center gap-1 border-b border-primary pb-1 font-label-md">
-              View All Products <ArrowRight size={16} />
+              {t("home_featured_view_all", locale)} <ArrowRight size={16} className={locale === "ur" ? "rotate-180" : ""} />
             </Link>
           </div>
 
@@ -211,21 +240,23 @@ export default async function HomePage() {
                     <div className="border-t border-on-surface/5 pt-4 w-full">
                       {(product.packaging_info || product.price_moq) && (
                         <div className="flex justify-between items-center text-xs font-semibold text-on-surface-variant/80 mb-4">
-                          {product.packaging_info ? <span>Pack: {product.packaging_info}</span> : <span></span>}
+                          {product.packaging_info ? <span>{product.packaging_info}</span> : <span></span>}
                           {product.price_moq ? <span className="text-primary font-bold">{product.price_moq}</span> : <span></span>}
                         </div>
                       )}
                       <span
                         className="w-full bg-primary text-on-primary py-3 rounded text-center font-label-md group-hover:bg-primary/90 transition-colors block text-sm"
                       >
-                        Request Quote
+                        {t("home_featured_request_quote", locale)}
                       </span>
                     </div>
                   </div>
                 </Link>
               ))
             ) : (
-              <p className="col-span-3 text-center text-on-surface-variant py-12">No products loaded yet. Create them in the Admin Dashboard!</p>
+              <p className="col-span-3 text-center text-on-surface-variant py-12">
+                {t("home_featured_no_products", locale)}
+              </p>
             )}
           </div>
         </div>
@@ -237,13 +268,13 @@ export default async function HomePage() {
           <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
             <div className="text-center max-w-3xl mx-auto mb-12">
               <span className="font-label-md text-label-md text-secondary uppercase tracking-widest bg-secondary/10 px-3 py-1 rounded">
-                Supply Chain Journal
+                {t("home_blog_span", locale)}
               </span>
               <h2 className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-primary mt-4 mb-2">
-                Latest Logistics & Industry Update
+                {t("home_blog_title", locale)}
               </h2>
               <p className="font-body-md text-body-md text-on-surface-variant">
-                Stay informed with direct sourcing reports, regulatory updates, and global market analyses.
+                {t("home_blog_subtitle", locale)}
               </p>
             </div>
 
@@ -267,7 +298,7 @@ export default async function HomePage() {
                   <div className="p-6 flex-grow flex flex-col justify-between gap-4">
                     <div className="space-y-2">
                       <span className="text-xs font-semibold text-on-surface-variant/70 block">
-                        {post.published_at ? new Date(post.published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        {post.published_at ? new Date(post.published_at).toLocaleDateString(locale === "ur" ? 'ur-PK' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : new Date(post.created_at).toLocaleDateString(locale === "ur" ? 'ur-PK' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                       </span>
                       <h3 className="font-title-lg text-title-lg text-primary line-clamp-2 group-hover:text-primary transition-colors font-bold">{post.title}</h3>
                       <div
@@ -277,13 +308,13 @@ export default async function HomePage() {
                     </div>
                     <div className="border-t border-on-surface/5 pt-4 w-full flex justify-between items-center">
                       <div>
-                        <p className="text-[10px] font-semibold text-on-surface-variant/80 uppercase tracking-widest">Written By</p>
+                        <p className="text-[10px] font-semibold text-on-surface-variant/80 uppercase tracking-widest">{t("home_blog_written_by", locale)}</p>
                         <p className="text-xs font-semibold text-primary mt-0.5">{post.author}</p>
                       </div>
                       <span
                         className="text-primary font-bold hover:text-primary/80 transition-colors flex items-center gap-1 text-xs font-label-md"
                       >
-                        Read Post <ArrowRight size={14} />
+                        {t("home_blog_read_post", locale)} <ArrowRight size={14} className={locale === "ur" ? "rotate-180" : ""} />
                       </span>
                     </div>
                   </div>
@@ -299,12 +330,12 @@ export default async function HomePage() {
         <div className="max-w-4xl mx-auto px-margin-mobile text-center relative z-10">
           <span className="text-secondary font-bold text-5xl font-serif">“</span>
           <p className="font-headline-md-mobile md:font-headline-md text-primary italic mb-8 -mt-2 leading-relaxed">
-            TheSevenSpice has transformed our procurement. Their shipping compliance verification and consistent grade profiles mean zero delays at customs and absolute flavor stability.
+            {t("home_testimonial_text", locale)}
           </p>
           <div>
-            <h4 className="font-title-lg text-title-lg text-on-surface font-semibold">David Jenkins</h4>
+            <h4 className="font-title-lg text-title-lg text-on-surface font-semibold">{t("home_testimonial_author", locale)}</h4>
             <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-widest mt-1.5">
-              VP of Operations, Global Seasoning Ltd (London)
+              {t("home_testimonial_role", locale)}
             </p>
           </div>
         </div>
@@ -321,27 +352,27 @@ export default async function HomePage() {
 
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center relative z-10 flex flex-col items-center gap-6">
           <span className="font-label-md text-label-md text-secondary-fixed uppercase tracking-widest bg-black/40 px-3 py-1 rounded border border-secondary-fixed/20">
-            Global Bulk Distribution
+            {t("home_cta_span", locale)}
           </span>
           <h2 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-primary max-w-3xl leading-tight">
-            Ready to secure your global spice supply chains?
+            {t("home_cta_title", locale)}
           </h2>
           <p className="font-body-lg text-body-lg text-on-primary/80 max-w-2xl">
-            Get in touch with our B2B account managers today to establish bulk pricing, custom product testing specifications, or logistical contracts.
+            {t("home_cta_desc", locale)}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mt-4 w-full sm:w-auto">
             <Link
               href="/contact"
               className="bg-secondary-container text-on-secondary-container font-label-md text-label-md px-8 py-4 rounded hover:opacity-90 transition-all flex items-center justify-center gap-2"
             >
-              Contact Sales Team
-              <ArrowRight size={16} />
+              {t("home_cta_sales", locale)}
+              <ArrowRight size={16} className={locale === "ur" ? "rotate-180" : ""} />
             </Link>
             <a
               href={`tel:${settings.business_phone}`}
               className="border border-on-primary/30 text-on-primary font-label-md text-label-md px-8 py-4 rounded hover:bg-on-primary/10 transition-all flex items-center justify-center gap-2"
             >
-              Call {settings.business_phone}
+              {t("home_cta_call", locale)} {settings.business_phone}
             </a>
           </div>
         </div>
@@ -352,42 +383,25 @@ export default async function HomePage() {
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-primary mb-4">
-              Frequently Asked Questions
+              {t("home_faq_title", locale)}
             </h2>
             <p className="font-body-md text-body-md text-on-surface-variant">
-              Quick answers to common inquiries regarding wholesale logistics, grading standards, and custom formulations.
+              {t("home_faq_subtitle", locale)}
             </p>
           </div>
 
           <div className="max-w-3xl mx-auto space-y-4">
-            {[
-              {
-                q: "What is your Minimum Order Quantity (MOQ)?",
-                a: "Our MOQ varies by category. For premium spices like Kashmiri Saffron, orders start at 500 grams. For whole peppercorns, cardamom, and seeds, MOQs typically range from 100 kg to 250 kg. We also offer sample packs for registered commercial accounts."
-              },
-              {
-                q: "Do you provide Certificate of Analysis (CoA) reports?",
-                a: "Yes. Every shipment is accompanied by a Certificate of Analysis (CoA) from accredited laboratories. We test for active compound concentrations (e.g., piperine in black pepper, curcumin in turmeric), moisture thresholds, volatile oil content, and microbiological compliance."
-              },
-              {
-                q: "How do you handle shipping logistics and custom clearance?",
-                a: "We offer FOB, CIF, and DDP shipping terms. Our B2B operations team coordinates ocean and air freight, completes phytosanitary registry clearances, manages import/export customs clearance forms, and utilizes moisture-barrier container configurations."
-              },
-              {
-                q: "Can you manufacture custom spice formulations or private label packaging?",
-                a: "Absolutely. Our processing facility features custom grinding lines to achieve specific mesh sizes, and custom blending drums for proprietary recipes. We also support private labeling with vacuum-sealed packaging configurations from 1kg bags to export cartons."
-              }
-            ].map((faq, index) => (
+            {faqList.map((faq, index) => (
               <details key={index} className="group bg-surface border border-on-surface/10 rounded-lg p-5 [&_summary::-webkit-details-marker]:hidden transition-all duration-300 open:shadow-md">
                 <summary className="flex justify-between items-center font-bold text-primary cursor-pointer list-none select-none">
-                  <span className="font-title-lg text-sm sm:text-base pr-4">{faq.q}</span>
+                  <span className="font-title-lg text-sm sm:text-base pr-4 text-left">{faq.q}</span>
                   <span className="transition-transform duration-300 group-open:rotate-180 shrink-0">
                     <svg className="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                   </span>
                 </summary>
-                <div className="mt-4 pt-4 border-t border-on-surface/5 text-sm sm:text-base text-on-surface-variant leading-relaxed">
+                <div className="mt-4 pt-4 border-t border-on-surface/5 text-sm sm:text-base text-on-surface-variant leading-relaxed text-left">
                   {faq.a}
                 </div>
               </details>

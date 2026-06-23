@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import QuoteModal from "./QuoteModal";
 import { Search, SlidersHorizontal, Tag } from "lucide-react";
+import { t } from "@/lib/translations";
 
-export default function ProductCatalog({ initialProducts, businessPhone, businessEmail }) {
+export default function ProductCatalog({ initialProducts, businessPhone, businessEmail, locale = "en" }) {
   const searchParams = useSearchParams();
   
   // State
@@ -42,6 +43,16 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
     setModalOpen(true);
   };
 
+  const getCategoryName = (category) => {
+    if (category === "All") return t("all", locale);
+    if (locale === "ur") {
+      if (category === "Spices" || category === "مصالحہ جات") return "مصالحہ جات";
+      if (category === "Herbs" || category === "جڑی بوٹیاں") return "جڑی بوٹیاں";
+      if (category === "Powder" || category === "پاؤڈر") return "پاؤڈر";
+    }
+    return category;
+  };
+
   return (
     <div className="space-y-stack-lg animate-fadeIn">
       {/* Filters & Search Row */}
@@ -51,7 +62,7 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant/50 w-5 h-5" />
           <input
             type="text"
-            placeholder="Search catalog by spice name, description..."
+            placeholder={t("catalog_search_placeholder", locale)}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-surface border border-on-surface/15 focus:border-primary focus:ring-0 rounded pl-11 pr-4 py-2.5 font-body-md text-sm text-on-surface transition-all"
@@ -71,7 +82,7 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
                   : "bg-surface border-on-surface/10 text-on-surface-variant hover:text-primary hover:border-primary/30"
               }`}
             >
-              {category}
+              {getCategoryName(category)}
             </button>
           ))}
         </div>
@@ -84,7 +95,7 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
             <div 
               key={product.id} 
               onClick={() => openQuote(product)}
-              className="bg-surface-container-lowest border border-on-surface/10 rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-[0_12px_40px_rgba(26,26,26,0.04)] hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer"
+              className="bg-surface-container-lowest border border-on-surface/10 rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-[0_12px_40px_rgba(26,26,26,0.04)] hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer text-left"
             >
               <div>
                 {/* Image Frame */}
@@ -95,7 +106,7 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
                     className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                   />
                   <span className="absolute top-4 left-4 bg-secondary text-on-secondary text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded shadow-sm flex items-center gap-1.5">
-                    <Tag size={10} /> {product.category}
+                    <Tag size={10} /> {getCategoryName(product.category)}
                   </span>
                 </div>
 
@@ -115,13 +126,13 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
                     <div className="flex flex-col gap-1.5 text-xs font-semibold text-on-surface-variant/80">
                       {product.packaging_info && (
                         <div className="flex justify-between">
-                          <span>PACKAGING SPEC</span>
+                          <span>{t("catalog_pack_spec", locale)}</span>
                           <span className="text-on-surface font-semibold">{product.packaging_info}</span>
                         </div>
                       )}
                       {product.price_moq && (
                         <div className={`flex justify-between ${product.packaging_info ? "border-t border-on-surface/5 pt-1.5 mt-1" : ""}`}>
-                          <span>BASE RATE / MOQ</span>
+                          <span>{t("catalog_rate_moq", locale)}</span>
                           <span className="text-primary font-bold">{product.price_moq}</span>
                         </div>
                       )}
@@ -133,7 +144,7 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
                   onClick={() => openQuote(product)}
                   className="w-full bg-primary text-on-primary py-3 rounded text-center font-label-md hover:bg-primary/90 group-hover:bg-primary/90 transition-colors text-sm flex items-center justify-center gap-2"
                 >
-                  Request Commercial Quote
+                  {t("catalog_req_quote", locale)}
                 </button>
               </div>
             </div>
@@ -141,12 +152,12 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
         ) : (
           <div className="col-span-1 md:col-span-2 lg:col-span-3 text-center py-20 bg-surface-container-low border border-on-surface/10 rounded-lg">
             <span className="material-symbols-outlined text-4xl text-on-surface-variant/40 mb-2">inventory_2</span>
-            <p className="font-body-lg text-on-surface-variant">No products found matching your active filters.</p>
+            <p className="font-body-lg text-on-surface-variant">{t("catalog_no_products", locale)}</p>
             <button
               onClick={() => { setSelectedCategory("All"); setSearchQuery(""); }}
               className="mt-4 text-xs font-label-md text-primary hover:underline"
             >
-              Reset Search Filters
+              {t("catalog_reset_filters", locale)}
             </button>
           </div>
         )}
@@ -164,6 +175,7 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
         productId={modalProduct.id}
         businessPhone={businessPhone}
         businessEmail={businessEmail}
+        locale={locale}
       />
     </div>
   );

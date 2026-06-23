@@ -3,10 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Globe, ChevronDown, Check } from "lucide-react";
+import { t } from "@/lib/translations";
 
-export default function Navbar() {
+export default function Navbar({ locale = "en" }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLangOpen, setIsLangOpen] = useState(false);
   const pathname = usePathname();
 
   // Hide main navbar on admin dashboard pages
@@ -15,12 +17,17 @@ export default function Navbar() {
   if (isAdminPage) return null;
 
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "Products", href: "/products" },
-    { name: "About", href: "/about" },
-    { name: "Blog", href: "/blog" },
-    { name: "Contact", href: "/contact" }
+    { name: t("home", locale), href: "/" },
+    { name: t("products", locale), href: "/products" },
+    { name: t("about", locale), href: "/about" },
+    { name: t("blog", locale), href: "/blog" },
+    { name: t("contact", locale), href: "/contact" }
   ];
+
+  const handleSelectLanguage = (newLocale) => {
+    document.cookie = `locale=${newLocale}; path=/; max-age=31536000`;
+    window.location.reload();
+  };
 
   return (
     <>
@@ -40,7 +47,7 @@ export default function Navbar() {
             onClick={() => setIsOpen(false)}
             className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md font-semibold text-primary hover:opacity-90 transition-opacity"
           >
-            TheSevenSpice
+            {t("brand", locale)}
           </Link>
 
           {/* Desktop Links */}
@@ -63,21 +70,94 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden md:flex items-center gap-4">
+          {/* CTA & Language Switcher (Desktop) */}
+          <div className="hidden md:flex items-center gap-6">
+            {/* Custom Language Dropdown (Desktop) */}
+            <div className="relative">
+              <button
+                onClick={() => setIsLangOpen(!isLangOpen)}
+                className="flex items-center gap-2 text-on-surface-variant hover:text-primary hover:bg-on-surface/5 transition-all duration-200 border border-on-surface/10 rounded-full px-4 py-2 bg-surface-container-lowest text-xs font-semibold shadow-[0_1px_3px_rgba(0,0,0,0.02)] focus:outline-none"
+                aria-label={t("select_lang", locale)}
+              >
+                <Globe size={14} className="text-on-surface-variant/60" />
+                <span>{locale === "ur" ? "اردو" : "English"}</span>
+                <ChevronDown size={12} className={`transition-transform duration-200 ${isLangOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {isLangOpen && (
+                <>
+                  {/* Invisible background overlay to trigger click outside close */}
+                  <div className="fixed inset-0 z-10 cursor-default" onClick={() => setIsLangOpen(false)} />
+                  
+                  {/* Dropdown Card Popover */}
+                  <div className="absolute right-0 mt-2 w-36 bg-surface/95 backdrop-blur-md border border-on-surface/10 rounded-lg shadow-xl py-1.5 z-20 animate-fadeIn flex flex-col gap-0.5">
+                    <button
+                      onClick={() => handleSelectLanguage("en")}
+                      className={`flex items-center justify-between px-3.5 py-2 text-xs font-semibold transition-colors duration-150 ${
+                        locale === "en"
+                          ? "text-primary bg-primary/5 font-bold"
+                          : "text-on-surface-variant hover:text-primary hover:bg-on-surface/5"
+                      }`}
+                    >
+                      <span>English</span>
+                      {locale === "en" && <Check size={12} className="text-primary" />}
+                    </button>
+                    <button
+                      onClick={() => handleSelectLanguage("ur")}
+                      className={`flex items-center justify-between px-3.5 py-2 text-xs font-semibold transition-colors duration-150 ${
+                        locale === "ur"
+                          ? "text-primary bg-primary/5 font-bold"
+                          : "text-on-surface-variant hover:text-primary hover:bg-on-surface/5"
+                      }`}
+                    >
+                      <span className="font-urdu">اردو (Urdu)</span>
+                      {locale === "ur" && <Check size={12} className="text-primary" />}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+
             <Link href="/contact" className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded hover:bg-primary/90 transition-colors">
-              Contact Us
+              {t("nav_cta", locale)}
             </Link>
           </div>
 
-          {/* Mobile Hamburguer Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-on-surface p-2 focus:outline-none"
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Menu & Language Toggle */}
+          <div className="flex items-center gap-3 md:hidden">
+            {/* Mobile dynamic pill switcher */}
+            <div className="flex bg-surface-container border border-on-surface/10 rounded-full p-0.5 relative z-10 shrink-0">
+              <button
+                onClick={() => handleSelectLanguage("en")}
+                className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 ${
+                  locale === "en"
+                    ? "bg-primary text-on-primary shadow-sm"
+                    : "text-on-surface-variant hover:text-primary"
+                }`}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => handleSelectLanguage("ur")}
+                className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 ${
+                  locale === "ur"
+                    ? "bg-primary text-on-primary shadow-sm"
+                    : "text-on-surface-variant hover:text-primary"
+                }`}
+              >
+                اردو
+              </button>
+            </div>
+
+            {/* Mobile Hamburguer Button */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-on-surface p-2 focus:outline-none"
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Drawer */}
@@ -92,7 +172,9 @@ export default function Navbar() {
                   onClick={() => setIsOpen(false)}
                   className={`text-lg font-medium transition-colors duration-200 py-1 ${
                     isActive
-                      ? "text-primary border-l-4 border-primary pl-3 font-bold"
+                      ? locale === "ur"
+                        ? "text-primary border-r-4 border-primary pr-3 font-bold text-right"
+                        : "text-primary border-l-4 border-primary pl-3 font-bold text-left"
                       : "text-on-surface-variant hover:text-primary"
                   }`}
                 >
@@ -106,7 +188,7 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
                 className="bg-primary text-on-primary text-center font-label-md text-label-md px-6 py-3 rounded hover:bg-primary/90 transition-colors w-full"
               >
-                Contact Us
+                {t("nav_cta", locale)}
               </Link>
             </div>
           </div>

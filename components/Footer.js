@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { getSiteSettings } from "@/lib/db";
 import { Instagram, Facebook, Linkedin, Youtube } from "lucide-react";
+import { t } from "@/lib/translations";
 
-export default async function Footer() {
+export default async function Footer({ locale = "en" }) {
   const settings = await getSiteSettings();
 
   return (
@@ -13,41 +14,41 @@ export default async function Footer() {
           {/* Column 1: Brand / Description */}
           <div className="flex flex-col gap-4 lg:col-span-2">
             <Link href="/" className="hover:opacity-90 transition-opacity">
-              <span className="font-serif text-3xl font-bold text-white">The</span>
-              <span className="font-serif text-3xl font-bold text-secondary-fixed">SevenSpice</span>
+              <span className="font-serif text-3xl font-bold text-white">{t("brand_the", locale)}</span>
+              <span className="font-serif text-3xl font-bold text-secondary-fixed"> {t("brand_seven_spice", locale)}</span>
             </Link>
             <p className="text-white/70 text-sm leading-relaxed max-w-xs">
-              Global Spice Logistics & Export. Bridging heritage agriculture with modern enterprise supply chains.
+              {t("footer_desc", locale)}
             </p>
           </div>
 
           {/* Column 2: Quick Links */}
           <div className="flex flex-col gap-4">
-            <h3 className="font-bold text-secondary-fixed text-xs uppercase tracking-wider">Quick Links</h3>
+            <h3 className="font-bold text-secondary-fixed text-xs uppercase tracking-wider">{t("footer_quick_links", locale)}</h3>
             <ul className="flex flex-col gap-2.5 text-sm text-white/70">
               <li>
                 <Link href="/" className="hover:text-secondary-fixed transition-colors">
-                  Home
+                  {t("home", locale)}
                 </Link>
               </li>
               <li>
                 <Link href="/products" className="hover:text-secondary-fixed transition-colors">
-                  Products
+                  {t("products", locale)}
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="hover:text-secondary-fixed transition-colors">
-                  About
+                  {t("about", locale)}
                 </Link>
               </li>
               <li>
                 <Link href="/blog" className="hover:text-secondary-fixed transition-colors">
-                  Blog
+                  {t("blog", locale)}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="hover:text-secondary-fixed transition-colors">
-                  Contact
+                  {t("contact", locale)}
                 </Link>
               </li>
             </ul>
@@ -55,21 +56,21 @@ export default async function Footer() {
 
           {/* Column 3: Services */}
           <div className="flex flex-col gap-4">
-            <h3 className="font-bold text-secondary-fixed text-xs uppercase tracking-wider">Services</h3>
+            <h3 className="font-bold text-secondary-fixed text-xs uppercase tracking-wider">{t("footer_services", locale)}</h3>
             <ul className="flex flex-col gap-2.5 text-sm text-white/70">
               <li>
                 <Link href="/products" className="hover:text-secondary-fixed transition-colors">
-                  Wholesale
+                  {t("footer_wholesale", locale)}
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="hover:text-secondary-fixed transition-colors">
-                  Logistics
+                  {t("footer_logistics", locale)}
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="hover:text-secondary-fixed transition-colors">
-                  Certifications
+                  {t("footer_certifications", locale)}
                 </Link>
               </li>
             </ul>
@@ -77,10 +78,10 @@ export default async function Footer() {
 
           {/* Column 4: Contact Info */}
           <div className="flex flex-col gap-4">
-            <h3 className="font-bold text-secondary-fixed text-xs uppercase tracking-wider">Contact Info</h3>
+            <h3 className="font-bold text-secondary-fixed text-xs uppercase tracking-wider">{t("footer_contact_info", locale)}</h3>
             <div className="flex flex-col gap-4 text-sm">
               <div>
-                <span className="block text-white/55 text-[10px] tracking-widest uppercase font-bold mb-1">Email</span>
+                <span className="block text-white/55 text-[10px] tracking-widest uppercase font-bold mb-1">{t("email", locale)}</span>
                 <a 
                   href={`mailto:${settings.business_email || "sales@thesevenspice.com"}`} 
                   className="text-white hover:text-secondary-fixed transition-colors font-semibold font-body-md"
@@ -89,7 +90,7 @@ export default async function Footer() {
                 </a>
               </div>
               <div>
-                <span className="block text-white/55 text-[10px] tracking-widest uppercase font-bold mb-1">Phone</span>
+                <span className="block text-white/55 text-[10px] tracking-widest uppercase font-bold mb-1">{t("phone", locale)}</span>
                 <a 
                   href={`tel:${settings.business_phone || "+1 (800) 555-SPICE"}`} 
                   className="text-white hover:text-secondary-fixed transition-colors font-semibold font-body-md"
@@ -102,7 +103,7 @@ export default async function Footer() {
 
           {/* Column 5: Follow Us */}
           <div className="flex flex-col gap-4">
-            <h3 className="font-bold text-secondary-fixed text-xs uppercase tracking-wider">Follow Us</h3>
+            <h3 className="font-bold text-secondary-fixed text-xs uppercase tracking-wider">{t("footer_follow_us", locale)}</h3>
             <div className="flex gap-3">
               {settings.social_linkedin && (
                 <a 
@@ -157,16 +158,16 @@ export default async function Footer() {
           <p className="text-sm text-white/60 text-center sm:text-left">
             © 2024{" "}
             <Link href="/admin/login" className="hover:underline text-white/60">
-              TheSevenSpice
+              {t("brand", locale)}
             </Link>
-            . All rights reserved.
+            . {t("footer_all_rights", locale)}
           </p>
           <div className="flex gap-6 text-sm text-white/60">
             <Link href="/privacy" className="hover:text-secondary-fixed transition-colors">
-              Privacy Policy
+              {t("footer_privacy", locale)}
             </Link>
             <Link href="/terms" className="hover:text-secondary-fixed transition-colors">
-              Terms of Service
+              {t("footer_terms", locale)}
             </Link>
           </div>
         </div>
@@ -174,4 +175,3 @@ export default async function Footer() {
     </footer>
   );
 }
-
