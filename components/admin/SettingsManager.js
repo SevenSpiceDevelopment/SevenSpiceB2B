@@ -196,7 +196,7 @@ export default function SettingsManager({ initialSettings }) {
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-primary text-on-primary font-label-md text-xs px-6 py-2.5 rounded hover:bg-primary/90 transition-colors flex items-center gap-1.5 disabled:bg-primary/70 shadow-sm"
+                className="bg-secondary-container text-on-secondary-container font-label-md text-xs px-6 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-1.5 disabled:bg-secondary-container/70 shadow-sm"
               >
                 {loading && <Loader2 className="animate-spin w-3.5 h-3.5" />}
                 Save Homepage Copy
@@ -350,7 +350,7 @@ export default function SettingsManager({ initialSettings }) {
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-primary text-on-primary font-label-md text-xs px-6 py-2.5 rounded hover:bg-primary/90 transition-colors flex items-center gap-1.5 disabled:bg-primary/70 shadow-sm"
+                className="bg-secondary-container text-on-secondary-container font-label-md text-xs px-6 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-1.5 disabled:bg-secondary-container/70 shadow-sm"
               >
                 {loading && <Loader2 className="animate-spin w-3.5 h-3.5" />}
                 Save Headquarters Profile
@@ -412,7 +412,7 @@ export default function SettingsManager({ initialSettings }) {
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-primary text-on-primary font-label-md text-xs px-6 py-2.5 rounded hover:bg-primary/90 transition-colors flex items-center gap-1.5 disabled:bg-primary/70 shadow-sm w-full sm:w-auto"
+                className="bg-secondary-container text-on-secondary-container font-label-md text-xs px-6 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-1.5 disabled:bg-secondary-container/70 shadow-sm w-full sm:w-auto"
               >
                 {loading && <Loader2 className="animate-spin w-3.5 h-3.5" />}
                 Change Password Keys

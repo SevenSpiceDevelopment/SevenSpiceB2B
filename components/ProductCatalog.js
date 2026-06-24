@@ -78,7 +78,7 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
               onClick={() => setSelectedCategory(category)}
               className={`font-label-md text-xs px-4 py-2.5 rounded transition-all border ${
                 selectedCategory === category
-                  ? "bg-primary border-primary text-on-primary font-bold shadow-sm"
+                  ? "bg-secondary-container border-secondary-container text-on-secondary-container font-bold shadow-sm"
                   : "bg-surface border-on-surface/10 text-on-surface-variant hover:text-primary hover:border-primary/30"
               }`}
             >
@@ -142,7 +142,7 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
 
                 <button
                   onClick={() => openQuote(product)}
-                  className="w-full bg-primary text-on-primary py-3 rounded text-center font-label-md hover:bg-primary/90 group-hover:bg-primary/90 transition-colors text-sm flex items-center justify-center gap-2"
+                  className="w-full bg-secondary-container text-on-secondary-container py-3 rounded text-center font-label-md hover:opacity-90 group-hover:opacity-90 transition-all text-sm flex items-center justify-center gap-2"
                 >
                   {t("catalog_req_quote", locale)}
                 </button>

@@ -196,7 +196,7 @@ export default function ContactForm({ locale = "en" }) {
       {/* Submit Button */}
       <div className="pt-2">
         <button
-          className="w-full md:w-auto bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded hover:bg-primary/95 transition-all duration-200 flex items-center justify-center gap-2 disabled:bg-primary/60 disabled:cursor-not-allowed shadow-sm hover:shadow active:scale-[0.99]"
+          className="w-full md:w-auto bg-secondary-container text-on-secondary-container font-label-md text-label-md px-8 py-4 rounded hover:opacity-90 transition-all duration-200 flex items-center justify-center gap-2 disabled:bg-secondary-container/60 disabled:cursor-not-allowed shadow-sm hover:shadow active:scale-[0.99]"
           type="submit"
           disabled={loading}
         >

@@ -77,7 +77,7 @@ export default function InquiriesManager({ initialInquiries }) {
                 onClick={() => setStatusFilter(status)}
                 className={`font-label-md text-xs px-3.5 py-2 rounded transition-all ${
                   statusFilter === status
-                    ? "bg-primary text-on-primary font-bold shadow-sm"
+                    ? "bg-secondary-container text-on-secondary-container font-bold shadow-sm"
                     : "text-on-surface-variant hover:text-primary"
                 }`}
               >

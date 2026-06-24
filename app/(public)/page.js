@@ -88,7 +88,7 @@ export default async function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto pt-2">
               <Link
                 href={settings.hero_cta_link || "/contact"}
-                className="bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded hover:bg-primary/90 transition-all text-center flex items-center justify-center gap-2 shadow-sm"
+                className="bg-secondary-container text-on-secondary-container font-label-md text-label-md px-8 py-4 rounded hover:opacity-90 transition-all text-center flex items-center justify-center gap-2 shadow-sm"
               >
                 {heroCtaText}
                 <ArrowRight size={16} className={locale === "ur" ? "rotate-180" : ""} />
@@ -245,7 +245,7 @@ export default async function HomePage() {
                         </div>
                       )}
                       <span
-                        className="w-full bg-primary text-on-primary py-3 rounded text-center font-label-md group-hover:bg-primary/90 transition-colors block text-sm"
+                        className="w-full bg-secondary-container text-on-secondary-container py-3 rounded text-center font-label-md hover:opacity-90 group-hover:opacity-90 transition-all block text-sm"
                       >
                         {t("home_featured_request_quote", locale)}
                       </span>

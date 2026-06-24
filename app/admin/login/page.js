@@ -183,7 +183,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={forgotLoading}
-            className="w-full bg-primary text-on-primary font-label-md text-sm py-3.5 rounded hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:bg-primary/70 disabled:cursor-not-allowed shadow-sm"
+            className="w-full bg-secondary-container text-on-secondary-container font-label-md text-sm py-3.5 rounded hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:bg-secondary-container/70 disabled:cursor-not-allowed shadow-sm"
           >
             {forgotLoading ? (
               <>
@@ -312,7 +312,7 @@ export default function AdminLoginPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-primary text-on-primary font-label-md text-sm py-3.5 rounded hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:bg-primary/70 disabled:cursor-not-allowed shadow-sm mt-8"
+          className="w-full bg-secondary-container text-on-secondary-container font-label-md text-sm py-3.5 rounded hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:bg-secondary-container/70 disabled:cursor-not-allowed shadow-sm mt-8"
         >
           {loading ? (
             <>

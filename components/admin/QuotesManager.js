@@ -141,7 +141,7 @@ export default function QuotesManager({ initialQuotes }) {
                 onClick={() => setStatusFilter(status)}
                 className={`font-label-md text-[11px] px-3 py-1.5 rounded transition-all ${
                   statusFilter === status
-                    ? "bg-primary text-on-primary font-bold shadow-sm"
+                    ? "bg-secondary-container text-on-secondary-container font-bold shadow-sm"
                     : "text-on-surface-variant hover:text-primary"
                 }`}
               >
@@ -154,7 +154,7 @@ export default function QuotesManager({ initialQuotes }) {
         {/* Right Side: CSV Export Action */}
         <button
           onClick={handleExportCSV}
-          className="w-full lg:w-auto bg-primary text-on-primary font-label-md text-xs px-4 py-2.5 rounded hover:bg-primary/90 transition-all flex items-center justify-center gap-1.5 shadow-sm shrink-0"
+          className="w-full lg:w-auto bg-secondary-container text-on-secondary-container font-label-md text-xs px-4 py-2.5 rounded hover:opacity-90 transition-all flex items-center justify-center gap-1.5 shadow-sm shrink-0"
         >
           <Download size={14} /> Export filtered CSV
         </button>

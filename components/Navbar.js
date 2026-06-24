@@ -118,7 +118,7 @@ export default function Navbar({ locale = "en" }) {
               )}
             </div>
 
-            <Link href="/contact" className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded hover:bg-primary/90 transition-colors">
+            <Link href="/contact" className="bg-secondary-container text-on-secondary-container font-label-md text-label-md px-6 py-3 rounded hover:opacity-90 transition-all">
               {t("nav_cta", locale)}
             </Link>
           </div>
@@ -186,7 +186,7 @@ export default function Navbar({ locale = "en" }) {
               <Link
                 href="/contact"
                 onClick={() => setIsOpen(false)}
-                className="bg-primary text-on-primary text-center font-label-md text-label-md px-6 py-3 rounded hover:bg-primary/90 transition-colors w-full"
+                className="bg-secondary-container text-on-secondary-container text-center font-label-md text-label-md px-6 py-3 rounded hover:opacity-90 transition-all w-full"
               >
                 {t("nav_cta", locale)}
               </Link>

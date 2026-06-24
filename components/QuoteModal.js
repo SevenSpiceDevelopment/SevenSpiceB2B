@@ -110,7 +110,7 @@ export default function QuoteModal({
                   setResult(null);
                   onClose();
                 }}
-                className="mt-4 bg-primary text-on-primary font-label-md text-label-md px-6 py-2.5 rounded hover:bg-primary/90 transition-colors"
+                className="mt-4 bg-secondary-container text-on-secondary-container font-label-md text-label-md px-6 py-2.5 rounded hover:opacity-90 transition-all"
               >
                 {t("modal_success_close", locale)}
               </button>
@@ -279,7 +279,7 @@ export default function QuoteModal({
                     <button
                       type="submit"
                       disabled={loading}
-                      className="bg-primary text-on-primary font-label-md text-xs px-6 py-2.5 rounded hover:bg-primary/90 transition-colors flex items-center gap-2 disabled:bg-primary/60 disabled:cursor-not-allowed"
+                      className="bg-secondary-container text-on-secondary-container font-label-md text-xs px-6 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-2 disabled:bg-secondary-container/60 disabled:cursor-not-allowed"
                     >
                       {loading ? (
                         <>
@@ -307,7 +307,7 @@ export default function QuoteModal({
                     
                     <a
                       href={`tel:${businessPhone}`}
-                      className="mt-2 bg-primary text-on-primary font-title-lg px-8 py-3 rounded hover:bg-primary/90 transition-all shadow-md flex items-center gap-3 group hover:scale-[1.02]"
+                      className="mt-2 bg-secondary-container text-on-secondary-container font-title-lg px-8 py-3 rounded hover:opacity-90 transition-all shadow-md flex items-center gap-3 group hover:scale-[1.02]"
                     >
                       <Phone className="w-5 h-5 group-hover:rotate-12 transition-transform" />
                       {businessPhone}

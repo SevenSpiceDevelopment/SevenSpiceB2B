@@ -169,7 +169,7 @@ export default function BlogManager({ initialPosts }) {
         </span>
         <button
           onClick={openAddForm}
-          className="bg-primary text-on-primary font-label-md text-xs px-4 py-2.5 rounded hover:bg-primary/90 transition-all flex items-center gap-1.5 shadow-sm"
+          className="bg-secondary-container text-on-secondary-container font-label-md text-xs px-4 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-1.5 shadow-sm"
         >
           <Plus size={16} /> Add Article
         </button>
@@ -513,7 +513,7 @@ export default function BlogManager({ initialPosts }) {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-primary text-on-primary text-xs font-label-md px-6 py-2.5 rounded hover:bg-primary/90 transition-colors flex items-center gap-2 disabled:bg-primary/60 disabled:cursor-not-allowed shadow-sm"
+                  className="bg-secondary-container text-on-secondary-container text-xs font-label-md px-6 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-2 disabled:bg-secondary-container/60 disabled:cursor-not-allowed shadow-sm"
                 >
                   {loading ? (
                     <>

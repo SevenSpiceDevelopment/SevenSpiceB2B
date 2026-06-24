@@ -22,6 +22,16 @@ A fully responsive, production-ready B2B logistics and wholesale marketing porta
 
 ---
 
+## 🔄 Recent Updates & Improvements
+Since the initial version, the following key features and upgrades have been added:
+* **🌐 Multilingual Support (English & Urdu):** Integrated translation context/helpers (`lib/translations.js`) that dynamically render Urdu translations based on user cookie settings for all UI copy, product catalogues, and blogs.
+* **🎠 Interactive Hero Carousels:** Added a highly polished `AboutHeroCarousel` component to showcase premium product imagery on the *About Us* page.
+* **📱 Mobile-Optimized Layouts:** Enhanced responsive performance with horizontal scroll/snap carousels for the blog list and products catalog on mobile viewports.
+* **🎨 Modern Visual Styling & UX:** Upgraded to a glossy, frosted-glass header navbar, refined font settings, and added smooth interactive states (such as active hamburger menus and hover scale transitions).
+* **🌿 Heritage Section Image Replacement:** Replaced placeholder assets on the home page with a high-resolution, premium **Methi Featured Product** graphic (`public/images/Methi Featured Product Image.jpg`) to align with the brand aesthetic.
+
+---
+
 ## 📂 Project Structure
 ```
 /app
