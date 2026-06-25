@@ -1,106 +1,144 @@
-# TheSevenSpice B2B wholesale Platform
+# TheSevenSpice B2B Wholesale Platform
 
-A fully responsive, production-ready B2B logistics and wholesale marketing portal for **TheSevenSpice** featuring a dynamic product catalog, industry insights blog, lead capture systems, and a route-protected custom **Admin Dashboard** to manage all content dynamically.
+A responsive B2B logistics and wholesale marketing portal for **TheSevenSpice**. It includes public marketing pages, a dynamic product catalog, blog content, lead capture forms, a floating WhatsApp CTA, and a route-protected custom **Admin Dashboard** for managing site content.
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 * **Framework:** Next.js 14+ (App Router)
-* **Styling:** Tailwind CSS (Stitch Design Tokens)
-* **Database:** Supabase (PostgreSQL) — with a local JSON file-based fallback
-* **Authentication:** NextAuth.js (JWT strategy, credentials provider)
-* **Forms:** React Hook Form + Server Actions
+* **Styling:** Tailwind CSS with custom design tokens
+* **Database:** Turso/libSQL with local JSON fallback
+* **Authentication:** NextAuth.js with JWT credentials auth
+* **Forms:** React Hook Form and Server Actions
 
 ---
 
-## 🚀 Key Features
-1. **Dynamic Pages:** All public marketing pages (`/`, `/products`, `/about`, `/contact`, `/blog`) are statically generated (SSG/ISR) for page loading speed and SEO optimization.
-2. **Hybrid Database Client:** If Supabase credentials are not provided in environment variables, the database client seamlessly falls back to reading and writing database records to a local JSON file (`lib/mockDb.json`). This ensures the app is **immediately runnable and testable** out-of-the-box.
-3. **Admin Dashboard:** Access-restricted panel at `/admin` displaying real-time KPI tiles and a unified lead activity stream. Includes managers for catalog CRUD operations (with base64 image encoding uploads), blog publishing (with a custom visual WYSIWYG editor), inquiry controls, and commercial settings configurations.
-4. **CSV Exporter:** Download quote requests lists filtered by interest or status directly as Excel-compatible CSV reports.
-5. **SEO & Indexing:** Standard search compliance setup using dynamic metadata headers, Open Graph tags, dynamic `sitemap.xml` feeds, and `robots.txt` guidelines.
+## Key Features
+1. **Dynamic Public Pages:** Marketing pages include `/`, `/products`, `/about`, `/contact`, and `/blog`.
+2. **Hybrid Database Client:** When Turso is not configured, the app falls back to local JSON storage at `lib/mockDb.json`.
+3. **Admin Dashboard:** Protected `/admin` area for managing products, blog posts, inquiries, quote requests, site settings, and admin credentials.
+4. **CSV Exporter:** Quote request lists can be downloaded as Excel-compatible CSV reports.
+5. **Floating WhatsApp CTA:** Public pages include a floating WhatsApp button configured from Admin Settings.
+6. **SEO & Indexing:** Dynamic metadata, Open Graph tags, sitemap generation, and robots rules are included.
+7. **Multilingual UI:** English and Urdu UI copy is handled through `lib/translations.js`.
 
 ---
 
-## 🔄 Recent Updates & Improvements
-Since the initial version, the following key features and upgrades have been added:
-* **🌐 Multilingual Support (English & Urdu):** Integrated translation context/helpers (`lib/translations.js`) that dynamically render Urdu translations based on user cookie settings for all UI copy, product catalogues, and blogs.
-* **🎠 Interactive Hero Carousels:** Added a highly polished `AboutHeroCarousel` component to showcase premium product imagery on the *About Us* page.
-* **📱 Mobile-Optimized Layouts:** Enhanced responsive performance with horizontal scroll/snap carousels for the blog list and products catalog on mobile viewports.
-* **🎨 Modern Visual Styling & UX:** Upgraded to a glossy, frosted-glass header navbar, refined font settings, and added smooth interactive states (such as active hamburger menus and hover scale transitions).
-* **🌿 Heritage Section Image Replacement:** Replaced placeholder assets on the home page with a high-resolution, premium **Methi Featured Product** graphic (`public/images/Methi Featured Product Image.jpg`) to align with the brand aesthetic.
+## Recent Updates
+* Added `components/WhatsAppButton.js` and mounted it globally from `app/layout.js`.
+* Added WhatsApp number and default message fields to Admin Settings.
+* Updated `lib/db.js` so existing Turso databases still receive compatibility migrations for `whatsapp_number` and `whatsapp_message`.
+* Added local fallback merging in `getSiteSettings()` so older `lib/mockDb.json` files still receive default WhatsApp values.
+* Added polished responsive UI updates, mobile catalog/blog layouts, and updated product imagery.
 
 ---
 
-## 📂 Project Structure
-```
+## Project Structure
+```text
 /app
-  /(public)         → Public marketing pages (Home, Catalog, Contact, About, Blog)
-  /admin            → Route-protected admin dashboard screens
-  /api/auth         → NextAuth.js API endpoint route handlers
-  /globals.css      → Global stylesheets with typography, custom patterns, and mobile tap targets
-  /layout.js        → Main layout template with SEO metadata settings
-  /robots.js        → Dynamic robots.txt generation
-  /sitemap.js       → Dynamic sitemap.xml generation
+  /(public)          Public marketing pages
+  /admin             Protected admin dashboard screens
+  /api/auth          NextAuth.js API route handlers
+  /globals.css       Global styles
+  /layout.js         Main layout, metadata, navbar, footer, WhatsApp CTA
+  /robots.js         Dynamic robots.txt generation
+  /sitemap.js        Dynamic sitemap.xml generation
 /components
-  /admin            → Admin dashboard UI views
-  /ui               → Shared public widgets (Navbar, Footer, Quote modal overlays)
+  /admin             Admin dashboard UI components
+  WhatsAppButton.js  Floating public WhatsApp CTA
+  Navbar.js          Public navigation
+  Footer.js          Public footer
 /lib
-  /db.js            → Database wrapper layer (Supabase / local JSON handler)
-  /auth.js          → NextAuth.js configuration options
-  /schema.sql       → Table setup scripts for Supabase SQL Editor
-  /mockDb.json      → Auto-generated local database file (when fallback is active)
-/middleware.js      → Security routing guards checking role authorization
-/tailwind.config.js → Custom design styles, border radii, spacing, and brand colors
+  /db.js             Turso/local JSON database wrapper
+  /auth.js           NextAuth.js configuration
+  /schema.sql        Database schema reference
+  /mockDb.json       Local fallback database file
+/middleware.js       Admin route protection
+/tailwind.config.js  Theme tokens and Tailwind config
 ```
 
 ---
 
-## 💾 Local Development Setup
+## Local Development
 
 ### 1. Install Dependencies
-Ensure you have Node.js 18+ and npm installed. Run the following command in the root folder:
 ```bash
 npm install
 ```
 
 ### 2. Configure Environment Variables
-Create a `.env.local` file in the root directory. To run using the local JSON database fallback, you can omit the Supabase variables. To switch to a live database, populate the fields below:
+Create `.env.local` in the project root.
+
+For local JSON fallback, leave `TURSO_DATABASE_URL` empty or set it to `placeholder`.
+
 ```env
-# NextAuth Settings
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=sevenspice_super_secret_key_12345
 
-# Admin Login Profile
 ADMIN_EMAIL=admin@thesevenspice.com
 ADMIN_PASSWORD=password123
 
-# Live Supabase Database Connection (Optional, client falls back to file storage if empty)
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+TURSO_DATABASE_URL=placeholder
+TURSO_AUTH_TOKEN=
+```
+
+For live Turso:
+
+```env
+TURSO_DATABASE_URL=libsql://your-database.turso.io
+TURSO_AUTH_TOKEN=your_turso_auth_token
 ```
 
 ### 3. Run the Development Server
-Start the Next.js local development build:
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+Open [http://localhost:3000](http://localhost:3000). If port `3000` is already in use, Next.js may run on another port such as [http://localhost:3001](http://localhost:3001).
 
 ---
 
-## 🔑 Admin Access Credentials
-For initial testing and local validation:
-* **Admin Login URI:** `/admin/login` (accessible via the lock icon in the footer/navbar)
+## Admin Access
+For local testing:
+* **Login URL:** `/admin/login`
 * **Email:** `admin@thesevenspice.com`
-* **Password:** `password123` *(Can be updated directly via Admin Settings)*
+* **Password:** `password123`
+
+The password can be changed from Admin Settings.
 
 ---
 
-## 🛢️ Supabase Database Production Setup
-If you are deploying to production and connecting to a live Supabase project:
-1. Navigate to your Supabase project dashboard.
-2. Open the **SQL Editor** from the left-side navigation panel.
-3. Copy the contents of the schema file: [`lib/schema.sql`](file:///d:/B2B-Seven-Spice/lib/schema.sql).
-4. Paste the SQL statements into the editor and click **Run**.
-5. Ensure your environment variables (`NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`) are configured in Vercel or your deployment provider.
+## WhatsApp Button Setup
+The floating WhatsApp CTA is rendered globally through `app/layout.js` and `components/WhatsAppButton.js`.
+
+To configure it:
+1. Log in to `/admin/login`.
+2. Open **Admin Settings**.
+3. Go to **HQ Contact & Socials**.
+4. Add a WhatsApp number with country code, for example `+923001234567`.
+5. Add an optional default pre-filled message.
+6. Save settings and check a public page such as `/`, `/products`, or `/contact`.
+
+The button will not show when:
+* The current route starts with `/admin`.
+* `whatsapp_number` is empty or missing from site settings.
+* The database is an older Turso schema that has not yet received the WhatsApp columns.
+
+The current `lib/db.js` handles the database issue by always running compatibility migrations before reading settings. It also merges local mock settings with default settings so older `lib/mockDb.json` files do not hide the button.
+
+---
+
+## Turso Production Setup
+1. Create or open your Turso database.
+2. Apply `lib/schema.sql` if the database is new.
+3. Configure `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` in your deployment provider.
+4. Start the app once so `lib/db.js` can run compatibility migrations for existing databases.
+5. Confirm Admin Settings shows the WhatsApp fields, then save the desired WhatsApp number and message.
+
+---
+
+## Troubleshooting
+* If the WhatsApp button does not appear, first check that the page is not under `/admin`.
+* Confirm the WhatsApp number is saved in Admin Settings with the country code.
+* Restart the dev server after changing `.env.local`.
+* If using Turso, make sure the app has run once after this update so the compatibility migration can add the WhatsApp columns.
