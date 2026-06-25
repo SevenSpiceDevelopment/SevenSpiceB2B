@@ -74,6 +74,10 @@ CREATE TABLE IF NOT EXISTS site_settings (
     social_twitter VARCHAR(255),
     social_instagram VARCHAR(255),
     social_linkedin VARCHAR(255),
+    social_youtube VARCHAR(255),
+    whatsapp_number VARCHAR(50),
+    whatsapp_message TEXT,
+    admin_password TEXT,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -83,7 +87,8 @@ CREATE TABLE IF NOT EXISTS site_settings (
 INSERT INTO site_settings (
     id, hero_title, hero_subtitle, hero_cta_text, hero_cta_link, 
     business_address, business_phone, business_email, 
-    social_facebook, social_twitter, social_instagram, social_linkedin
+    social_facebook, social_twitter, social_instagram, social_linkedin, social_youtube,
+    whatsapp_number, whatsapp_message
 ) VALUES (
     'default', 
     'Exquisite Spices sourced globally, delivered reliably.', 
@@ -96,7 +101,10 @@ INSERT INTO site_settings (
     'https://facebook.com/thesevenspice',
     'https://twitter.com/thesevenspice',
     'https://instagram.com/thesevenspice',
-    'https://linkedin.com/company/thesevenspice'
+    'https://linkedin.com/company/thesevenspice',
+    'https://youtube.com/@thesevenspice',
+    '+15550000000',
+    'Hello TheSevenSpice, I would like to inquire about wholesale spice sourcing.'
 ) ON CONFLICT (id) DO NOTHING;
 
 -- Insert initial products

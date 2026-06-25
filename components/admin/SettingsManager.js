@@ -191,6 +191,8 @@ export default function SettingsManager({ initialSettings }) {
             <input type="hidden" name="social_instagram" value={initialSettings?.social_instagram || ""} />
             <input type="hidden" name="social_linkedin" value={initialSettings?.social_linkedin || ""} />
             <input type="hidden" name="social_youtube" value={initialSettings?.social_youtube || ""} />
+            <input type="hidden" name="whatsapp_number" value={initialSettings?.whatsapp_number || ""} />
+            <input type="hidden" name="whatsapp_message" value={initialSettings?.whatsapp_message || ""} />
 
             <div className="pt-4 border-t border-on-surface/5 flex justify-end">
               <button
@@ -336,6 +338,41 @@ export default function SettingsManager({ initialSettings }) {
                   defaultValue={initialSettings?.social_youtube || ""}
                   disabled={loading}
                   className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface-variant text-sm font-mono"
+                />
+              </div>
+            </div>
+
+            {/* WhatsApp Integration settings */}
+            <h4 className="font-title-lg text-title-lg text-primary border-b border-on-surface/5 pb-2 pt-4 flex items-center gap-2">
+              <span className="material-symbols-outlined text-secondary">chat</span> WhatsApp CTA floating Integration
+            </h4>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="flex flex-col">
+                <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="whatsapp-num">
+                  WhatsApp Number (with country code, e.g. +923001234567)
+                </label>
+                <input
+                  id="whatsapp-num"
+                  name="whatsapp_number"
+                  placeholder="+923001234567"
+                  defaultValue={initialSettings?.whatsapp_number || ""}
+                  disabled={loading}
+                  className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="whatsapp-msg">
+                  WhatsApp Default Pre-filled Message
+                </label>
+                <input
+                  id="whatsapp-msg"
+                  name="whatsapp_message"
+                  placeholder="Hello TheSevenSpice, I would like to inquire..."
+                  defaultValue={initialSettings?.whatsapp_message || ""}
+                  disabled={loading}
+                  className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
                 />
               </div>
             </div>

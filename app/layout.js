@@ -2,6 +2,8 @@ import { cookies } from "next/headers";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import { getSiteSettings } from "@/lib/db";
 
 export const metadata = {
   title: {
@@ -24,10 +26,11 @@ export const metadata = {
   }
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   const cookieStore = cookies();
   const locale = cookieStore.get("locale")?.value || "en";
   const direction = locale === "ur" ? "rtl" : "ltr";
+  const settings = await getSiteSettings();
 
   return (
     <html lang={locale} dir={direction} className="light scroll-smooth">
@@ -38,6 +41,11 @@ export default function RootLayout({ children }) {
         </main>
         {/* @ts-expect-error Async Server Component */}
         <Footer locale={locale} />
+        <WhatsAppButton 
+          whatsappNumber={settings?.whatsapp_number} 
+          whatsappMessage={settings?.whatsapp_message} 
+          locale={locale} 
+        />
       </body>
     </html>
   );

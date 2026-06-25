@@ -334,6 +334,8 @@ export async function saveSiteSettingsAction(formData) {
     const social_instagram = formData.get("social_instagram");
     const social_linkedin = formData.get("social_linkedin");
     const social_youtube = formData.get("social_youtube");
+    const whatsapp_number = formData.get("whatsapp_number");
+    const whatsapp_message = formData.get("whatsapp_message");
 
     if (!hero_title || !hero_subtitle || !hero_cta_text || !hero_cta_link || !business_address || !business_phone || !business_email) {
       return { success: false, error: "Please fill in all required settings fields." };
@@ -351,7 +353,9 @@ export async function saveSiteSettingsAction(formData) {
       social_twitter,
       social_instagram,
       social_linkedin,
-      social_youtube
+      social_youtube,
+      whatsapp_number,
+      whatsapp_message
     };
 
     await saveSiteSettings(settings);
