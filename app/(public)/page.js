@@ -172,8 +172,16 @@ export default async function HomePage() {
       </section>
 
       {/* 2. TRUST SIGNALS SECTION */}
-      <section className="py-16 bg-surface-container-low border-b border-on-surface/5">
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+      <section className="relative py-16 bg-surface-container-low border-b border-on-surface/5 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-95"
+          style={{ backgroundImage: "url('/images/quality-logistics-background.png')" }}
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/68 to-white/82" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white/55 via-transparent to-white/45" aria-hidden="true" />
+
+        <div className="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-primary mb-4">
               {t("home_trust_title", locale)}
@@ -185,8 +193,8 @@ export default async function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
             {trustSignals.map((signal, index) => (
-              <div key={index} className="bg-surface-container-lowest border border-on-surface/10 rounded-lg p-8 hover:shadow-[0_8px_30px_rgba(26,26,26,0.03)] transition-all duration-300 flex flex-col gap-4">
-                <div className="p-3 bg-surface rounded-lg w-fit">
+              <div key={index} className="bg-white/82 backdrop-blur-md border border-white/70 rounded-lg p-8 shadow-[0_18px_45px_rgba(87,0,19,0.08)] hover:shadow-[0_22px_55px_rgba(87,0,19,0.12)] transition-all duration-300 flex flex-col gap-4">
+                <div className="p-3 bg-white/70 rounded-lg w-fit shadow-sm">
                   {signal.icon}
                 </div>
                 <h3 className="font-title-lg text-title-lg text-primary">{signal.title}</h3>
