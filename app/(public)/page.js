@@ -4,6 +4,7 @@ import { ShieldCheck, Truck, Droplets, ArrowRight } from "lucide-react";
 import AnimatedStat from "@/components/AnimatedStat";
 import { cookies } from "next/headers";
 import { t, translateProducts, translateBlogPosts } from "@/lib/translations";
+import FeaturedProductCard from "@/components/FeaturedProductCard";
 
 export default async function HomePage() {
   const cookieStore = cookies();
@@ -14,6 +15,8 @@ export default async function HomePage() {
     getProducts(),
     getBlogPosts(),
   ]);
+  const businessPhone = settings?.business_phone || "+1 (800) 555-SPICE";
+  const businessEmail = settings?.business_email || "sales@thesevenspice.com";
 
   // Translate database objects dynamically if locale is 'ur'
   const products = translateProducts(rawProducts, locale);
@@ -225,41 +228,13 @@ export default async function HomePage() {
           <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 md:grid md:grid-cols-3 md:gap-gutter">
             {featuredProducts.length > 0 ? (
               featuredProducts.map((product) => (
-                <Link
+                <FeaturedProductCard
                   key={product.id}
-                  href={`/products?quoteProduct=${encodeURIComponent(product.name)}&productId=${product.id}`}
-                  className="min-w-[85vw] sm:min-w-[320px] snap-align-center md:min-w-0 flex-shrink-0 bg-surface border border-on-surface/10 rounded-lg overflow-hidden flex flex-col hover:shadow-[0px_20px_40px_rgba(26,26,26,0.03)] transition-all duration-300 group cursor-pointer"
-                >
-                  <div className="h-64 overflow-hidden relative bg-surface-container">
-                    <img
-                      src={product.image_url || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute top-4 left-4 bg-secondary text-on-secondary text-xs uppercase tracking-wider font-bold px-3 py-1 rounded">
-                      {product.category}
-                    </div>
-                  </div>
-                  <div className="p-6 flex-grow flex flex-col justify-between gap-4">
-                    <div className="space-y-2">
-                      <h3 className="font-title-lg text-title-lg text-primary line-clamp-1 group-hover:text-primary transition-colors font-bold">{product.name}</h3>
-                      <p className="text-sm text-on-surface-variant line-clamp-3">{product.description}</p>
-                    </div>
-                    <div className="border-t border-on-surface/5 pt-4 w-full">
-                      {(product.packaging_info || product.price_moq) && (
-                        <div className="flex justify-between items-center text-xs font-semibold text-on-surface-variant/80 mb-4">
-                          {product.packaging_info ? <span>{product.packaging_info}</span> : <span></span>}
-                          {product.price_moq ? <span className="text-primary font-bold">{product.price_moq}</span> : <span></span>}
-                        </div>
-                      )}
-                      <span
-                        className="w-full bg-secondary-container text-on-secondary-container py-3 rounded text-center font-label-md hover:opacity-90 group-hover:opacity-90 transition-all block text-sm"
-                      >
-                        {t("home_featured_request_quote", locale)}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
+                  product={product}
+                  locale={locale}
+                  businessPhone={businessPhone}
+                  businessEmail={businessEmail}
+                />
               ))
             ) : (
               <p className="col-span-3 text-center text-on-surface-variant py-12">

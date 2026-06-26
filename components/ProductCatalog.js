@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import QuoteModal from "./QuoteModal";
-import { Search, SlidersHorizontal, Tag } from "lucide-react";
+import { Search, SlidersHorizontal, Tag, ArrowRight } from "lucide-react";
 import { t } from "@/lib/translations";
+import { getProductSlug } from "@/lib/productPaths";
 
 export default function ProductCatalog({ initialProducts, businessPhone, businessEmail, locale = "en" }) {
+  const router = useRouter();
   const searchParams = useSearchParams();
   
   // State
@@ -41,6 +43,10 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
   const openQuote = (product) => {
     setModalProduct({ name: product.name, id: product.id });
     setModalOpen(true);
+  };
+
+  const openProductDetails = (product) => {
+    router.push(`/products/${getProductSlug(product)}`);
   };
 
   const getCategoryName = (category) => {
@@ -94,8 +100,17 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
           filteredProducts.map((product) => (
             <div 
               key={product.id} 
-              onClick={() => openQuote(product)}
-              className="bg-surface-container-lowest border border-on-surface/10 rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-[0_12px_40px_rgba(26,26,26,0.04)] hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer text-left"
+              onClick={() => openProductDetails(product)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  openProductDetails(product);
+                }
+              }}
+              role="link"
+              tabIndex={0}
+              aria-label={`Open details for ${product.name}`}
+              className="bg-surface-container-lowest border border-on-surface/10 rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-[0_12px_40px_rgba(26,26,26,0.04)] hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
             >
               <div>
                 {/* Image Frame */}
@@ -116,6 +131,9 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
                   <p className="text-on-surface-variant text-sm leading-relaxed line-clamp-4">
                     {product.description}
                   </p>
+                  <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-secondary pt-1">
+                    View product details <ArrowRight size={12} />
+                  </div>
                 </div>
               </div>
 
@@ -141,7 +159,10 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
                 )}
 
                 <button
-                  onClick={() => openQuote(product)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openQuote(product);
+                  }}
                   className="w-full bg-secondary-container text-on-secondary-container py-3 rounded text-center font-label-md hover:opacity-90 group-hover:opacity-90 transition-all text-sm flex items-center justify-center gap-2"
                 >
                   {t("catalog_req_quote", locale)}

@@ -158,12 +158,17 @@ export async function saveProductAction(formData) {
   await assertAdmin();
 
   try {
+    const normalizeText = (value) => {
+      if (typeof value !== "string") return "";
+      return value.replace(/\s+/g, " ").trim();
+    };
+
     const id = formData.get("id") || null;
-    const name = formData.get("name");
-    const category = formData.get("category");
-    const description = formData.get("description");
-    const price_moq = formData.get("price_moq") || "";
-    const packaging_info = formData.get("packaging_info") || "";
+    const name = normalizeText(formData.get("name"));
+    const category = normalizeText(formData.get("category"));
+    const description = normalizeText(formData.get("description"));
+    const price_moq = normalizeText(formData.get("price_moq")) || "Available on inquiry";
+    const packaging_info = normalizeText(formData.get("packaging_info")) || "Bulk export packaging available on request";
     const is_visible = formData.get("is_visible") === "true";
     
     const imageFile = formData.get("image");
