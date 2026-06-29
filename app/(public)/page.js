@@ -107,72 +107,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* HERITAGE & QUALITY SECTION */}
-      <section className="py-16 md:py-24 bg-background border-b border-on-surface/10 overflow-hidden">
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-            {/* Left Content Column */}
-            <div className="lg:col-span-7 flex flex-col justify-center text-left">
-              <span className="font-label-md text-label-md text-secondary uppercase tracking-widest mb-4">
-                {t("home_heritage_span", locale)}
-              </span>
-              <h2 className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-primary mb-6 leading-tight">
-                {t("home_heritage_title", locale)}
-              </h2>
-              <p className="font-body-lg text-body-lg text-on-surface-variant mb-6 leading-relaxed">
-                {t("home_heritage_p1", locale)}
-              </p>
-              <p className="font-body-lg text-body-lg text-on-surface-variant mb-8 leading-relaxed">
-                {t("home_heritage_p2", locale)}
-              </p>
-
-              {/* Statistics Grid */}
-              <div className="flex flex-row gap-12 sm:gap-16 pt-4 border-t border-on-surface/10">
-                <div>
-                  <div className="text-4xl sm:text-5xl font-bold text-primary mb-2">
-                    <AnimatedStat targetValue={0} startValue={0} suffix="%" />
-                  </div>
-                  <div className="text-xs uppercase tracking-widest text-on-surface-variant font-bold">
-                    {t("home_stats_adulterants", locale)}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-4xl sm:text-5xl font-bold text-primary mb-2">
-                    <AnimatedStat targetValue={100} startValue={0} suffix="%" />
-                  </div>
-                  <div className="text-xs uppercase tracking-widest text-on-surface-variant font-bold">
-                    {t("home_stats_organic", locale)}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column: Image and Overlapping Card */}
-            <div className="lg:col-span-5 relative mt-8 lg:mt-12 mb-8 lg:mb-0 flex justify-center">
-              <div className="relative w-full max-w-md lg:max-w-none h-96">
-                {/* Methi Featured Product Image */}
-                <div className="rounded-2xl overflow-hidden shadow-2xl h-full w-full">
-                  <img
-                    src="/images/Methi%20Featured%20Product%20Image.jpg"
-                    alt="Methi (Fenugreek) featured product representing premium quality spice standards"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                {/* Overlapping Promise Card */}
-                <div className="absolute -bottom-8 left-6 md:-bottom-12 md:-left-12 bg-gradient-to-br from-white/90 via-white/80 to-white/50 backdrop-blur-lg p-6 rounded-xl border border-white/50 shadow-[0_20px_50px_rgba(87,0,19,0.15)] max-w-[280px] sm:max-w-xs transition-transform hover:scale-[1.02] duration-300 z-10">
-                  <h3 className="font-serif text-lg font-bold text-primary mb-1.5">
-                    {t("home_promise_title", locale)}
-                  </h3>
-                  <p className="font-serif italic text-on-surface-variant text-sm leading-relaxed">
-                    {t("home_promise_desc", locale)}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 2. TRUST SIGNALS SECTION */}
       <section className="relative py-16 bg-surface-container-low border-b border-on-surface/5 overflow-hidden">
@@ -274,26 +208,10 @@ export default async function HomePage() {
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute top-4 left-4 bg-primary text-on-primary text-xs uppercase tracking-wider font-bold px-3 py-1 rounded">
-                      {post.category}
-                    </div>
                   </div>
                   <div className="p-6 flex-grow flex flex-col justify-between gap-4">
-                    <div className="space-y-2">
-                      <span className="text-xs font-semibold text-on-surface-variant/70 block">
-                        {post.published_at ? new Date(post.published_at).toLocaleDateString(locale === "ur" ? 'ur-PK' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : new Date(post.created_at).toLocaleDateString(locale === "ur" ? 'ur-PK' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                      </span>
-                      <h3 className="font-title-lg text-title-lg text-primary line-clamp-2 group-hover:text-primary transition-colors font-bold">{post.title}</h3>
-                      <div
-                        className="text-sm text-on-surface-variant line-clamp-3 leading-relaxed"
-                        dangerouslySetInnerHTML={{ __html: post.content }}
-                      />
-                    </div>
+                    <h3 className="font-title-lg text-title-lg text-primary line-clamp-2 group-hover:text-primary transition-colors font-bold">{post.title}</h3>
                     <div className="border-t border-on-surface/5 pt-4 w-full flex justify-between items-center">
-                      <div>
-                        <p className="text-[10px] font-semibold text-on-surface-variant/80 uppercase tracking-widest">{t("home_blog_written_by", locale)}</p>
-                        <p className="text-xs font-semibold text-primary mt-0.5">{post.author}</p>
-                      </div>
                       <span
                         className="text-primary font-bold hover:text-primary/80 transition-colors flex items-center gap-1 text-xs font-label-md"
                       >

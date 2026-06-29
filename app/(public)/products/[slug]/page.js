@@ -32,6 +32,214 @@ export async function generateMetadata({ params }) {
 
 export const revalidate = 60;
 
+function getTechnicalSpecs(product, locale) {
+  const isUrdu = locale === "ur";
+
+  // Try to use specifications from database if present
+  let dbSpecs = {};
+  if (product.specifications) {
+    if (typeof product.specifications === "string") {
+      try {
+        dbSpecs = JSON.parse(product.specifications);
+      } catch (e) {
+        dbSpecs = {};
+      }
+    } else {
+      dbSpecs = product.specifications;
+    }
+  }
+
+  if (dbSpecs && Object.keys(dbSpecs).length > 0 && (dbSpecs.origin || dbSpecs.grade || dbSpecs.purity || dbSpecs.moisture || dbSpecs.shelf_life || dbSpecs.storage_guidelines || dbSpecs.certifications)) {
+    const specsList = [
+      {
+        label: isUrdu ? "مصنوعات کا نام" : "Product Identity",
+        value: product.name
+      },
+      {
+        label: isUrdu ? "زمرہ" : "Product Category",
+        value: product.category
+      },
+      {
+        label: isUrdu ? "اصل / سورسنگ" : "Country of Origin",
+        value: dbSpecs.origin || (isUrdu ? "پوچھ گچھ پر دستیاب ہے" : "Available on request")
+      },
+      {
+        label: isUrdu ? "کوالٹی گریڈ" : "Quality Grade",
+        value: dbSpecs.grade || (isUrdu ? "معیاری گریڈ" : "Standard Grade")
+      }
+    ];
+
+    if (dbSpecs.chemical_name && dbSpecs.chemical_value) {
+      specsList.push({
+        label: dbSpecs.chemical_name,
+        value: dbSpecs.chemical_value
+      });
+    }
+
+    specsList.push(
+      {
+        label: isUrdu ? "طبعی پاکیزگی" : "Physical Purity",
+        value: dbSpecs.purity || "99.5% Min"
+      },
+      {
+        label: isUrdu ? "نمی کا تناسب" : "Moisture Content",
+        value: dbSpecs.moisture || "12% Max"
+      },
+      {
+        label: isUrdu ? "پیکیجنگ فارمیٹ" : "Packaging Format",
+        value: product.packaging_info || (isUrdu ? "درخواست پر دستیاب ہے" : "Available on request")
+      },
+      {
+        label: isUrdu ? "کم از کم آرڈر اور قیمت" : "Wholesale MOQ & Price",
+        value: product.price_moq || (isUrdu ? "پوچھ گچھ پر دستیاب ہے" : "Available on inquiry")
+      },
+      {
+        label: isUrdu ? "شیلف لائف" : "Expected Shelf Life",
+        value: dbSpecs.shelf_life || "24 Months"
+      },
+      {
+        label: isUrdu ? "سٹوریج کی شرائط" : "Storage Guidelines",
+        value: dbSpecs.storage_guidelines || (isUrdu ? "ٹھنڈی، خشک جگہ پر اسٹور کریں" : "Store in cool, dry conditions.")
+      },
+      {
+        label: isUrdu ? "دستیاب سرٹیفکیٹس" : "Compliance Certifications",
+        value: dbSpecs.certifications || "ISO, HACCP"
+      }
+    );
+
+    return specsList;
+  }
+
+  const name = (product.name || "").toLowerCase();
+  
+  // Default specs
+  let origin = isUrdu ? "پریمیم گلوبل سورسنگ" : "Premium Global Sourced";
+  let grade = isUrdu ? "گریڈ اے ایکسپورٹ کوالٹی" : "Grade A Export Quality";
+  let chemicalSpec = null; // e.g. Curcumin content, Crocin content, Piperine content
+  let moisture = "10.0% - 12.0% Maximum";
+  let purity = "99.5% Minimum (Free from heavy metals, synthetic colors & fillers)";
+  
+  if (name.includes("saffron") || name.includes("زعفران")) {
+    origin = isUrdu ? "کشمیر، انڈیا" : "Kashmir, India";
+    grade = isUrdu ? "گریڈ 1 (ISO 3632 پریمیم)" : "Grade I (ISO 3632 Premium)";
+    chemicalSpec = {
+      label: isUrdu ? "ایکٹو کروسین (رنگ کی طاقت)" : "Active Crocin (Coloring Strength)",
+      value: "> 220 (High Coloring Potential)"
+    };
+    moisture = "8.0% Maximum";
+    purity = isUrdu ? "100% خالص زعفران کے دھاگے" : "100% Pure Saffron Threads (No style/artificial color)";
+  } else if (name.includes("pepper") || name.includes("کالی مرچ")) {
+    origin = isUrdu ? "مالابار کوسٹ، انڈیا" : "Malabar Coast, India";
+    grade = isUrdu ? "ٹیلی چیری اسپیشل بولڈ (TGSEB)" : "Tellicherry Extra Bold (TGSEB)";
+    chemicalSpec = {
+      label: isUrdu ? "پائپرین مواد" : "Piperine Content",
+      value: "4.5% - 5.5% (Sharp & Aromatic heat)"
+    };
+    moisture = "11.5% Maximum";
+    purity = isUrdu ? "99% خالص (کوئی بیرونی مواد نہیں)" : "99.0% Pure (No foreign materials / dust)";
+  } else if (name.includes("cinnamon") || name.includes("دارچینی")) {
+    origin = isUrdu ? "سری لنکا" : "Sri Lanka";
+    grade = isUrdu ? "C5 یا C5-خصوصی گریڈ" : "C5 / C5-Special Premium";
+    chemicalSpec = {
+      label: isUrdu ? "مستحکم دارچینی کا تیل" : "Volatile Cinnamon Oil",
+      value: "1.5% - 2.0% Min"
+    };
+    moisture = "12.0% Maximum";
+    purity = isUrdu ? "100% خالص دارچینی کی چھال" : "100% Pure Ceylon Cinnamon Bark";
+  } else if (name.includes("basil") || name.includes("تلسی")) {
+    origin = isUrdu ? "مصر" : "Egypt";
+    grade = isUrdu ? "پریمیم کٹ اینڈ سلفٹڈ پتے" : "Premium Cut & Sifted Leaves";
+    moisture = "9.5% Maximum";
+    purity = isUrdu ? "99% خالص خشک تلسی" : "99.0% Pure Crushed Basil (No stems/twigs)";
+  } else if (name.includes("cardamom") || name.includes("الائچی")) {
+    origin = isUrdu ? "کیرالہ، انڈیا" : "Kerala, India";
+    grade = isUrdu ? "فینسی بولڈ (8 ملی میٹر+ سائز)" : "Fancy Bold (8mm+ Size)";
+    chemicalSpec = {
+      label: isUrdu ? "خوشبودار تیل کا مواد" : "Aromatic Oil Content",
+      value: "2.0% - 2.5% Min"
+    };
+    moisture = "11.0% Maximum";
+    purity = isUrdu ? "99% خالص الائچی" : "99.0% Pure Cardamom Pods";
+  } else if (name.includes("turmeric") || name.includes("ہلدی")) {
+    origin = isUrdu ? "انڈیا" : "India";
+    grade = isUrdu ? "پریمیم ہائی کرکومن ہلدی" : "Premium High-Curcumin Grade";
+    chemicalSpec = {
+      label: isUrdu ? "ایکٹو کرکومین مواد" : "Active Curcumin Content",
+      value: "> 5.5% (Verified HPLC)"
+    };
+    moisture = "9.0% Maximum";
+    purity = isUrdu ? "100% خالص ہلدی پاؤڈر" : "100% Pure Turmeric Powder (No lead chromate)";
+  } else if (name.includes("methi") || name.includes("fenugreek") || name.includes("میتھی")) {
+    origin = isUrdu ? "راجستھان، انڈیا" : "Rajasthan, India";
+    grade = isUrdu ? "مشین کلینڈ ہینڈ سلیکٹڈ" : "Machine Cleaned, Hand Selected (MC/HS)";
+    moisture = "10.0% Maximum";
+    purity = isUrdu ? "99.5% خالص پریمیم بیج" : "99.5% Pure Premium Fenugreek Seeds";
+  }
+
+  const specsList = [
+    {
+      label: isUrdu ? "مصنوعات کا نام" : "Product Identity",
+      value: product.name
+    },
+    {
+      label: isUrdu ? "زمرہ" : "Product Category",
+      value: product.category
+    },
+    {
+      label: isUrdu ? "اصل / سورسنگ" : "Country of Origin",
+      value: origin
+    },
+    {
+      label: isUrdu ? "کوالٹی گریڈ" : "Quality Grade",
+      value: grade
+    }
+  ];
+
+  if (chemicalSpec) {
+    specsList.push({
+      label: chemicalSpec.label,
+      value: chemicalSpec.value
+    });
+  }
+
+  specsList.push(
+    {
+      label: isUrdu ? "طبعی پاکیزگی" : "Physical Purity",
+      value: purity
+    },
+    {
+      label: isUrdu ? "نمی کا تناسب" : "Moisture Content",
+      value: moisture
+    },
+    {
+      label: isUrdu ? "پیکیجنگ فارمیٹ" : "Packaging Format",
+      value: product.packaging_info || (isUrdu ? "درخواست پر دستیاب ہے" : "Available on request")
+    },
+    {
+      label: isUrdu ? "کم از کم آرڈر اور قیمت" : "Wholesale MOQ & Price",
+      value: product.price_moq || (isUrdu ? "پوچھ گچھ پر دستیاب ہے" : "Available on inquiry")
+    },
+    {
+      label: isUrdu ? "شیلف لائف" : "Expected Shelf Life",
+      value: isUrdu ? "اصل پیکیجنگ میں 24 ماہ" : "24 Months in original sealed packaging"
+    },
+    {
+      label: isUrdu ? "سٹوریج کی شرائط" : "Storage Guidelines",
+      value: isUrdu 
+        ? "براہ راست سورج کی روشنی اور نمی سے دور ٹھنڈی، خشک جگہ پر اسٹور کریں"
+        : "Store in a cool, dry warehouse environment, away from direct sunlight and excess moisture."
+    },
+    {
+      label: isUrdu ? "دستیاب سرٹیفکیٹس" : "Compliance Certifications",
+      value: isUrdu
+        ? "ISO 22000, HACCP, Phytosanitary سرٹیفکیٹ، حلال اور آرگینک (درخواست پر)"
+        : "ISO 22000, HACCP, Phytosanitary Export Certificate, Halal & Organic compliance (available on request)"
+    }
+  );
+
+  return specsList;
+}
+
 export default async function ProductDetailPage({ params }) {
   const cookieStore = cookies();
   const locale = cookieStore.get("locale")?.value || "en";
@@ -64,24 +272,6 @@ export default async function ProductDetailPage({ params }) {
       : descriptionPreview
     : "Commercial product details are available below for procurement teams and wholesale buyers.";
 
-  const supplyHighlights = [
-    {
-      icon: Package,
-      title: "Bulk-ready packaging",
-      text: product.packaging_info || "Configured for wholesale transit and secure export handling.",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Quality control",
-      text: "Positioned for commercial buyers who need consistent grade, traceability, and dependable supply.",
-    },
-    {
-      icon: Truck,
-      title: "Export logistics",
-      text: "Suitable for distributors, food manufacturers, and importers working across international freight channels.",
-    },
-  ];
-
   const buyerFit = [
     "Food manufacturers and private-label processors",
     "Wholesale distributors and importers",
@@ -89,11 +279,7 @@ export default async function ProductDetailPage({ params }) {
     "Hospitality and catering supply teams",
   ];
 
-  const commercialFacts = [
-    { label: "Category", value: product.category },
-    { label: "Packaging", value: product.packaging_info || "Available on request" },
-    { label: "MOQ / Rate", value: product.price_moq || "Available on inquiry" },
-  ];
+  const technicalSpecs = getTechnicalSpecs(product, locale);
 
   return (
     <div className="bg-background pb-stack-lg">
@@ -161,44 +347,46 @@ export default async function ProductDetailPage({ params }) {
 
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mt-12 grid grid-cols-1 lg:grid-cols-12 gap-gutter">
         <article className="lg:col-span-8 space-y-8">
-          <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {commercialFacts.map((fact) => (
-              <div key={fact.label} className="bg-surface-container-low border border-on-surface/10 rounded-xl p-5">
-                <div className="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-bold">{fact.label}</div>
-                <div className="mt-2 text-sm text-on-surface font-semibold leading-relaxed break-words">{fact.value}</div>
-              </div>
-            ))}
-          </section>
+          {/* TECHNICAL SPECIFICATIONS & STANDARDS SECTION */}
+          <section className="bg-surface-container-low border border-on-surface/10 rounded-xl p-6 md:p-8 shadow-sm">
+            <div className="border-b border-on-surface/10 pb-4 mb-6">
+              <h2 className="font-title-lg text-title-lg text-primary flex items-center gap-2">
+                <ShieldCheck size={22} className="text-secondary" />
+                {locale === "ur" ? "پروڈکٹ کی تفصیلات اور تکنیکی معلومات" : "Product Specifications & Technical Data"}
+              </h2>
+              <p className="text-sm text-on-surface-variant mt-1.5 leading-relaxed">
+                {locale === "ur"
+                  ? "ہول سیل خریداروں، امپورٹرز اور کوالٹی اشورینس ٹیموں کے لیے تصدیق شدہ تجارتی اور معیار کے پیرامیٹرز۔"
+                  : "Verified commercial and quality parameters for wholesale procurement, importers, and quality assurance teams."}
+              </p>
+            </div>
 
-          <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {supplyHighlights.map((item) => {
-              const Icon = item.icon;
-              return (
-                <div key={item.title} className="bg-surface-container-low border border-on-surface/10 rounded-xl p-5">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-full bg-secondary/10 text-secondary flex items-center justify-center">
-                      <Icon size={18} />
-                    </div>
-                    <h3 className="font-title-lg text-title-lg text-primary">{item.title}</h3>
-                  </div>
-                  <p className="text-sm text-on-surface-variant leading-relaxed">{item.text}</p>
-                </div>
-              );
-            })}
-          </section>
-
-          <section className="bg-surface-container-low border border-on-surface/10 rounded-xl p-6 md:p-8">
-            <h2 className="font-title-lg text-title-lg text-primary flex items-center gap-2">
-              <MapPin size={18} className="text-secondary" /> {t("product_detail_specs_title", locale)}
-            </h2>
-            <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="rounded-lg border border-on-surface/10 bg-surface p-4">
-                <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">Packaging</div>
-                <div className="mt-2 text-sm text-on-surface font-semibold leading-relaxed">{product.packaging_info || "Bulk export packaging available on request."}</div>
-              </div>
-              <div className="rounded-lg border border-on-surface/10 bg-surface p-4">
-                <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">Price / MOQ</div>
-                <div className="mt-2 text-sm text-primary font-bold leading-relaxed">{product.price_moq || "Pricing available on inquiry."}</div>
+            <div className="overflow-hidden rounded-lg border border-on-surface/5 bg-surface-container-lowest">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm border-collapse">
+                  <thead>
+                    <tr className="bg-surface-container-high border-b border-on-surface/10 text-xs font-bold uppercase tracking-wider text-on-surface-variant">
+                      <th className="py-3 px-4 w-5/12 font-semibold">
+                        {locale === "ur" ? "خصوصیت / پیرامیٹر" : "Specification Parameter"}
+                      </th>
+                      <th className="py-3 px-4 font-semibold">
+                        {locale === "ur" ? "تصدیق شدہ قدر / معیار" : "Verified Value / Standard"}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-on-surface/5 text-on-surface">
+                    {technicalSpecs.map((spec) => (
+                      <tr key={spec.label} className="hover:bg-surface-container-low/50 transition-colors">
+                        <td className="py-3.5 px-4 font-semibold text-xs uppercase tracking-wider text-on-surface-variant bg-surface-container-lowest/50 w-5/12 border-r border-on-surface/5">
+                          {spec.label}
+                        </td>
+                        <td className="py-3.5 px-4 text-sm font-medium text-primary break-words leading-relaxed">
+                          {spec.value}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </section>

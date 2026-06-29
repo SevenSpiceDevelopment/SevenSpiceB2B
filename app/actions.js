@@ -183,6 +183,18 @@ export async function saveProductAction(formData) {
       return { success: false, error: "Please fill in all required product fields." };
     }
 
+    const specificationsObj = {
+      origin: normalizeText(formData.get("spec_origin")),
+      grade: normalizeText(formData.get("spec_grade")),
+      chemical_name: normalizeText(formData.get("spec_chemical_name")),
+      chemical_value: normalizeText(formData.get("spec_chemical_value")),
+      purity: normalizeText(formData.get("spec_purity")),
+      moisture: normalizeText(formData.get("spec_moisture")),
+      shelf_life: normalizeText(formData.get("spec_shelf_life")),
+      storage_guidelines: normalizeText(formData.get("spec_storage_guidelines")),
+      certifications: normalizeText(formData.get("spec_certifications"))
+    };
+
     const product = {
       name,
       category,
@@ -190,7 +202,8 @@ export async function saveProductAction(formData) {
       price_moq,
       packaging_info,
       image_url,
-      is_visible
+      is_visible,
+      specifications: JSON.stringify(specificationsObj)
     };
 
     if (id) product.id = id;
