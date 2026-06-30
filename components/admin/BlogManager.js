@@ -215,7 +215,7 @@ export default function BlogManager({ initialPosts }) {
                     />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-primary text-base leading-tight hover:underline">
+                    <h4 className="font-semibold text-primary text-base leading-tight hover:underline break-words">
                       <Link href={`/blog/${post.slug}`} target="_blank">{post.title}</Link>
                     </h4>
                     <div className="flex flex-wrap items-center gap-3 text-xs text-on-surface-variant/75 font-mono mt-1.5">

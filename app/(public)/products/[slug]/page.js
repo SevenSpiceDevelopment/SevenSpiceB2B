@@ -296,7 +296,7 @@ export default async function ProductDetailPage({ params }) {
               <span className="inline-flex items-center gap-2 bg-secondary/10 text-primary text-xs uppercase font-bold tracking-[0.2em] px-3 py-1.5 rounded">
                 <BadgePercent size={12} /> {product.category}
               </span>
-              <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mt-4 leading-tight max-w-3xl">
+              <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mt-4 leading-tight max-w-3xl break-words">
                 {product.name}
               </h1>
               <p className="font-body-lg text-body-lg text-on-surface-variant mt-5 max-w-3xl leading-relaxed break-words">
@@ -454,7 +454,7 @@ export default async function ProductDetailPage({ params }) {
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="text-[10px] uppercase tracking-[0.2em] text-secondary font-bold">{relatedProduct.category}</div>
-                      <div className="mt-1 text-sm font-semibold text-primary group-hover:text-secondary leading-tight line-clamp-2 transition-colors">
+                      <div className="mt-1 text-sm font-semibold text-primary group-hover:text-secondary leading-tight line-clamp-2 transition-colors break-words">
                         {relatedProduct.name}
                       </div>
                     </div>

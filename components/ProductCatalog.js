@@ -127,8 +127,8 @@ export default function ProductCatalog({ initialProducts, businessPhone, busines
 
                 {/* Content */}
                 <div className="p-6 space-y-3">
-                  <h3 className="font-title-lg text-title-lg text-primary line-clamp-1">{product.name}</h3>
-                  <p className="text-on-surface-variant text-sm leading-relaxed line-clamp-4">
+                  <h3 className="font-title-lg text-title-lg text-primary line-clamp-1 break-words">{product.name}</h3>
+                  <p className="text-on-surface-variant text-sm leading-relaxed line-clamp-4 break-words">
                     {product.description}
                   </p>
                   <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-secondary pt-1">

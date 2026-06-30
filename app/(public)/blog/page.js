@@ -78,11 +78,11 @@ export default async function BlogPage() {
                         </span>
                       </div>
 
-                      <h3 className="font-title-lg text-title-lg text-primary font-semibold leading-tight line-clamp-2 group-hover:text-primary transition-colors">
+                      <h3 className="font-title-lg text-title-lg text-primary font-semibold leading-tight line-clamp-2 group-hover:text-primary transition-colors break-words">
                         {post.title}
                       </h3>
 
-                      <p className="text-on-surface-variant text-sm leading-relaxed line-clamp-3">
+                      <p className="text-on-surface-variant text-sm leading-relaxed line-clamp-3 break-words">
                         {excerpt}
                       </p>
                     </div>

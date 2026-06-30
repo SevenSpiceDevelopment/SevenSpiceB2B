@@ -64,7 +64,7 @@ export default async function BlogPostPage({ params }) {
             {post.category}
           </span>
           
-          <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mt-4 mb-6 leading-tight">
+          <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mt-4 mb-6 leading-tight break-words">
             {post.title}
           </h1>
 
@@ -97,7 +97,7 @@ export default async function BlogPostPage({ params }) {
         {/* Article content (8 cols on desktop) */}
         <article className="lg:col-span-8 flex flex-col gap-6">
           <div 
-            className="prose prose-stone max-w-none text-on-surface-variant leading-relaxed font-body-md text-body-md space-y-6"
+            className="prose prose-stone max-w-none text-on-surface-variant leading-relaxed font-body-md text-body-md space-y-6 break-words"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
@@ -134,7 +134,7 @@ export default async function BlogPostPage({ params }) {
                       {rPost.category}
                     </span>
                     <span
-                      className="font-semibold text-sm text-primary group-hover:text-secondary leading-tight block line-clamp-2 transition-colors"
+                      className="font-semibold text-sm text-primary group-hover:text-secondary leading-tight block line-clamp-2 transition-colors break-words"
                     >
                       {rPost.title}
                     </span>

@@ -184,14 +184,14 @@ export default function InquiriesManager({ initialInquiries }) {
                         <Building size={16} className="text-secondary shrink-0" />
                         <div>
                           <p className="font-mono text-[9px] uppercase tracking-wider text-on-surface-variant">Company</p>
-                          <p className="font-semibold text-on-surface">{inquiry.company}</p>
+                          <p className="font-semibold text-on-surface break-words">{inquiry.company}</p>
                         </div>
                       </div>
                       <div className="bg-surface border border-on-surface/5 p-3.5 rounded flex items-center gap-3 text-xs shadow-xs">
                         <Mail size={16} className="text-secondary shrink-0" />
                         <div>
                           <p className="font-mono text-[9px] uppercase tracking-wider text-on-surface-variant">Corporate Email</p>
-                          <a href={`mailto:${inquiry.email}`} className="font-semibold text-primary hover:underline">{inquiry.email}</a>
+                          <a href={`mailto:${inquiry.email}`} className="font-semibold text-primary hover:underline break-all">{inquiry.email}</a>
                         </div>
                       </div>
                       <div className="bg-surface border border-on-surface/5 p-3.5 rounded flex items-center gap-3 text-xs shadow-xs">
@@ -210,7 +210,7 @@ export default function InquiriesManager({ initialInquiries }) {
                     {/* Project details / Message */}
                     <div className="bg-surface border border-on-surface/5 p-5 rounded space-y-2 shadow-xs">
                       <p className="font-mono text-[9px] uppercase tracking-wider text-on-surface-variant">Formulated Specifications / Project Message</p>
-                      <p className="text-sm text-on-surface leading-relaxed whitespace-pre-wrap font-body-md">
+                      <p className="text-sm text-on-surface leading-relaxed whitespace-pre-wrap font-body-md break-words">
                         {inquiry.message}
                       </p>
                     </div>

@@ -89,7 +89,13 @@ TURSO_DATABASE_URL=libsql://your-database.turso.io
 TURSO_AUTH_TOKEN=your_turso_auth_token
 ```
 
-### 3. Run the Development Server
+### 3. Initialize and Seed the Database
+Before running the server, run the setup script to initialize the database schema and seed initial settings, products, and articles. This works for both live Turso databases and the local JSON fallback file:
+```bash
+npm run db:setup
+```
+
+### 4. Run the Development Server
 ```bash
 npm run dev
 ```
@@ -134,6 +140,58 @@ The current `lib/db.js` handles the database issue by always running compatibili
 3. Configure `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` in your deployment provider.
 4. Start the app once so `lib/db.js` can run compatibility migrations for existing databases.
 5. Confirm Admin Settings shows the WhatsApp fields, then save the desired WhatsApp number and message.
+
+---
+
+## Advanced Features & Implementation Details
+
+### 1. Commercial Technical Specifications Sheets
+Each product details sheet features a dynamic backend-managed specifications section. When managing products in the **Products Manager**, administrators can enter specific parameters that are saved in the `specifications` column of the `products` table as a JSON object:
+* **Country of Origin:** Sourcing location (e.g., Kashmir, India).
+* **Quality Grade:** Commercial tiering (e.g., Grade A Premium).
+* **Physical Purity:** Percentage of raw purity (e.g., 99.5% Min).
+* **Moisture Content:** Volatile threshold tolerance (e.g., 12% Max).
+* **Active Component Spec:** Sourcing spec parameters (e.g., *Active Curcumin Content* value `> 5.5% (Verified HPLC)`).
+* **Expected Shelf Life:** Maximum storage guidelines (e.g., 24 Months).
+* **Compliance Certifications:** ISO 22000, HACCP, Halal, etc.
+* **Storage Guidelines:** Direct storage conditions (e.g., Store in a cool, dry warehouse environment).
+
+---
+
+### 2. Administrative Password Recovery
+In case the admin password is lost or changed, a console-based recovery routine is built into the `/admin/login` page:
+1. Click **Forgot Password?** on the login screen.
+2. Enter the administrative email address configured in `.env.local` (`ADMIN_EMAIL`).
+3. The server runs the `forgotPasswordAction` Server Action, logging the configured environment credentials and reset instructions safely to the **server's terminal console logs**.
+4. To reset or clear database-hashed passwords back to the default environment password, you may delete the `admin_password` value in the `site_settings` database row, or update the `ADMIN_PASSWORD` variable and restart the server.
+
+---
+
+### 3. Serverless-Safe Base64 Image Sourcing
+To ensure compatibility with both serverless runtimes and local directory setups without requiring S3 or Supabase Storage, all file uploads from the admin dashboard (product catalog images and blog banners) use a Base64 pipeline:
+1. The client uploads the image file through the form.
+2. Next.js Server Actions convert the file buffer into a Base64 data URI string via the `fileToBase64` helper.
+3. The Base64 string is written directly into the database (`products.image_url` or `blog_posts.featured_image`).
+
+---
+
+### 4. Admin Workflow & Automations
+To optimize admin workflows, the dashboard features automatic status advancements:
+* **Inquiries Panel (`/admin/inquiries`):** Clicking to expand an *Unread* inquiry automatically advances its status to *Read* through the Server Action.
+* **Quote Requests Panel (`/admin/quotes`):** Clicking to expand a *Pending* quote request automatically updates its status to *Processed*.
+* **CSV Export:** Administrators can filter quote requests by status or company name and export them to an Excel-compatible CSV list with a single click.
+
+---
+
+### 5. Interactive Editorial Formatting Toolbar
+For publishing articles under `/admin/blog`, the Blog Manager includes a custom formatting helper toolbar. Admins can select text in the raw textarea and click **Bold**, **Italic**, **H2**, **List**, or **Link** buttons. The interface automatically wraps the selected text in appropriate semantic HTML tags at the cursor.
+
+---
+
+### 6. Dynamic Urdu Language Toggle & Translation Dictionary
+Multilingual translation is powered by `lib/translations.js`:
+* **General UI Copy:** Static strings on public views are instantly toggled between English and Urdu.
+* **Content Sourcing Translations:** Standard seeded products and blog articles automatically map to translated Urdu descriptions and content when viewing the Urdu layout, providing a seamless localized experience.
 
 ---
 
