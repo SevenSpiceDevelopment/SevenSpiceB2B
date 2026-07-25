@@ -1,11 +1,8 @@
 import Link from "next/link";
-import { getSiteSettings } from "@/lib/db";
 import { Instagram, Facebook, Linkedin, Youtube } from "lucide-react";
 import { t } from "@/lib/translations";
 
-export default async function Footer({ locale = "en" }) {
-  const settings = await getSiteSettings();
-
+export default function Footer({ locale = "en", settings = {} }) {
   return (
     <footer className="bg-primary w-full border-t border-white/10 text-white">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12 md:py-16">

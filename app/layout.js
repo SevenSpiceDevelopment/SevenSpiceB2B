@@ -39,8 +39,7 @@ export default async function RootLayout({ children }) {
         <main className="flex-grow flex flex-col">
           {children}
         </main>
-        {/* @ts-expect-error Async Server Component */}
-        <Footer locale={locale} />
+        <Footer locale={locale} settings={settings} />
         <WhatsAppButton 
           whatsappNumber={settings?.whatsapp_number} 
           whatsappMessage={settings?.whatsapp_message} 
@@ -50,4 +49,3 @@ export default async function RootLayout({ children }) {
     </html>
   );
 }
-

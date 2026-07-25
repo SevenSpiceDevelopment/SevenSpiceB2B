@@ -8,9 +8,9 @@ import {
   saveBlogPost, deleteBlogPost, 
   saveInquiry, updateInquiryStatus, 
   saveQuoteRequest, updateQuoteRequestStatus, 
-  getSiteSettings, saveSiteSettings 
+  getSiteSettingsFresh, saveSiteSettings 
 } from "@/lib/db";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 // Helper to assert admin session
 async function assertAdmin() {
@@ -209,6 +209,8 @@ export async function saveProductAction(formData) {
     if (id) product.id = id;
 
     await saveProduct(product);
+
+    revalidateTag("products");
     
     revalidatePath("/products");
     revalidatePath("/admin/products");
@@ -226,6 +228,9 @@ export async function deleteProductAction(id) {
   await assertAdmin();
   try {
     await deleteProduct(id);
+
+    revalidateTag("products");
+
     revalidatePath("/products");
     revalidatePath("/admin/products");
     revalidatePath("/");
@@ -283,6 +288,8 @@ export async function saveBlogPostAction(formData) {
 
     await saveBlogPost(post);
 
+    revalidateTag("blog-posts");
+
     revalidatePath("/blog");
     revalidatePath(`/blog/${slug}`);
     revalidatePath("/admin/blog");
@@ -299,6 +306,9 @@ export async function deleteBlogPostAction(id) {
   await assertAdmin();
   try {
     await deleteBlogPost(id);
+
+    revalidateTag("blog-posts");
+
     revalidatePath("/blog");
     revalidatePath("/admin/blog");
     return { success: true, message: "Blog post deleted successfully." };
@@ -378,6 +388,8 @@ export async function saveSiteSettingsAction(formData) {
 
     await saveSiteSettings(settings);
 
+    revalidateTag("site-settings");
+
     revalidatePath("/");
     revalidatePath("/contact");
     revalidatePath("/admin/settings");
@@ -410,7 +422,7 @@ export async function changeAdminPasswordAction(formData) {
     }
 
     // Verify current password
-    const settings = await getSiteSettings();
+    const settings = await getSiteSettingsFresh();
     let isCurrentPasswordValid = false;
 
     if (settings.admin_password) {

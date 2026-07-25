@@ -1,10 +1,10 @@
-import { getSiteSettings } from "@/lib/db";
+import { getSiteSettingsFresh } from "@/lib/db";
 import SettingsManager from "@/components/admin/SettingsManager";
 
 export const revalidate = 0; // Disable cache for admin routes
 
 export default async function AdminSettingsPage() {
-  const settings = await getSiteSettings();
+  const settings = await getSiteSettingsFresh();
 
   return (
     <div className="space-y-6">
