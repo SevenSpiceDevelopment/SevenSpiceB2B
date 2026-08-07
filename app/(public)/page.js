@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { getSiteSettings, getProducts, getBlogPosts } from "@/lib/db";
-import { ShieldCheck, Truck, Droplets, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import AnimatedStat from "@/components/AnimatedStat";
+import TrustSignals from "@/components/TrustSignals";
 import { cookies } from "next/headers";
 import { t, translateProducts, translateBlogPosts } from "@/lib/translations";
 import FeaturedProductCard from "@/components/FeaturedProductCard";
@@ -30,11 +31,11 @@ export default async function HomePage() {
   const featuredProducts = products.slice(0, 3);
 
   // Handle default site settings localizations
-  const heroTitle = settings.hero_title === "Exquisite Spices sourced globally, delivered reliably."
+  const heroTitle = settings.hero_title === "Experience the Finest Fenugreek (Methi)"
     ? t("home_hero_title", locale)
     : settings.hero_title;
 
-  const heroSubtitle = settings.hero_subtitle === "Partner with TheSevenSpice for premium bulk imports, custom formulations, and seamless international logistics."
+  const heroSubtitle = settings.hero_subtitle === "TheSevenSpice offers premium Fenugreek (Methi) seeds and powder, expertly sourced for exceptional freshness, rich aroma, and consistent quality—trusted by customers across local and global markets."
     ? t("home_hero_subtitle", locale)
     : settings.hero_subtitle;
 
@@ -42,19 +43,16 @@ export default async function HomePage() {
     ? t("home_hero_cta", locale)
     : settings.hero_cta_text;
 
-  const trustSignals = [
+  const trustCards = [
     {
-      icon: <ShieldCheck className="text-secondary w-8 h-8" />,
       title: t("home_trust_card1_title", locale),
       desc: t("home_trust_card1_desc", locale)
     },
     {
-      icon: <Truck className="text-secondary w-8 h-8" />,
       title: t("home_trust_card2_title", locale),
       desc: t("home_trust_card2_desc", locale)
     },
     {
-      icon: <Droplets className="text-secondary w-8 h-8" />,
       title: t("home_trust_card3_title", locale),
       desc: t("home_trust_card3_desc", locale)
     }
@@ -128,17 +126,7 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-            {trustSignals.map((signal, index) => (
-              <div key={index} className="bg-white/82 backdrop-blur-md border border-white/70 rounded-lg p-8 shadow-[0_18px_45px_rgba(87,0,19,0.08)] hover:shadow-[0_22px_55px_rgba(87,0,19,0.12)] transition-all duration-300 flex flex-col gap-4">
-                <div className="p-3 bg-white/70 rounded-lg w-fit shadow-sm">
-                  {signal.icon}
-                </div>
-                <h3 className="font-title-lg text-title-lg text-primary">{signal.title}</h3>
-                <p className="font-body-md text-body-md text-on-surface-variant">{signal.desc}</p>
-              </div>
-            ))}
-          </div>
+          <TrustSignals cards={trustCards} />
         </div>
       </section>
 
