@@ -91,8 +91,8 @@ INSERT INTO site_settings (
     whatsapp_number, whatsapp_message
 ) VALUES (
     'default', 
-    'Exquisite Spices sourced globally, delivered reliably.', 
-    'Partner with TheSevenSpice for premium bulk imports, custom formulations, and seamless international logistics.',
+    'Experience the Finest Fenugreek (Methi)', 
+    'TheSevenSpice offers premium Fenugreek (Methi) seeds and powder, expertly sourced for exceptional freshness, rich aroma, and consistent quality—trusted by customers across local and global markets.',
     'Submit Wholesale Inquiry',
     '/contact',
     '1200 Silk Road Plaza, Suite 400, Trade District, NY 10001, United States',
