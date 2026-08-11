@@ -19,10 +19,15 @@ export async function generateMetadata({ params }) {
 
 // Enable static pre-rendering at build time for instant loading
 export async function generateStaticParams() {
-  const posts = await getBlogPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  try {
+    const posts = await getBlogPosts();
+    return posts.map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.error("Failed to generate static params for blog posts:", error);
+    return [];
+  }
 }
 
 // Revalidate this path every 60 seconds

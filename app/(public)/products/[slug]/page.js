@@ -11,10 +11,15 @@ import ProductQuoteButton from "@/components/ProductQuoteButton";
 const getProductById = cache(dbGetProductById);
 
 export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.map((product) => ({
-    slug: getProductSlug(product),
-  }));
+  try {
+    const products = await getProducts();
+    return products.map((product) => ({
+      slug: getProductSlug(product),
+    }));
+  } catch (error) {
+    console.error("Failed to generate static params for products:", error);
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }) {
