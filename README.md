@@ -27,7 +27,7 @@ A responsive B2B logistics and wholesale marketing portal for **TheSevenSpice**.
 ## Recent Updates
 * Added `components/WhatsAppButton.js` and mounted it globally from `app/layout.js`.
 * Added WhatsApp number and default message fields to Admin Settings.
-* Updated `lib/db.js` so existing Turso databases still receive compatibility migrations for `whatsapp_number` and `whatsapp_message`.
+* Updated `lib/db.js` so existing Turso databases still receive compatibility migrations for `whatsapp_number` `whatsapp_message`.
 * Added local fallback merging in `getSiteSettings()` so older `lib/mockDb.json` files still receive default WhatsApp values.
 * Added polished responsive UI updates, mobile catalog/blog layouts, and updated product imagery.
 
