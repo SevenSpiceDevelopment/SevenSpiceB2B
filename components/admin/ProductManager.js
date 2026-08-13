@@ -24,12 +24,6 @@ export default function ProductManager({ initialProducts }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const specs = editingProduct?.specifications 
-    ? (typeof editingProduct.specifications === "string" 
-        ? (() => { try { return JSON.parse(editingProduct.specifications); } catch(e) { return {}; } })()
-        : editingProduct.specifications)
-    : {};
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -208,7 +202,7 @@ export default function ProductManager({ initialProducts }) {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={6} className="text-center py-12 text-on-surface-variant/80 font-mono text-sm">
+                  <td colSpan={4} className="text-center py-12 text-on-surface-variant/80 font-mono text-sm">
                     No products added to wholesale catalog.
                   </td>
                 </tr>
@@ -229,7 +223,7 @@ export default function ProductManager({ initialProducts }) {
                   {editingProduct ? "Modify Registry" : "New Catalog Entry"}
                 </span>
                 <h3 className="font-title-lg text-title-lg text-primary mt-1">
-                  {editingProduct ? "Edit Product Specs" : "Add Product Specs"}
+                  {editingProduct ? "Edit Product" : "Add Product"}
                 </h3>
               </div>
               <button 
@@ -282,7 +276,7 @@ export default function ProductManager({ initialProducts }) {
               {/* Description */}
               <div className="flex flex-col">
                 <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="prod-desc">
-                  Wholesale Catalog Description *
+                  Product Description *
                 </label>
                 <textarea
                   id="prod-desc"
@@ -295,177 +289,6 @@ export default function ProductManager({ initialProducts }) {
                   className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm resize-y"
                 />
               </div>
-
-              {/* Commercial Parameters */}
-              <div className="grid grid-cols-2 gap-4 border-t border-on-surface/5 pt-4">
-                <div className="flex flex-col">
-                  <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="prod-price-moq">
-                    Price / MOQ *
-                  </label>
-                  <input
-                    id="prod-price-moq"
-                    name="price_moq"
-                    required
-                    placeholder="e.g. $4.20/kg (MOQ: 200kg)"
-                    defaultValue={editingProduct?.price_moq || ""}
-                    disabled={loading}
-                    className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="prod-packaging">
-                    Packaging Info *
-                  </label>
-                  <input
-                    id="prod-packaging"
-                    name="packaging_info"
-                    required
-                    placeholder="e.g. 25kg multi-layer paper bags"
-                    defaultValue={editingProduct?.packaging_info || ""}
-                    disabled={loading}
-                    className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
-                  />
-                </div>
-              </div>
-
-              {/* Technical Specifications Section */}
-              <div className="border-t border-on-surface/10 pt-4 space-y-4">
-                <h4 className="font-mono text-xs uppercase tracking-wider text-secondary font-bold">
-                  Technical Specifications (Backend-managed Specs Sheet)
-                </h4>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col">
-                    <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="spec-origin">
-                      Country of Origin
-                    </label>
-                    <input
-                      id="spec-origin"
-                      name="spec_origin"
-                      placeholder="e.g. Kashmir, India"
-                      defaultValue={specs.origin || ""}
-                      disabled={loading}
-                      className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="spec-grade">
-                      Quality Grade
-                    </label>
-                    <input
-                      id="spec-grade"
-                      name="spec_grade"
-                      placeholder="e.g. Grade A Premium"
-                      defaultValue={specs.grade || ""}
-                      disabled={loading}
-                      className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col">
-                    <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="spec-purity">
-                      Physical Purity
-                    </label>
-                    <input
-                      id="spec-purity"
-                      name="spec_purity"
-                      placeholder="e.g. 99.5% Min"
-                      defaultValue={specs.purity || ""}
-                      disabled={loading}
-                      className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="spec-moisture">
-                      Moisture Content
-                    </label>
-                    <input
-                      id="spec-moisture"
-                      name="spec_moisture"
-                      placeholder="e.g. 12% Max"
-                      defaultValue={specs.moisture || ""}
-                      disabled={loading}
-                      className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col">
-                    <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="spec-chemical-name">
-                      Active Component Spec Name (e.g., Curcumin)
-                    </label>
-                    <input
-                      id="spec-chemical-name"
-                      name="spec_chemical_name"
-                      placeholder="e.g. Active Curcumin Content"
-                      defaultValue={specs.chemical_name || ""}
-                      disabled={loading}
-                      className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="spec-chemical-value">
-                      Active Component value
-                    </label>
-                    <input
-                      id="spec-chemical-value"
-                      name="spec_chemical_value"
-                      placeholder="e.g. > 5.5% (Verified HPLC)"
-                      defaultValue={specs.chemical_value || ""}
-                      disabled={loading}
-                      className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col">
-                    <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="spec-shelf-life">
-                      Expected Shelf Life
-                    </label>
-                    <input
-                      id="spec-shelf-life"
-                      name="spec_shelf_life"
-                      placeholder="e.g. 24 Months"
-                      defaultValue={specs.shelf_life || ""}
-                      disabled={loading}
-                      className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="spec-certifications">
-                      Compliance Certifications
-                    </label>
-                    <input
-                      id="spec-certifications"
-                      name="spec_certifications"
-                      placeholder="e.g. ISO 22000, HACCP, Halal"
-                      defaultValue={specs.certifications || ""}
-                      disabled={loading}
-                      className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-col">
-                  <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="spec-storage-guidelines">
-                    Storage Guidelines
-                  </label>
-                  <input
-                    id="spec-storage-guidelines"
-                    name="spec_storage_guidelines"
-                    placeholder="e.g. Store in a cool, dry warehouse environment, away from direct sunlight"
-                    defaultValue={specs.storage_guidelines || ""}
-                    disabled={loading}
-                    className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-2 font-body-md text-on-surface text-sm"
-                  />
-                </div>
-              </div>
-
-
 
               {/* Image upload with preview */}
               <div className="flex flex-col gap-2">
@@ -535,7 +358,7 @@ export default function ProductManager({ initialProducts }) {
                       <Loader2 className="animate-spin w-3.5 h-3.5" />
                     </>
                   ) : (
-                    "Save Product Specs"
+                    "Save Product"
                   )}
                 </button>
               </div>

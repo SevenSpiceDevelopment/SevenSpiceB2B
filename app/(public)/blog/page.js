@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getBlogPosts } from "@/lib/db";
-import { Calendar, User, ArrowRight, BookOpen } from "lucide-react";
+import { Calendar, User, ArrowRight, BookOpen, Tag } from "lucide-react";
+import MobileCardCarousel from "@/components/MobileCardCarousel";
 
 export const metadata = {
   title: "Industry Insights & Global Trade Blog",
@@ -29,7 +30,7 @@ export default async function BlogPage() {
       </header>
 
       {/* Main Grid */}
-      <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-gutter mt-4">
+      <MobileCardCarousel count={posts.length} className="mt-4 compact-cards md:grid-cols-2 lg:grid-cols-3">
         {posts.length > 0 ? (
           posts.map((post) => {
             // Strip HTML to make excerpt
@@ -51,51 +52,50 @@ export default async function BlogPage() {
               <Link 
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="min-w-[85vw] sm:min-w-[320px] snap-align-center md:min-w-0 flex-shrink-0 bg-surface border border-on-surface/10 rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-[0_12px_35px_rgba(26,26,26,0.03)] hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer"
+                className="w-[85vw] max-w-[85vw] min-w-[85vw] sm:w-[320px] sm:max-w-[320px] sm:min-w-[320px] snap-start flex-shrink-0 md:w-auto md:max-w-none md:min-w-0 bg-surface-container-lowest border border-on-surface/10 rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-[0_12px_40px_rgba(26,26,26,0.04)] hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 h-full"
               >
                 <article className="flex flex-col justify-between h-full">
-                  <div>
+                  <div className="min-w-0 flex flex-col flex-grow">
                     {/* Thumbnail */}
-                    <div className="h-52 overflow-hidden bg-surface-container relative">
+                    <div className="h-60 overflow-hidden relative bg-surface-container-high border-b border-on-surface/10 shrink-0">
                       <img 
                         src={post.featured_image || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"} 
                         alt={post.title} 
-                        className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                       />
-                      <span className="absolute top-4 left-4 bg-primary text-on-primary text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded shadow-sm">
-                        {post.category}
-                      </span>
+                      {post.category && (
+                        <span className="absolute top-4 left-4 bg-secondary text-on-secondary text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded shadow-sm flex items-center gap-1.5">
+                          <Tag size={10} /> {post.category}
+                        </span>
+                      )}
                     </div>
 
                     {/* Body Content */}
-                    <div className="p-6 space-y-3">
-                      <div className="flex items-center gap-4 text-xs text-on-surface-variant/70 font-semibold">
-                        <span className="flex items-center gap-1">
-                          <Calendar size={12} /> {dateStr}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <User size={12} /> {post.author.split(",")[0]}
-                        </span>
+                    <div className="min-w-0 p-6 space-y-3 flex-grow flex flex-col justify-between">
+                      <div className="space-y-3">
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-on-surface-variant/70 font-semibold">
+                          <span className="flex items-center gap-1">
+                            <Calendar size={12} /> {dateStr}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <User size={12} /> {post.author.split(",")[0]}
+                          </span>
+                        </div>
+
+                        <h3 className="min-w-0 font-title-lg text-title-lg text-primary font-semibold leading-tight line-clamp-2 group-hover:text-primary transition-colors break-words [overflow-wrap:anywhere]">
+                          {post.title}
+                        </h3>
+
+                        <p className="min-w-0 text-on-surface-variant text-sm leading-relaxed line-clamp-3 break-words [overflow-wrap:anywhere]">
+                          {excerpt}
+                        </p>
                       </div>
 
-                      <h3 className="font-title-lg text-title-lg text-primary font-semibold leading-tight line-clamp-2 group-hover:text-primary transition-colors break-words">
-                        {post.title}
-                      </h3>
-
-                      <p className="text-on-surface-variant text-sm leading-relaxed line-clamp-3 break-words">
-                        {excerpt}
-                      </p>
+                      <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-secondary pt-2">
+                        Read Full Article
+                        <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                      </div>
                     </div>
-                  </div>
-
-                  {/* Footer Link */}
-                  <div className="px-6 pb-6 pt-2">
-                    <span 
-                      className="text-xs font-bold text-secondary flex items-center gap-1 group-hover:underline"
-                    >
-                      Read Full Article
-                      <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
-                    </span>
                   </div>
                 </article>
               </Link>
@@ -107,7 +107,7 @@ export default async function BlogPage() {
             <p className="font-body-lg text-on-surface-variant">No blog posts published yet.</p>
           </div>
         )}
-      </div>
+      </MobileCardCarousel>
     </div>
   );
 }

@@ -10,9 +10,12 @@ export default function Footer({ locale = "en", settings = {} }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
           {/* Column 1: Brand / Description */}
           <div className="flex flex-col gap-4 lg:col-span-2">
-            <Link href="/" className="hover:opacity-90 transition-opacity">
-              <span className="font-serif text-3xl font-bold text-white">{t("brand_the", locale)}</span>
-              <span className="font-serif text-3xl font-bold text-secondary-fixed"> {t("brand_seven_spice", locale)}</span>
+            <Link href="/" className="inline-flex h-16 w-[252px] overflow-hidden items-center hover:opacity-80 transition-opacity">
+              <img
+                src="/images/logo/seven-spices-horizontal-header.png"
+                alt={t("brand", locale)}
+                className="block h-14 w-[240px] scale-[2.35] object-contain brightness-0 invert"
+              />
             </Link>
             <p className="text-white/70 text-sm leading-relaxed max-w-xs">
               {t("footer_desc", locale)}

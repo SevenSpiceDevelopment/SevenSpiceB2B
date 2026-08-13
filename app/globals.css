@@ -10,7 +10,7 @@
 
 @layer base {
   body {
-    @apply bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col;
+    @apply bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col overflow-x-hidden;
   }
 }
 

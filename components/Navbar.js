@@ -45,13 +45,19 @@ export default function Navbar({ locale = "en" }) {
           <Link
             href="/"
             onClick={() => setIsOpen(false)}
-            className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md font-semibold text-primary hover:opacity-90 transition-opacity"
+            className="flex items-center hover:opacity-90 transition-opacity shrink-0"
           >
-            {t("brand", locale)}
+            <span className="relative block h-10 w-[146px] sm:h-12 sm:w-[178px] md:h-14 md:w-[230px] overflow-hidden">
+              <img
+                src="/images/logo/seven-spices-horizontal-header.png"
+                alt={t("brand", locale)}
+                className="absolute inset-0 block h-full w-full scale-[2.35] object-contain"
+              />
+            </span>
           </Link>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex gap-gutter items-center">
+          <div className="hidden lg:flex gap-gutter items-center">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -71,7 +77,7 @@ export default function Navbar({ locale = "en" }) {
           </div>
 
           {/* CTA & Language Switcher (Desktop) */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-6">
             {/* Custom Language Dropdown (Desktop) */}
             <div className="relative">
               <button
@@ -123,13 +129,13 @@ export default function Navbar({ locale = "en" }) {
             </Link>
           </div>
 
-          {/* Mobile Menu & Language Toggle */}
-          <div className="flex items-center gap-3 md:hidden">
-            {/* Mobile dynamic pill switcher */}
-            <div className="flex bg-surface-container border border-on-surface/10 rounded-full p-0.5 relative z-10 shrink-0">
+          {/* Mobile Menu */}
+          <div className="flex items-center gap-3 lg:hidden">
+            {/* Language switcher is inside the drawer */}
+            <div className="hidden">
               <button
                 onClick={() => handleSelectLanguage("en")}
-                className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 ${
+                className={`!min-h-0 h-8 px-2.5 rounded-full text-[11px] font-semibold transition-all duration-200 ${
                   locale === "en"
                     ? "bg-primary text-on-primary shadow-sm"
                     : "text-on-surface-variant hover:text-primary"
@@ -139,7 +145,7 @@ export default function Navbar({ locale = "en" }) {
               </button>
               <button
                 onClick={() => handleSelectLanguage("ur")}
-                className={`px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 ${
+                className={`!min-h-0 h-8 px-2.5 rounded-full text-[11px] font-semibold transition-all duration-200 ${
                   locale === "ur"
                     ? "bg-primary text-on-primary shadow-sm"
                     : "text-on-surface-variant hover:text-primary"
@@ -162,7 +168,7 @@ export default function Navbar({ locale = "en" }) {
 
         {/* Mobile Drawer */}
         {isOpen && (
-          <div className="relative z-50 md:hidden bg-surface border-b border-on-surface/10 w-full px-margin-mobile py-6 flex flex-col gap-6 animate-fadeIn">
+          <div className="relative z-50 lg:hidden bg-surface border-b border-on-surface/10 w-full px-margin-mobile py-6 flex flex-col gap-6 animate-fadeIn">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -182,6 +188,13 @@ export default function Navbar({ locale = "en" }) {
                 </Link>
               );
             })}
+            <div className="flex items-center justify-between gap-4 pt-4 border-t border-on-surface/10">
+              <span className="text-sm font-semibold text-on-surface-variant">Language</span>
+              <div className="flex h-9 bg-surface-container border border-on-surface/10 rounded-full p-0.5">
+                <button onClick={() => handleSelectLanguage("en")} className={`!min-h-0 h-8 px-3 rounded-full text-[11px] font-semibold ${locale === "en" ? "bg-primary text-on-primary" : "text-on-surface-variant"}`}>EN</button>
+                <button onClick={() => handleSelectLanguage("ur")} className={`!min-h-0 h-8 px-3 rounded-full text-[11px] font-semibold ${locale === "ur" ? "bg-primary text-on-primary" : "text-on-surface-variant"}`}>اردو</button>
+              </div>
+            </div>
             <div className="flex flex-col gap-4 pt-4 border-t border-on-surface/10">
               <Link
                 href="/contact"

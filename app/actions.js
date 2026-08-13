@@ -167,8 +167,8 @@ export async function saveProductAction(formData) {
     const name = normalizeText(formData.get("name"));
     const category = normalizeText(formData.get("category"));
     const description = normalizeText(formData.get("description"));
-    const price_moq = normalizeText(formData.get("price_moq")) || "Available on inquiry";
-    const packaging_info = normalizeText(formData.get("packaging_info")) || "Bulk export packaging available on request";
+    const price_moq = "Available on inquiry";
+    const packaging_info = "Bulk export packaging available on request";
     const is_visible = formData.get("is_visible") === "true";
     
     const imageFile = formData.get("image");
@@ -183,18 +183,6 @@ export async function saveProductAction(formData) {
       return { success: false, error: "Please fill in all required product fields." };
     }
 
-    const specificationsObj = {
-      origin: normalizeText(formData.get("spec_origin")),
-      grade: normalizeText(formData.get("spec_grade")),
-      chemical_name: normalizeText(formData.get("spec_chemical_name")),
-      chemical_value: normalizeText(formData.get("spec_chemical_value")),
-      purity: normalizeText(formData.get("spec_purity")),
-      moisture: normalizeText(formData.get("spec_moisture")),
-      shelf_life: normalizeText(formData.get("spec_shelf_life")),
-      storage_guidelines: normalizeText(formData.get("spec_storage_guidelines")),
-      certifications: normalizeText(formData.get("spec_certifications"))
-    };
-
     const product = {
       name,
       category,
@@ -203,7 +191,7 @@ export async function saveProductAction(formData) {
       packaging_info,
       image_url,
       is_visible,
-      specifications: JSON.stringify(specificationsObj)
+      specifications: "{}"
     };
 
     if (id) product.id = id;

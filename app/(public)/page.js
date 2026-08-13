@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { getSiteSettings, getProducts, getBlogPosts } from "@/lib/db";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Tag } from "lucide-react";
 import AnimatedStat from "@/components/AnimatedStat";
 import TrustSignals from "@/components/TrustSignals";
 import { cookies } from "next/headers";
 import { t, translateProducts, translateBlogPosts } from "@/lib/translations";
-import FeaturedProductCard from "@/components/FeaturedProductCard";
+import FeaturedProductCarousel from "@/components/FeaturedProductCarousel";
+import MobileCardCarousel from "@/components/MobileCardCarousel";
 
 export default async function HomePage() {
   const cookieStore = cookies();
@@ -147,23 +148,20 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 md:grid md:grid-cols-3 md:gap-gutter">
-            {featuredProducts.length > 0 ? (
-              featuredProducts.map((product) => (
-                <FeaturedProductCard
-                  key={product.id}
-                  product={product}
-                  locale={locale}
-                  businessPhone={businessPhone}
-                  businessEmail={businessEmail}
-                />
-              ))
-            ) : (
+          {featuredProducts.length > 0 ? (
+            <FeaturedProductCarousel
+              products={featuredProducts}
+              locale={locale}
+              businessPhone={businessPhone}
+              businessEmail={businessEmail}
+            />
+          ) : (
+            <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 md:grid md:grid-cols-3 md:gap-gutter">
               <p className="col-span-3 text-center text-on-surface-variant py-12">
                 {t("home_featured_no_products", locale)}
               </p>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -183,33 +181,51 @@ export default async function HomePage() {
               </p>
             </div>
 
-            <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 md:grid md:grid-cols-3 md:gap-gutter">
-              {featuredBlogPosts.map((post) => (
-                <Link
-                  key={post.id}
-                  href={`/blog/${post.slug}`}
-                  className="min-w-[85vw] sm:min-w-[320px] snap-align-center md:min-w-0 flex-shrink-0 bg-surface border border-on-surface/10 rounded-lg overflow-hidden flex flex-col hover:shadow-[0px_20px_40px_rgba(26,26,26,0.03)] transition-all duration-300 group cursor-pointer"
-                >
-                  <div className="h-48 overflow-hidden relative bg-surface-container">
-                    <img
-                      src={post.featured_image || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"}
-                      alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="p-6 flex-grow flex flex-col justify-between gap-4">
-                    <h3 className="font-title-lg text-title-lg text-primary line-clamp-2 group-hover:text-primary transition-colors font-bold">{post.title}</h3>
-                    <div className="border-t border-on-surface/5 pt-4 w-full flex justify-between items-center">
-                      <span
-                        className="text-primary font-bold hover:text-primary/80 transition-colors flex items-center gap-1 text-xs font-label-md"
-                      >
-                        {t("home_blog_read_post", locale)} <ArrowRight size={14} className={locale === "ur" ? "rotate-180" : ""} />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            <MobileCardCarousel count={featuredBlogPosts.length} className="home-blog-cards">
+              {featuredBlogPosts.map((post) => {
+                const plainText = post.content
+                  .replace(/<[^>]+>/g, " ")
+                  .replace(/\s+/g, " ")
+                  .trim();
+                const excerpt = plainText.length > 150 ? plainText.substring(0, 150) + "..." : plainText;
+
+                return (
+                  <Link
+                    key={post.id}
+                    href={`/blog/${post.slug}`}
+                    className="w-[85vw] max-w-[85vw] min-w-[85vw] h-[520px] sm:w-[320px] sm:max-w-[320px] sm:min-w-[320px] snap-start flex-shrink-0 md:w-auto md:h-full md:max-w-none md:min-w-0 bg-surface-container-lowest border border-on-surface/10 rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-[0_12px_40px_rgba(26,26,26,0.04)] hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+                  >
+                    <article className="flex flex-col justify-between h-full">
+                      <div className="min-w-0 flex flex-col flex-grow">
+                        <div className="h-60 overflow-hidden relative bg-surface-container-high border-b border-on-surface/10 shrink-0">
+                          <img
+                            src={post.featured_image || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"}
+                            alt={post.title}
+                            className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                          />
+                          {post.category && (
+                            <span className="absolute top-4 left-4 bg-secondary text-on-secondary text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded shadow-sm flex items-center gap-1.5">
+                              <Tag size={10} /> {post.category}
+                            </span>
+                          )}
+                        </div>
+                        <div className="min-w-0 p-6 space-y-3 flex-grow flex flex-col justify-between">
+                          <div className="space-y-2">
+                            <h3 className="min-w-0 font-title-lg text-title-lg text-primary line-clamp-2 group-hover:text-primary transition-colors font-bold break-words [overflow-wrap:anywhere]">
+                              {post.title}
+                            </h3>
+                          </div>
+                          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-secondary pt-2">
+                            {t("home_blog_read_post", locale)}
+                            <ArrowRight size={12} className={locale === "ur" ? "rotate-180" : "group-hover:translate-x-0.5 transition-transform"} />
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+                  </Link>
+                );
+              })}
+            </MobileCardCarousel>
           </div>
         </section>
       )}

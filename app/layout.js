@@ -17,8 +17,20 @@ export const metadata = {
     description: "Direct-from-source bulk spices, custom blending, and international wholesale solutions.",
     url: "/",
     siteName: "TheSevenSpice",
+    images: [
+      {
+        url: "/images/logo/seven-spices-og.png",
+        width: 1200,
+        height: 630,
+        alt: "Seven Spices"
+      }
+    ],
     locale: "en_US",
     type: "website",
+  },
+  icons: {
+    icon: [{ url: "/favicon.png?v=2", type: "image/png", sizes: "512x512" }],
+    apple: "/apple-touch-icon.png"
   },
   robots: {
     index: true,
