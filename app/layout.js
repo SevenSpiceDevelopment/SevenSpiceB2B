@@ -1,8 +1,13 @@
 import { cookies } from "next/headers";
+import { Suspense } from "react";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import TopProgressBar from "@/components/TopProgressBar";
+import BrandPageLoader from "@/components/BrandPageLoader";
+import DealHeadlineBanner from "@/components/DealHeadlineBanner";
+import MarqueeTicker from "@/components/MarqueeTicker";
 import { getSiteSettings } from "@/lib/db";
 
 export const metadata = {
@@ -47,7 +52,12 @@ export default async function RootLayout({ children }) {
   return (
     <html lang={locale} dir={direction} className="light scroll-smooth">
       <body className="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col selection:bg-primary/10 selection:text-primary">
+        <Suspense fallback={null}>
+          <BrandPageLoader />
+        </Suspense>
+        <DealHeadlineBanner settings={settings} />
         <Navbar locale={locale} />
+        <MarqueeTicker settings={settings} />
         <main className="flex-grow flex flex-col">
           {children}
         </main>

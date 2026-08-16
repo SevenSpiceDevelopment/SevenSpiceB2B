@@ -352,6 +352,16 @@ export async function saveSiteSettingsAction(formData) {
     const social_youtube = formData.get("social_youtube");
     const whatsapp_number = formData.get("whatsapp_number");
     const whatsapp_message = formData.get("whatsapp_message");
+    const deal_headline_enabled = formData.get("deal_headline_enabled") === "on" || formData.get("deal_headline_enabled") === "true";
+    const deal_headline_badge = formData.get("deal_headline_badge") || "";
+    const deal_headline_text = formData.get("deal_headline_text") || "";
+    const deal_headline_link = formData.get("deal_headline_link") || "/contact";
+    const deal_headline_link_text = formData.get("deal_headline_link_text") || "Inquire Now";
+    const marquee_ticker_enabled = formData.get("marquee_ticker_enabled") === "on" || formData.get("marquee_ticker_enabled") === "true";
+    const rawTickerItems = formData.get("marquee_ticker_items") || "";
+    const marquee_ticker_items = typeof rawTickerItems === "string"
+      ? rawTickerItems.split("\n").map(s => s.trim()).filter(Boolean)
+      : [];
 
     if (!hero_title || !hero_subtitle || !hero_cta_text || !hero_cta_link || !business_address || !business_phone || !business_email) {
       return { success: false, error: "Please fill in all required settings fields." };
@@ -371,18 +381,24 @@ export async function saveSiteSettingsAction(formData) {
       social_linkedin,
       social_youtube,
       whatsapp_number,
-      whatsapp_message
+      whatsapp_message,
+      deal_headline_enabled,
+      deal_headline_badge,
+      deal_headline_text,
+      deal_headline_link,
+      deal_headline_link_text,
+      marquee_ticker_enabled,
+      marquee_ticker_items: JSON.stringify(marquee_ticker_items)
     };
 
     await saveSiteSettings(settings);
 
     revalidateTag("site-settings");
 
-    revalidatePath("/");
-    revalidatePath("/contact");
+    revalidatePath("/", "layout");
     revalidatePath("/admin/settings");
 
-    return { success: true, message: "Site settings updated successfully." };
+    return { success: true, message: "Site configurations and continuous moving ticker updated successfully." };
   } catch (err) {
     console.error("Error saving site settings:", err);
     return { success: false, error: "Failed to save site settings." };

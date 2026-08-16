@@ -47,7 +47,7 @@ export default function Navbar({ locale = "en" }) {
             onClick={() => setIsOpen(false)}
             className="flex items-center hover:opacity-90 transition-opacity shrink-0"
           >
-            <span className="relative block h-10 w-[146px] sm:h-12 sm:w-[178px] md:h-14 md:w-[230px] overflow-hidden">
+            <span className="relative block h-10 w-[140px] min-[375px]:w-[158px] sm:h-12 sm:w-[175px] md:h-14 md:w-[230px] overflow-hidden">
               <img
                 src="/images/logo/seven-spices-horizontal-header.png"
                 alt={t("brand", locale)}

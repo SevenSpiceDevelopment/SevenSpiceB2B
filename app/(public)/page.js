@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import { t, translateProducts, translateBlogPosts } from "@/lib/translations";
 import FeaturedProductCarousel from "@/components/FeaturedProductCarousel";
 import MobileCardCarousel from "@/components/MobileCardCarousel";
+import ProductApplicationsCollage from "@/components/ProductApplicationsCollage";
 
 export default async function HomePage() {
   const cookieStore = cookies();
@@ -47,15 +48,18 @@ export default async function HomePage() {
   const trustCards = [
     {
       title: t("home_trust_card1_title", locale),
-      desc: t("home_trust_card1_desc", locale)
+      desc: t("home_trust_card1_desc", locale),
+      pill: locale === "ur" ? "تصدیق شدہ کوالٹی" : "ISO 3632 Sourcing"
     },
     {
       title: t("home_trust_card2_title", locale),
-      desc: t("home_trust_card2_desc", locale)
+      desc: t("home_trust_card2_desc", locale),
+      pill: locale === "ur" ? "عالمی لاجسٹکس" : "Global Logistics"
     },
     {
       title: t("home_trust_card3_title", locale),
-      desc: t("home_trust_card3_desc", locale)
+      desc: t("home_trust_card3_desc", locale),
+      pill: locale === "ur" ? "کسٹم پروسیسنگ" : "Custom Processing"
     }
   ];
 
@@ -77,27 +81,27 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-black/60 z-0"></div>
 
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
-          <div className="max-w-3xl flex flex-col items-start gap-stack-md text-left">
-            <span className="font-label-md text-label-md text-secondary-fixed uppercase tracking-widest bg-black/40 px-3 py-1 rounded border border-secondary-fixed/20">
+          <div className="max-w-3xl flex flex-col items-start gap-4 sm:gap-stack-md text-left">
+            <span className="font-label-md text-[10px] xs:text-xs md:text-label-md text-secondary-fixed uppercase tracking-widest bg-black/40 px-2.5 py-1 rounded border border-secondary-fixed/20">
               {t("home_hero_span", locale)}
             </span>
-            <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-white tracking-tight leading-tight">
+            <h1 className="text-xl xs:text-2xl sm:text-4xl md:text-display-lg font-bold text-white tracking-tight leading-tight [overflow-wrap:anywhere] break-words">
               {heroTitle}
             </h1>
-            <p className="font-body-lg text-body-lg text-white/85 max-w-2xl">
+            <p className="text-xs sm:text-base md:text-body-lg text-white/85 max-w-2xl leading-relaxed">
               {heroSubtitle}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto pt-2">
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto pt-2">
               <Link
                 href={settings.hero_cta_link || "/contact"}
-                className="bg-secondary-container text-on-secondary-container font-label-md text-label-md px-8 py-4 rounded hover:opacity-90 transition-all text-center flex items-center justify-center gap-2 shadow-sm"
+                className="bg-secondary-container text-on-secondary-container font-label-md text-xs sm:text-label-md px-6 py-3.5 sm:px-8 sm:py-4 rounded hover:opacity-90 transition-all text-center flex items-center justify-center gap-2 shadow-sm"
               >
                 {heroCtaText}
                 <ArrowRight size={16} className={locale === "ur" ? "rotate-180" : ""} />
               </Link>
               <Link
                 href="/products"
-                className="border border-white/40 text-white font-label-md text-label-md px-8 py-4 rounded hover:bg-white/10 transition-all text-center flex items-center justify-center"
+                className="border border-white/40 text-white font-label-md text-xs sm:text-label-md px-6 py-3.5 sm:px-8 sm:py-4 rounded hover:bg-white/10 transition-all text-center flex items-center justify-center"
               >
                 {t("home_hero_browse", locale)}
               </Link>
@@ -108,15 +112,7 @@ export default async function HomePage() {
 
 
       {/* 2. TRUST SIGNALS SECTION */}
-      <section className="relative py-16 bg-surface-container-low border-b border-on-surface/5 overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-95"
-          style={{ backgroundImage: "url('/images/quality-logistics-background.png')" }}
-          aria-hidden="true"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/68 to-white/82" aria-hidden="true" />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/55 via-transparent to-white/45" aria-hidden="true" />
-
+      <section className="relative py-16 sm:py-20 bg-surface-container-low border-b border-on-surface/5 overflow-hidden bg-subtle-pattern">
         <div className="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-primary mb-4">
@@ -245,6 +241,31 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* 4.5. WHERE OUR PRODUCTS ARE USED (INDUSTRIES & APPLICATIONS COLLAGE) */}
+      <ProductApplicationsCollage 
+        locale={locale} 
+        translations={{
+          home_applications_span: t("home_applications_span", locale),
+          home_applications_title: t("home_applications_title", locale),
+          home_applications_subtitle: t("home_applications_subtitle", locale),
+          home_app1_title: t("home_app1_title", locale),
+          home_app1_desc: t("home_app1_desc", locale),
+          home_app1_pill: t("home_app1_pill", locale),
+          home_app2_title: t("home_app2_title", locale),
+          home_app2_desc: t("home_app2_desc", locale),
+          home_app2_pill: t("home_app2_pill", locale),
+          home_app3_title: t("home_app3_title", locale),
+          home_app3_desc: t("home_app3_desc", locale),
+          home_app3_pill: t("home_app3_pill", locale),
+          home_app4_title: t("home_app4_title", locale),
+          home_app4_desc: t("home_app4_desc", locale),
+          home_app4_pill: t("home_app4_pill", locale),
+          home_app5_title: t("home_app5_title", locale),
+          home_app5_desc: t("home_app5_desc", locale),
+          home_app5_pill: t("home_app5_pill", locale),
+        }}
+      />
 
       {/* 5. CTA SECTION */}
       <section
