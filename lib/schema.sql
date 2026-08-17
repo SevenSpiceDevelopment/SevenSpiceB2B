@@ -78,6 +78,13 @@ CREATE TABLE IF NOT EXISTS site_settings (
     whatsapp_number VARCHAR(50),
     whatsapp_message TEXT,
     admin_password TEXT,
+    deal_headline_enabled BOOLEAN DEFAULT false,
+    deal_headline_badge VARCHAR(100),
+    deal_headline_text TEXT,
+    deal_headline_link VARCHAR(255),
+    deal_headline_link_text VARCHAR(100),
+    marquee_ticker_enabled BOOLEAN DEFAULT true,
+    marquee_ticker_items TEXT,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -88,7 +95,9 @@ INSERT INTO site_settings (
     id, hero_title, hero_subtitle, hero_cta_text, hero_cta_link, 
     business_address, business_phone, business_email, 
     social_facebook, social_twitter, social_instagram, social_linkedin, social_youtube,
-    whatsapp_number, whatsapp_message
+    whatsapp_number, whatsapp_message,
+    deal_headline_enabled, deal_headline_badge, deal_headline_text, deal_headline_link, deal_headline_link_text,
+    marquee_ticker_enabled, marquee_ticker_items
 ) VALUES (
     'default', 
     'Experience the Finest Fenugreek (Methi)', 
@@ -104,7 +113,14 @@ INSERT INTO site_settings (
     'https://linkedin.com/company/thesevenspice',
     'https://youtube.com/@thesevenspice',
     '+15550000000',
-    'Hello TheSevenSpice, I would like to inquire about wholesale spice sourcing.'
+    'Hello TheSevenSpice, I would like to inquire about wholesale spice sourcing.',
+    true,
+    'Special Deal',
+    'New Season Harvest: 15% discount on bulk Grade-A Saffron & Fenugreek wholesale orders!',
+    '/contact',
+    'Inquire Now',
+    true,
+    '["🌿 100% Origin Farm Sourced","🔬 ISO 3632 & ISO 22000 Certified Quality","🚢 Worldwide Ocean & Air Freight (FOB / CIF / DDP)","📦 Vacuum-Sealed Moisture Barrier Packing","🌱 Zero Pesticide & 100% Adulteration-Free Guarantee","⚡ Custom Private-Label Blending & Packaging","🌍 Exporting to 30+ Global Ports & Wholesale Distributors"]'
 ) ON CONFLICT (id) DO NOTHING;
 
 -- Insert initial products

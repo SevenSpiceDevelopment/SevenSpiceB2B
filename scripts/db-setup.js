@@ -152,6 +152,31 @@ async function main() {
       await turso.execute(`ALTER TABLE site_settings ADD COLUMN social_youtube TEXT`);
     } catch (e) {}
 
+    // Ensure deal headline columns exist
+    try {
+      await turso.execute(`ALTER TABLE site_settings ADD COLUMN deal_headline_enabled INTEGER DEFAULT 0`);
+    } catch (e) {}
+    try {
+      await turso.execute(`ALTER TABLE site_settings ADD COLUMN deal_headline_badge TEXT`);
+    } catch (e) {}
+    try {
+      await turso.execute(`ALTER TABLE site_settings ADD COLUMN deal_headline_text TEXT`);
+    } catch (e) {}
+    try {
+      await turso.execute(`ALTER TABLE site_settings ADD COLUMN deal_headline_link TEXT`);
+    } catch (e) {}
+    try {
+      await turso.execute(`ALTER TABLE site_settings ADD COLUMN deal_headline_link_text TEXT`);
+    } catch (e) {}
+
+    // Ensure marquee ticker columns exist
+    try {
+      await turso.execute(`ALTER TABLE site_settings ADD COLUMN marquee_ticker_enabled INTEGER DEFAULT 1`);
+    } catch (e) {}
+    try {
+      await turso.execute(`ALTER TABLE site_settings ADD COLUMN marquee_ticker_items TEXT`);
+    } catch (e) {}
+
     // Seed default site settings, initial products, and initial blog posts if it's a new database
     if (!hasDefaultSettings) {
       console.log("Seeding default database data...");
