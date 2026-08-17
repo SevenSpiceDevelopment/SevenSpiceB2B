@@ -112,7 +112,7 @@ export default async function HomePage() {
 
 
       {/* 2. TRUST SIGNALS SECTION */}
-      <section className="relative py-16 sm:py-20 bg-surface-container-low border-b border-on-surface/5 overflow-hidden bg-subtle-pattern">
+      <section className="relative py-16 sm:py-20 bg-surface-container-low border-b border-on-surface/5 overflow-hidden">
         <div className="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-primary mb-4">
@@ -189,31 +189,46 @@ export default async function HomePage() {
                   <Link
                     key={post.id}
                     href={`/blog/${post.slug}`}
-                    className="w-[85vw] max-w-[85vw] min-w-[85vw] h-[520px] sm:w-[320px] sm:max-w-[320px] sm:min-w-[320px] snap-start flex-shrink-0 md:w-auto md:h-full md:max-w-none md:min-w-0 bg-surface-container-lowest border border-on-surface/10 rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-[0_12px_40px_rgba(26,26,26,0.04)] hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+                    className="w-[85vw] max-w-[85vw] min-w-[85vw] sm:w-[320px] sm:max-w-[320px] sm:min-w-[320px] snap-start shrink-0 md:w-auto md:max-w-none md:min-w-0 bg-surface-container-lowest rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-between hover:shadow-[0_20px_45px_rgba(87,0,19,0.08)] hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer text-left outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 select-none min-h-[440px] shadow-sm"
                   >
                     <article className="flex flex-col justify-between h-full">
                       <div className="min-w-0 flex flex-col flex-grow">
-                        <div className="h-60 overflow-hidden relative bg-surface-container-high border-b border-on-surface/10 shrink-0">
-                          <img
-                            src={post.featured_image || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"}
-                            alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
-                          />
-                          {post.category && (
-                            <span className="absolute top-4 left-4 bg-secondary text-on-secondary text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded shadow-sm flex items-center gap-1.5">
-                              <Tag size={10} /> {post.category}
-                            </span>
-                          )}
+                        {/* 1. SEAMLESS IMAGE CANVAS (Zero image border) */}
+                        <div className="relative p-4 sm:p-5 pb-2">
+                          <div className="relative w-full h-44 sm:h-50 rounded-xl sm:rounded-2xl overflow-hidden bg-surface-container-high/40 flex items-center justify-center">
+                            <img
+                              src={post.featured_image || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"}
+                              alt={post.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                            />
+                            {post.category && (
+                              <span className="absolute top-3.5 left-3.5 z-10 inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md text-secondary-fixed text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
+                                <Tag size={10} className="text-secondary-fixed" />
+                                <span>{post.category}</span>
+                              </span>
+                            )}
+                          </div>
                         </div>
-                        <div className="min-w-0 p-6 space-y-3 flex-grow flex flex-col justify-between">
+
+                        {/* 2. BLOG CONTENT */}
+                        <div className="p-5 sm:p-6 pt-3 flex-grow flex flex-col justify-between gap-4">
                           <div className="space-y-2">
-                            <h3 className="min-w-0 font-title-lg text-title-lg text-primary line-clamp-2 group-hover:text-primary transition-colors font-bold break-words [overflow-wrap:anywhere]">
+                            <h3 className="font-title-lg text-lg sm:text-xl font-bold text-primary leading-snug line-clamp-2 group-hover:text-primary transition-colors tracking-tight">
                               {post.title}
                             </h3>
+                            {excerpt && (
+                              <p className="font-body-md text-xs sm:text-sm text-on-surface-variant leading-relaxed line-clamp-2">
+                                {excerpt}
+                              </p>
+                            )}
                           </div>
-                          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-secondary pt-2">
-                            {t("home_blog_read_post", locale)}
-                            <ArrowRight size={12} className={locale === "ur" ? "rotate-180" : "group-hover:translate-x-0.5 transition-transform"} />
+
+                          {/* 3. POLISHED READ ARTICLE BUTTON */}
+                          <div className="pt-2">
+                            <div className="w-full bg-primary text-on-primary group-hover:bg-primary/90 py-3 px-4 rounded-xl text-center font-label-md text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-xs group-hover:shadow-md transition-all duration-200">
+                              <span>{t("home_blog_read_post", locale)}</span>
+                              <ArrowRight size={14} className={locale === "ur" ? "rotate-180" : "group-hover:translate-x-1 transition-transform"} />
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -243,8 +258,8 @@ export default async function HomePage() {
       </section>
 
       {/* 4.5. WHERE OUR PRODUCTS ARE USED (INDUSTRIES & APPLICATIONS COLLAGE) */}
-      <ProductApplicationsCollage 
-        locale={locale} 
+      <ProductApplicationsCollage
+        locale={locale}
         translations={{
           home_applications_span: t("home_applications_span", locale),
           home_applications_title: t("home_applications_title", locale),

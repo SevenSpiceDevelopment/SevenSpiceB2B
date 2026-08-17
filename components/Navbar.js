@@ -33,8 +33,8 @@ export default function Navbar({ locale = "en" }) {
     <>
       {/* Backdrop overlay to close drawer on click outside */}
       {isOpen && (
-        <div 
-          className="fixed inset-0 bg-inverse-surface/20 backdrop-blur-sm z-40 md:hidden" 
+        <div
+          className="fixed inset-0 bg-inverse-surface/20 backdrop-blur-sm z-40 md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
@@ -64,11 +64,10 @@ export default function Navbar({ locale = "en" }) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`font-medium transition-colors duration-200 ${
-                    isActive
+                  className={`font-medium transition-colors duration-200 ${isActive
                       ? "text-primary border-b-2 border-primary pb-1 font-bold"
                       : "text-on-surface-variant hover:text-primary"
-                  }`}
+                    }`}
                 >
                   {link.name}
                 </Link>
@@ -94,27 +93,25 @@ export default function Navbar({ locale = "en" }) {
                 <>
                   {/* Invisible background overlay to trigger click outside close */}
                   <div className="fixed inset-0 z-10 cursor-default" onClick={() => setIsLangOpen(false)} />
-                  
+
                   {/* Dropdown Card Popover */}
                   <div className="absolute right-0 mt-2 w-36 bg-surface/95 backdrop-blur-md border border-on-surface/10 rounded-lg shadow-xl py-1.5 z-20 animate-fadeIn flex flex-col gap-0.5">
                     <button
                       onClick={() => handleSelectLanguage("en")}
-                      className={`flex items-center justify-between px-3.5 py-2 text-xs font-semibold transition-colors duration-150 ${
-                        locale === "en"
+                      className={`flex items-center justify-between px-3.5 py-2 text-xs font-semibold transition-colors duration-150 ${locale === "en"
                           ? "text-primary bg-primary/5 font-bold"
                           : "text-on-surface-variant hover:text-primary hover:bg-on-surface/5"
-                      }`}
+                        }`}
                     >
                       <span>English</span>
                       {locale === "en" && <Check size={12} className="text-primary" />}
                     </button>
                     <button
                       onClick={() => handleSelectLanguage("ur")}
-                      className={`flex items-center justify-between px-3.5 py-2 text-xs font-semibold transition-colors duration-150 ${
-                        locale === "ur"
+                      className={`flex items-center justify-between px-3.5 py-2 text-xs font-semibold transition-colors duration-150 ${locale === "ur"
                           ? "text-primary bg-primary/5 font-bold"
                           : "text-on-surface-variant hover:text-primary hover:bg-on-surface/5"
-                      }`}
+                        }`}
                     >
                       <span className="font-urdu">اردو (Urdu)</span>
                       {locale === "ur" && <Check size={12} className="text-primary" />}
@@ -135,21 +132,19 @@ export default function Navbar({ locale = "en" }) {
             <div className="hidden">
               <button
                 onClick={() => handleSelectLanguage("en")}
-                className={`!min-h-0 h-8 px-2.5 rounded-full text-[11px] font-semibold transition-all duration-200 ${
-                  locale === "en"
+                className={`!min-h-0 h-8 px-2.5 rounded-full text-[11px] font-semibold transition-all duration-200 ${locale === "en"
                     ? "bg-primary text-on-primary shadow-sm"
                     : "text-on-surface-variant hover:text-primary"
-                }`}
+                  }`}
               >
                 EN
               </button>
               <button
                 onClick={() => handleSelectLanguage("ur")}
-                className={`!min-h-0 h-8 px-2.5 rounded-full text-[11px] font-semibold transition-all duration-200 ${
-                  locale === "ur"
+                className={`!min-h-0 h-8 px-2.5 rounded-full text-[11px] font-semibold transition-all duration-200 ${locale === "ur"
                     ? "bg-primary text-on-primary shadow-sm"
                     : "text-on-surface-variant hover:text-primary"
-                }`}
+                  }`}
               >
                 اردو
               </button>
@@ -176,13 +171,12 @@ export default function Navbar({ locale = "en" }) {
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className={`text-lg font-medium transition-colors duration-200 py-1 ${
-                    isActive
+                  className={`text-lg font-medium transition-colors duration-200 py-1 ${isActive
                       ? locale === "ur"
                         ? "text-primary border-r-4 border-primary pr-3 font-bold text-right"
                         : "text-primary border-l-4 border-primary pl-3 font-bold text-left"
                       : "text-on-surface-variant hover:text-primary"
-                  }`}
+                    }`}
                 >
                   {link.name}
                 </Link>

@@ -98,8 +98,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Core Values Section (Glossy Glassmorphism) */}
-      <section className="py-16 sm:py-20 bg-gradient-to-b from-surface-container-low via-surface to-surface-container-low border-t border-b border-on-surface/10 bg-subtle-pattern relative overflow-hidden">
+      {/* Core Values Section */}
+      <section className="py-16 sm:py-20 bg-surface-container-low border-t border-b border-on-surface/10 relative overflow-hidden">
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
             <span className="font-label-md text-label-md text-secondary uppercase tracking-widest bg-secondary/10 px-3.5 py-1.5 rounded-full inline-block border border-secondary/20 mb-3">
@@ -117,38 +117,21 @@ export default function AboutPage() {
             {coreValues.map((value, idx) => (
               <div 
                 key={idx} 
-                className="group relative flex flex-col justify-between gap-5 sm:gap-6 p-6 sm:p-7 lg:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white/95 via-white/85 to-white/65 backdrop-blur-2xl border border-white/90 shadow-[0_12px_35px_rgba(87,0,19,0.04),_0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_25px_60px_rgba(87,0,19,0.12),_0_8px_20px_rgba(252,204,56,0.12)] hover:-translate-y-1.5 hover:border-secondary/40 hover:bg-white/95 transition-all duration-500 text-left overflow-hidden"
+                className="flex flex-col justify-between gap-5 p-6 sm:p-7 rounded-2xl bg-white border border-on-surface/10 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 text-left"
               >
-                {/* Specular Ambient Glow Flares */}
-                <div 
-                  className="absolute -right-10 -top-10 w-36 h-36 rounded-full bg-gradient-to-br from-secondary-fixed/30 via-primary-fixed/20 to-transparent blur-2xl opacity-50 group-hover:opacity-100 group-hover:scale-125 transition-all duration-500 pointer-events-none" 
-                  aria-hidden="true"
-                />
-                <div 
-                  className="absolute -left-10 -bottom-10 w-32 h-32 rounded-full bg-gradient-to-tr from-secondary-fixed/20 to-transparent blur-2xl opacity-40 group-hover:opacity-80 transition-all duration-500 pointer-events-none" 
-                  aria-hidden="true"
-                />
-
-                {/* Top Edge Gloss Accent Sheen */}
-                <div 
-                  className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary/20 via-secondary to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
-                  aria-hidden="true"
-                />
-
-                {/* Glossy Header Bar */}
-                <div className="flex items-center justify-between gap-2 relative z-10">
-                  {/* Glossy Translucent Icon Orb */}
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-secondary/15 to-primary/5 backdrop-blur-md border border-secondary/25 flex items-center justify-center shadow-xs group-hover:scale-110 group-hover:rotate-3 group-hover:border-secondary/60 group-hover:shadow-[0_0_20px_rgba(252,204,56,0.3)] transition-all duration-500 shrink-0">
+                {/* Header Bar */}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="w-12 h-12 rounded-xl bg-surface-container-high border border-on-surface/10 flex items-center justify-center shrink-0">
                     {value.icon}
                   </div>
 
-                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-secondary px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 shadow-xs whitespace-nowrap">
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-secondary px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 whitespace-nowrap">
                     {value.pill}
                   </span>
                 </div>
 
                 {/* Content */}
-                <div className="flex flex-col gap-2 relative z-10">
+                <div className="flex flex-col gap-2">
                   <h3 className="font-title-lg text-lg sm:text-xl lg:text-2xl text-primary font-bold tracking-tight">
                     {value.title}
                   </h3>
