@@ -31,13 +31,17 @@ export default function DealHeadlineBanner({ settings }) {
     }
   }, [isEnabled, headlineText]);
 
-  const handleDismiss = () => {
+  const handleDismiss = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     setIsDismissed(true);
     try {
       if (headlineText) {
         sessionStorage.setItem("thesevenspice_deal_dismissed", headlineText);
       }
-    } catch (e) {}
+    } catch (err) {}
   };
 
   if (!isEnabled || !headlineText || isDismissed) {
@@ -76,9 +80,10 @@ export default function DealHeadlineBanner({ settings }) {
 
         {/* Dismiss Close Button */}
         <button
+          type="button"
           onClick={handleDismiss}
           aria-label="Dismiss banner"
-          className="text-white/70 hover:text-white p-1 rounded-full hover:bg-white/10 transition-colors shrink-0 self-center"
+          className="text-white/70 hover:text-white p-1 rounded-full hover:bg-white/10 transition-colors shrink-0 self-center cursor-pointer"
         >
           <X size={14} />
         </button>

@@ -130,6 +130,7 @@ export default function SettingsManager({ initialSettings }) {
       <div className="flex border-b border-on-surface/10 gap-2 overflow-x-auto">
         {tabs.map((tab) => (
           <button
+            type="button"
             key={tab.id}
             onClick={() => {
               setActiveTab(tab.id);
@@ -229,7 +230,18 @@ export default function SettingsManager({ initialSettings }) {
                       </span>
                     )}
                   </div>
-                  <span className="text-white/60 text-xs">✕</span>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setDealEnabled(false);
+                    }}
+                    title="Disable Banner"
+                    className="text-white/60 hover:text-white transition-colors cursor-pointer p-0.5 rounded text-xs"
+                  >
+                    ✕
+                  </button>
                 </div>
               </div>
 
