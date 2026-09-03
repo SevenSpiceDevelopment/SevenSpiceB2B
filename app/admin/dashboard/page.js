@@ -68,14 +68,15 @@ export default async function AdminDashboardPage() {
             <div className="border border-on-surface/10 rounded-lg p-5 hover:border-primary/30 transition-all space-y-3">
               <div className="flex items-center gap-2 text-primary font-bold text-sm">
                 <Database className="w-4 h-4 text-secondary" />
-                <span>1. Verify Turso Database Config</span>
+                <span>1. Verify Supabase Database Config</span>
               </div>
               <p className="text-xs text-on-surface-variant leading-relaxed">
                 Confirm your database credentials. Ensure the following environment variables are set in your Vercel Project Settings:
               </p>
               <ul className="text-xs font-mono text-on-surface-variant/80 bg-surface-container p-3 rounded space-y-1.5 border border-on-surface/5">
-                <li>TURSO_DATABASE_URL</li>
-                <li>TURSO_AUTH_TOKEN</li>
+                <li>NEXT_PUBLIC_SUPABASE_URL</li>
+                <li>NEXT_PUBLIC_SUPABASE_ANON_KEY</li>
+                <li>SUPABASE_SERVICE_ROLE_KEY</li>
               </ul>
             </div>
 
@@ -100,7 +101,7 @@ export default async function AdminDashboardPage() {
               <span>3. Initialize & Seeding</span>
             </div>
             <p className="text-xs text-on-surface-variant leading-relaxed">
-              If this is the first time deploying, ensure that your Turso database instance is online and reachable. Next-Auth and DB client will automatically try to create and seed the database tables upon connection.
+              If this is the first time deploying, run `npm run db:setup` to automatically verify and seed your Supabase database instance.
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
               <a 

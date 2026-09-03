@@ -24,7 +24,11 @@ export default function MobileCardCarousel({ children, count, className = "" }) 
 
   return (
     <>
-      <div ref={ref} onScroll={onScroll} className={`flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 md:grid md:grid-cols-3 md:gap-gutter ${className}`}>
+      <div 
+        ref={ref} 
+        onScroll={onScroll} 
+        className={`flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-5 pb-6 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 ${className}`}
+      >
         {cards}
       </div>
       {count > 1 && (

@@ -206,16 +206,12 @@ export default function ProductApplicationsCollage({ locale = "en", translations
                 {/* Top Glowing Hairline Gloss Sheen */}
                 <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary via-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20" />
 
-                {/* Card Top: Tag & Action Icon */}
+                {/* Card Top: Category Tag */}
                 <div className="relative z-20 flex items-center justify-between gap-2">
                   <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-secondary-fixed bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-secondary-fixed/30 shadow-md">
                     <IconComp size={13} className="text-secondary-fixed shrink-0" />
                     <span>{app.pill}</span>
                   </span>
-
-                  <div className="w-8 h-8 rounded-full bg-white/15 backdrop-blur-md text-white border border-white/20 flex items-center justify-center group-hover:bg-secondary-container group-hover:text-on-secondary-container transition-all duration-300 shadow-sm shrink-0">
-                    <ArrowUpRight size={15} />
-                  </div>
                 </div>
 
                 {/* Card Bottom: Title & Clear Description */}

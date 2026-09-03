@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function TopProgressBar() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -19,7 +18,7 @@ export default function TopProgressBar() {
       }, 350);
       return () => clearTimeout(timer);
     }
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   useEffect(() => {
     // Intercept clicks on internal links to trigger the loading bar instantly

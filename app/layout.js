@@ -4,11 +4,11 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import TopProgressBar from "@/components/TopProgressBar";
-import BrandPageLoader from "@/components/BrandPageLoader";
 import DealHeadlineBanner from "@/components/DealHeadlineBanner";
 import MarqueeTicker from "@/components/MarqueeTicker";
-import { getSiteSettings } from "@/lib/db";
+import { getSiteSettings, getProducts } from "@/lib/db";
+import { translateProducts } from "@/lib/translations";
+import { getProductSlug } from "@/lib/productPaths";
 
 export const metadata = {
   title: {
@@ -47,25 +47,39 @@ export default async function RootLayout({ children }) {
   const cookieStore = cookies();
   const locale = cookieStore.get("locale")?.value || "en";
   const direction = locale === "ur" ? "rtl" : "ltr";
-  const settings = await getSiteSettings();
+
+  const [settings, rawProducts] = await Promise.all([
+    getSiteSettings(),
+    getProducts(false)
+  ]);
+
+  const translatedProducts = translateProducts(rawProducts, locale);
+  const searchProducts = translatedProducts
+    .filter((p) => p.is_visible !== false)
+    .map((p) => ({
+      id: p.id,
+      name: p.name,
+      category: p.category || "Spices",
+      description: p.description || "",
+      price_moq: p.price_moq || "",
+      image_url: p.image_url || "/images/turmeric_mortar.png",
+      slug: getProductSlug(p)
+    }));
 
   return (
     <html lang={locale} dir={direction} className="light scroll-smooth">
       <body className="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col selection:bg-primary/10 selection:text-primary">
-        <Suspense fallback={null}>
-          <BrandPageLoader />
-        </Suspense>
         <DealHeadlineBanner settings={settings} />
-        <Navbar locale={locale} />
+        <Navbar locale={locale} initialProducts={searchProducts} />
         <MarqueeTicker settings={settings} />
         <main className="flex-grow flex flex-col">
           {children}
         </main>
         <Footer locale={locale} settings={settings} />
-        <WhatsAppButton 
-          whatsappNumber={settings?.whatsapp_number} 
-          whatsappMessage={settings?.whatsapp_message} 
-          locale={locale} 
+        <WhatsAppButton
+          whatsappNumber={settings?.whatsapp_number}
+          whatsappMessage={settings?.whatsapp_message}
+          locale={locale}
         />
       </body>
     </html>

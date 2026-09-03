@@ -40,43 +40,43 @@ export default async function BlogPage() {
               .trim();
             const excerpt = plainText.length > 150 ? plainText.substring(0, 150) + "..." : plainText;
 
-            const dateStr = post.published_at 
+            const dateStr = post.published_at
               ? new Date(post.published_at).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric"
-                }) 
+                year: "numeric",
+                month: "short",
+                day: "numeric"
+              })
               : "Draft";
 
             return (
-              <Link 
+              <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="w-[85vw] max-w-[85vw] min-w-[85vw] sm:w-[320px] sm:max-w-[320px] sm:min-w-[320px] snap-start shrink-0 md:w-auto md:max-w-none md:min-w-0 bg-surface-container-lowest rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-between hover:shadow-[0_20px_45px_rgba(87,0,19,0.08)] hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer text-left outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 select-none min-h-[460px] shadow-sm"
+                className="w-[85vw] max-w-[85vw] min-w-[85vw] xs:w-[280px] xs:max-w-[280px] xs:min-w-[280px] sm:w-[320px] sm:max-w-[320px] sm:min-w-[320px] snap-start shrink-0 md:w-full md:max-w-none md:min-w-0 bg-surface-container-lowest rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-between hover:shadow-[0_20px_45px_rgba(87,0,19,0.08)] hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer text-left outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 select-none shadow-sm border border-on-surface/5 h-full"
               >
                 <article className="flex flex-col justify-between h-full">
                   <div className="min-w-0 flex flex-col flex-grow">
-                    {/* 1. SEAMLESS THUMBNAIL CANVAS (Zero image border) */}
-                    <div className="relative p-4 sm:p-5 pb-2">
-                      <div className="relative w-full h-44 sm:h-50 rounded-xl sm:rounded-2xl overflow-hidden bg-surface-container-high/40 flex items-center justify-center">
-                        <img 
-                          src={post.featured_image || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"} 
-                          alt={post.title} 
+                    {/* 1. SEAMLESS THUMBNAIL CANVAS (Proportional aspect ratio) */}
+                    <div className="relative p-3.5 sm:p-4 pb-2">
+                      <div className="relative w-full aspect-[16/10] rounded-xl sm:rounded-2xl overflow-hidden bg-surface-container-high/40 flex items-center justify-center">
+                        <img
+                          src={post.featured_image || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"}
+                          alt={post.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                         />
                         {post.category && (
-                          <span className="absolute top-3.5 left-3.5 z-10 inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md text-secondary-fixed text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
-                            <Tag size={10} className="text-secondary-fixed" />
-                            <span>{post.category}</span>
+                          <span className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-10 inline-flex items-center gap-1 bg-black/65 backdrop-blur-md text-secondary-fixed text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 sm:py-1 rounded-full shadow-xs max-w-[80%] truncate">
+                            <Tag size={10} className="text-secondary-fixed shrink-0" />
+                            <span className="truncate">{post.category}</span>
                           </span>
                         )}
                       </div>
                     </div>
 
                     {/* 2. BLOG CONTENT */}
-                    <div className="p-5 sm:p-6 pt-3 flex-grow flex flex-col justify-between gap-4">
-                      <div className="space-y-3">
-                        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-on-surface-variant/70 font-semibold">
+                    <div className="p-4 sm:p-5 pt-2 flex-grow flex flex-col justify-between gap-3">
+                      <div className="space-y-2">
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-on-surface-variant/70 font-semibold">
                           <span className="flex items-center gap-1">
                             <Calendar size={12} /> {dateStr}
                           </span>
@@ -85,18 +85,18 @@ export default async function BlogPage() {
                           </span>
                         </div>
 
-                        <h3 className="font-title-lg text-lg sm:text-xl font-bold text-primary leading-snug line-clamp-2 group-hover:text-primary transition-colors tracking-tight">
+                        <h3 className="text-slate-900 font-bold text-base sm:text-lg md:text-xl leading-snug line-clamp-2 group-hover:text-primary transition-colors tracking-tight">
                           {post.title}
                         </h3>
 
-                        <p className="font-body-md text-xs sm:text-sm text-on-surface-variant leading-relaxed line-clamp-2">
+                        <p className="text-xs sm:text-[13px] text-slate-500 font-normal leading-relaxed line-clamp-2">
                           {excerpt}
                         </p>
                       </div>
 
-                      {/* 3. POLISHED ACTION BUTTON */}
+                      {/* 3. POLISHED ACTION PILL BUTTON */}
                       <div className="pt-2">
-                        <div className="w-full bg-primary text-on-primary group-hover:bg-primary/90 py-3 px-4 rounded-xl text-center font-label-md text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-xs group-hover:shadow-md transition-all duration-200">
+                        <div className="w-full bg-primary hover:bg-primary/90 text-white py-3 sm:py-3.5 px-4 rounded-full text-center text-sm sm:text-[15px] font-semibold flex items-center justify-center gap-2 shadow-xs hover:shadow-md transition-all duration-200">
                           <span>Read Full Article</span>
                           <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                         </div>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { cookies } from "next/headers";
-import { ArrowLeft, ArrowRight, Package, ShieldCheck, BadgePercent } from "lucide-react";
+import { ArrowLeft, ArrowRight, Package, ShieldCheck, BadgePercent, Layers } from "lucide-react";
 import { getProductById as dbGetProductById, getProducts, getSiteSettings } from "@/lib/db";
 import { t, translateProduct, translateProducts } from "@/lib/translations";
 import { getProductIdFromSlug, getProductSlug } from "@/lib/productPaths";
@@ -57,10 +57,17 @@ export default async function ProductDetailPage({ params }) {
   }
 
   const product = translateProduct(rawProduct, locale);
-  const relatedProducts = translateProducts(
-    rawProducts.filter((item) => item.id !== rawProduct.id && item.category === rawProduct.category),
-    locale
-  ).slice(0, 3);
+
+  // Filter related products: prioritize same collection first, then same category
+  const rawRelated = rawProducts
+    .filter((item) => item.id !== rawProduct.id && item.category === rawProduct.category)
+    .sort((a, b) => {
+      const aSameCol = rawProduct.collection && a.collection === rawProduct.collection ? -1 : 1;
+      const bSameCol = rawProduct.collection && b.collection === rawProduct.collection ? -1 : 1;
+      return aSameCol - bSameCol;
+    });
+
+  const relatedProducts = translateProducts(rawRelated, locale).slice(0, 3);
   const salesEmail = settings?.business_email || "sales@thesevenspice.com";
   const descriptionPreview = (product.description || "").replace(/\s+/g, " ").trim();
   const summaryText = descriptionPreview
@@ -88,9 +95,21 @@ export default async function ProductDetailPage({ params }) {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
             <div className="lg:col-span-7">
-              <span className="inline-flex items-center gap-2 bg-secondary/10 text-primary text-xs uppercase font-bold tracking-[0.2em] px-3 py-1.5 rounded">
-                <BadgePercent size={12} /> {product.category}
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 bg-secondary/10 text-primary text-xs uppercase font-bold tracking-[0.2em] px-3 py-1.5 rounded">
+                  <BadgePercent size={12} /> {product.category}
+                </span>
+                {product.collection && (
+                  <Link 
+                    href={`/products?category=${encodeURIComponent(product.category)}&collection=${encodeURIComponent(product.collection)}`}
+                    className="inline-flex items-center gap-1.5 bg-secondary-container text-on-secondary-container text-xs font-semibold px-3 py-1.5 rounded hover:opacity-90 transition-opacity border border-secondary/20"
+                  >
+                    <Layers size={12} className="text-secondary" />
+                    <span>{product.collection}</span>
+                  </Link>
+                )}
+              </div>
+
               <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mt-4 leading-tight max-w-3xl break-words">
                 {product.name}
               </h1>
@@ -124,14 +143,20 @@ export default async function ProductDetailPage({ params }) {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="p-5 border-t border-on-surface/10 grid grid-cols-2 gap-3 text-sm">
+                <div className={`p-5 border-t border-on-surface/10 grid ${product.collection ? "grid-cols-3" : "grid-cols-2"} gap-3 text-sm`}>
                   <div className="bg-surface-container-low rounded-lg p-3">
                     <div className="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-bold">Category</div>
-                    <div className="mt-1 text-on-surface font-semibold">{product.category}</div>
+                    <div className="mt-1 text-on-surface font-semibold text-xs sm:text-sm">{product.category}</div>
                   </div>
+                  {product.collection && (
+                    <div className="bg-surface-container-low rounded-lg p-3">
+                      <div className="text-[10px] uppercase tracking-[0.2em] text-secondary font-bold">Collection</div>
+                      <div className="mt-1 text-primary font-semibold text-xs sm:text-sm truncate" title={product.collection}>{product.collection}</div>
+                    </div>
+                  )}
                   <div className="bg-surface-container-low rounded-lg p-3">
                     <div className="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-bold">Sales Email</div>
-                    <div className="mt-1 text-on-surface font-semibold break-all">{salesEmail}</div>
+                    <div className="mt-1 text-on-surface font-semibold text-xs sm:text-sm break-all">{salesEmail}</div>
                   </div>
                 </div>
               </div>

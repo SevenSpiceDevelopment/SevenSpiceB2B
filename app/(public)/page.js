@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getSiteSettings, getProducts, getBlogPosts } from "@/lib/db";
 import { ArrowRight, Tag } from "lucide-react";
 import AnimatedStat from "@/components/AnimatedStat";
@@ -8,6 +9,7 @@ import { t, translateProducts, translateBlogPosts } from "@/lib/translations";
 import FeaturedProductCarousel from "@/components/FeaturedProductCarousel";
 import MobileCardCarousel from "@/components/MobileCardCarousel";
 import ProductApplicationsCollage from "@/components/ProductApplicationsCollage";
+import StatsBanner from "@/components/StatsBanner";
 
 export default async function HomePage() {
   const cookieStore = cookies();
@@ -73,35 +75,61 @@ export default async function HomePage() {
   return (
     <div className="flex flex-col w-full">
       {/* 1. HERO SECTION */}
-      <section
-        className="relative overflow-hidden py-20 md:py-32 bg-cover bg-center border-b border-on-surface/10"
-        style={{ backgroundImage: `url('/images/remove_the_smoke_202604271432.jpeg')` }}
-      >
-        {/* Dark overlay for text legibility */}
-        <div className="absolute inset-0 bg-black/60 z-0"></div>
+      <section className="relative overflow-hidden py-20 sm:py-24 md:py-32 border-b border-on-surface/10 min-h-[520px] md:min-h-[580px] flex items-center">
+        {/* Responsive Background Images */}
+        <div className="absolute inset-0 z-0">
+          {/* Mobile Mode Hero Image (Portrait) */}
+          <div className="block md:hidden absolute inset-0">
+            <Image
+              src="/images/hero-mobile.jpg"
+              alt="Seven Spice Fenugreek and Spices"
+              fill
+              priority
+              quality={90}
+              className="object-cover object-center"
+              sizes="100vw"
+            />
+          </div>
+          {/* Desktop Mode Hero Image (Landscape) */}
+          <div className="hidden md:block absolute inset-0">
+            <Image
+              src="/images/remove_the_smoke_202604271432.jpeg"
+              alt="Seven Spice Wholesale Sourcing"
+              fill
+              priority
+              quality={90}
+              className="object-cover object-center"
+              sizes="100vw"
+            />
+          </div>
 
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+          {/* Subtle directional overlay for text legibility while keeping the spice image bright & vibrant */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent md:from-black/50 md:via-black/20 md:to-transparent z-10" />
+        </div>
+
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10 w-full">
           <div className="max-w-3xl flex flex-col items-start gap-4 sm:gap-stack-md text-left">
-            <span className="font-label-md text-[10px] xs:text-xs md:text-label-md text-secondary-fixed uppercase tracking-widest bg-black/40 px-2.5 py-1 rounded border border-secondary-fixed/20">
+            <span className="font-label-md text-[10px] xs:text-xs md:text-label-md text-secondary-fixed uppercase tracking-widest bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full border border-secondary-fixed/30 shadow-sm inline-flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-secondary-fixed animate-pulse"></span>
               {t("home_hero_span", locale)}
             </span>
-            <h1 className="text-xl xs:text-2xl sm:text-4xl md:text-display-lg font-bold text-white tracking-tight leading-tight [overflow-wrap:anywhere] break-words">
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-display-lg font-bold text-white tracking-tight leading-tight [overflow-wrap:anywhere] break-words drop-shadow-md">
               {heroTitle}
             </h1>
-            <p className="text-xs sm:text-base md:text-body-lg text-white/85 max-w-2xl leading-relaxed">
+            <p className="text-xs xs:text-sm sm:text-base md:text-body-lg text-white/90 max-w-2xl leading-relaxed drop-shadow-sm font-normal">
               {heroSubtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto pt-2">
               <Link
                 href={settings.hero_cta_link || "/contact"}
-                className="bg-secondary-container text-on-secondary-container font-label-md text-xs sm:text-label-md px-6 py-3.5 sm:px-8 sm:py-4 rounded hover:opacity-90 transition-all text-center flex items-center justify-center gap-2 shadow-sm"
+                className="bg-secondary-container text-on-secondary-container font-label-md text-xs sm:text-label-md px-6 py-3.5 sm:px-8 sm:py-4 rounded hover:opacity-90 active:scale-[0.98] transition-all text-center flex items-center justify-center gap-2 shadow-lg"
               >
                 {heroCtaText}
                 <ArrowRight size={16} className={locale === "ur" ? "rotate-180" : ""} />
               </Link>
               <Link
                 href="/products"
-                className="border border-white/40 text-white font-label-md text-xs sm:text-label-md px-6 py-3.5 sm:px-8 sm:py-4 rounded hover:bg-white/10 transition-all text-center flex items-center justify-center"
+                className="border border-white/40 bg-black/20 backdrop-blur-sm text-white font-label-md text-xs sm:text-label-md px-6 py-3.5 sm:px-8 sm:py-4 rounded hover:bg-white/15 active:scale-[0.98] transition-all text-center flex items-center justify-center"
               >
                 {t("home_hero_browse", locale)}
               </Link>
@@ -124,6 +152,9 @@ export default async function HomePage() {
           </div>
 
           <TrustSignals cards={trustCards} />
+
+          {/* Stats Bar (50+ Countries, 100+ Partners, 30+ Checkpoints, 99.5% Delivery) */}
+          <StatsBanner locale={locale} />
         </div>
       </section>
 
@@ -213,19 +244,19 @@ export default async function HomePage() {
                         {/* 2. BLOG CONTENT */}
                         <div className="p-5 sm:p-6 pt-3 flex-grow flex flex-col justify-between gap-4">
                           <div className="space-y-2">
-                            <h3 className="font-title-lg text-lg sm:text-xl font-bold text-primary leading-snug line-clamp-2 group-hover:text-primary transition-colors tracking-tight">
+                            <h3 className="text-slate-900 font-bold text-lg sm:text-xl leading-snug line-clamp-2 group-hover:text-primary transition-colors tracking-tight">
                               {post.title}
                             </h3>
                             {excerpt && (
-                              <p className="font-body-md text-xs sm:text-sm text-on-surface-variant leading-relaxed line-clamp-2">
+                              <p className="text-xs sm:text-[13px] text-slate-500 font-normal leading-relaxed line-clamp-2">
                                 {excerpt}
                               </p>
                             )}
                           </div>
 
-                          {/* 3. POLISHED READ ARTICLE BUTTON */}
+                          {/* 3. POLISHED READ ARTICLE PILL BUTTON */}
                           <div className="pt-2">
-                            <div className="w-full bg-primary text-on-primary group-hover:bg-primary/90 py-3 px-4 rounded-xl text-center font-label-md text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-xs group-hover:shadow-md transition-all duration-200">
+                            <div className="w-full bg-primary hover:bg-primary/90 text-white py-3 sm:py-3.5 px-4 rounded-full text-center text-sm sm:text-[15px] font-semibold flex items-center justify-center gap-2 shadow-xs hover:shadow-md transition-all duration-200">
                               <span>{t("home_blog_read_post", locale)}</span>
                               <ArrowRight size={14} className={locale === "ur" ? "rotate-180" : "group-hover:translate-x-1 transition-transform"} />
                             </div>

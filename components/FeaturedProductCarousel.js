@@ -32,7 +32,7 @@ export default function FeaturedProductCarousel({ products, locale, businessPhon
       <div
         ref={scrollerRef}
         onScroll={handleScroll}
-        className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 md:grid md:grid-cols-3 md:gap-gutter"
+        className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-5 pb-6 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6"
       >
         {products.map((product) => (
           <FeaturedProductCard

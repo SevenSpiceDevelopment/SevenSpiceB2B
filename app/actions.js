@@ -4,7 +4,8 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import bcrypt from "bcryptjs";
 import { 
-  saveProduct, deleteProduct, 
+  saveProduct, deleteProduct, batchSaveProducts,
+  saveCollection, deleteCollection,
   saveBlogPost, deleteBlogPost, 
   saveInquiry, updateInquiryStatus, 
   saveQuoteRequest, updateQuoteRequestStatus, 
@@ -166,6 +167,7 @@ export async function saveProductAction(formData) {
     const id = formData.get("id") || null;
     const name = normalizeText(formData.get("name"));
     const category = normalizeText(formData.get("category"));
+    const collection = normalizeText(formData.get("collection"));
     const description = normalizeText(formData.get("description"));
     const price_moq = "Available on inquiry";
     const packaging_info = "Bulk export packaging available on request";
@@ -186,6 +188,7 @@ export async function saveProductAction(formData) {
     const product = {
       name,
       category,
+      collection: collection || "",
       description,
       price_moq,
       packaging_info,
@@ -199,6 +202,7 @@ export async function saveProductAction(formData) {
     await saveProduct(product);
 
     revalidateTag("products");
+    revalidateTag("collections");
     
     revalidatePath("/products");
     revalidatePath("/admin/products");
@@ -211,6 +215,52 @@ export async function saveProductAction(formData) {
   }
 }
 
+// Batch Add Multiple Products under a Category & Collection
+export async function batchSaveProductsAction(formData) {
+  await assertAdmin();
+
+  try {
+    const category = formData.get("category");
+    const collection = formData.get("collection") || "";
+    const rawProductsJson = formData.get("products_json");
+
+    if (!category) {
+      return { success: false, error: "Category is required for batch product addition." };
+    }
+
+    let products = [];
+    try {
+      products = JSON.parse(rawProductsJson || "[]");
+    } catch (e) {
+      return { success: false, error: "Invalid product entries data." };
+    }
+
+    if (!Array.isArray(products) || products.length === 0) {
+      return { success: false, error: "Please enter at least one product." };
+    }
+
+    const res = await batchSaveProducts({ category, collection, products });
+    if (!res.success) {
+      return { success: false, error: res.error || "Failed to batch save products." };
+    }
+
+    revalidateTag("products");
+    revalidateTag("collections");
+
+    revalidatePath("/products");
+    revalidatePath("/admin/products");
+    revalidatePath("/");
+
+    return { 
+      success: true, 
+      message: `Successfully added ${res.count} products to ${collection ? `"${collection}"` : category}!` 
+    };
+  } catch (err) {
+    console.error("Error batch saving products:", err);
+    return { success: false, error: err.message || "Failed to batch save products." };
+  }
+}
+
 // Delete Product
 export async function deleteProductAction(id) {
   await assertAdmin();
@@ -218,6 +268,7 @@ export async function deleteProductAction(id) {
     await deleteProduct(id);
 
     revalidateTag("products");
+    revalidateTag("collections");
 
     revalidatePath("/products");
     revalidatePath("/admin/products");
@@ -226,6 +277,78 @@ export async function deleteProductAction(id) {
   } catch (err) {
     console.error("Error deleting product:", err);
     return { success: false, error: "Failed to delete product." };
+  }
+}
+
+// Create or Update Collection
+export async function saveCollectionAction(formData) {
+  await assertAdmin();
+
+  try {
+    const normalizeText = (value) => {
+      if (typeof value !== "string") return "";
+      return value.replace(/\s+/g, " ").trim();
+    };
+
+    const id = formData.get("id") || null;
+    const name = normalizeText(formData.get("name"));
+    const category = normalizeText(formData.get("category"));
+    const description = normalizeText(formData.get("description"));
+    const is_featured = formData.get("is_featured") === "true";
+
+    const imageFile = formData.get("image");
+    let image_url = formData.get("existing_image_url") || null;
+
+    if (imageFile && imageFile instanceof File && imageFile.size > 0) {
+      image_url = await fileToBase64(imageFile);
+    }
+
+    if (!name || !category) {
+      return { success: false, error: "Collection name and category are required." };
+    }
+
+    const collectionData = {
+      name,
+      category,
+      description: description || "",
+      image_url,
+      is_featured
+    };
+
+    if (id) collectionData.id = id;
+
+    await saveCollection(collectionData);
+
+    revalidateTag("collections");
+    revalidateTag("products");
+
+    revalidatePath("/products");
+    revalidatePath("/admin/products");
+    revalidatePath("/");
+
+    return { success: true, message: id ? "Collection updated successfully." : "Collection created successfully." };
+  } catch (err) {
+    console.error("Error saving collection:", err);
+    return { success: false, error: err.message || "Failed to save collection." };
+  }
+}
+
+// Delete Collection
+export async function deleteCollectionAction(id) {
+  await assertAdmin();
+  try {
+    await deleteCollection(id);
+
+    revalidateTag("collections");
+    revalidateTag("products");
+
+    revalidatePath("/products");
+    revalidatePath("/admin/products");
+    revalidatePath("/");
+    return { success: true, message: "Collection deleted successfully." };
+  } catch (err) {
+    console.error("Error deleting collection:", err);
+    return { success: false, error: "Failed to delete collection." };
   }
 }
 

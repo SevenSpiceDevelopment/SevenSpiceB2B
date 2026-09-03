@@ -1,4 +1,4 @@
-import { getProducts, getSiteSettings } from "@/lib/db";
+import { getProducts, getCollections, getSiteSettings } from "@/lib/db";
 import ProductCatalog from "@/components/ProductCatalog";
 import { Suspense } from "react";
 import { cookies } from "next/headers";
@@ -16,8 +16,9 @@ export default async function ProductsPage() {
   const cookieStore = cookies();
   const locale = cookieStore.get("locale")?.value || "en";
 
-  const [rawProducts, settings] = await Promise.all([
+  const [rawProducts, rawCollections, settings] = await Promise.all([
     getProducts(),
+    getCollections(),
     getSiteSettings()
   ]);
   const businessPhone = settings?.business_phone || "+1 (800) 555-SPICE";
@@ -25,6 +26,7 @@ export default async function ProductsPage() {
 
   // Translate database products if Urdu is active
   const products = translateProducts(rawProducts, locale);
+  const collections = rawCollections || [];
 
   return (
     <div className="flex-grow flex flex-col pt-stack-lg pb-stack-lg w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop gap-stack-lg animate-fadeIn">
@@ -49,6 +51,7 @@ export default async function ProductsPage() {
       }>
         <ProductCatalog 
           initialProducts={products} 
+          initialCollections={collections}
           businessPhone={businessPhone}
           businessEmail={businessEmail}
           locale={locale}
