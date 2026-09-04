@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getBlogPostBySlug as dbGetBlogPostBySlug, getBlogPosts } from "@/lib/db";
 import { Calendar, User, ArrowLeft, ArrowRight, Tag } from "lucide-react";
@@ -87,11 +88,15 @@ export default async function BlogPostPage({ params }) {
       {/* Featured Image Frame */}
       {post.featured_image && (
         <div className="max-w-4xl mx-auto px-margin-mobile -mt-8 relative z-10">
-          <div className="h-[300px] md:h-[450px] rounded-lg border border-on-surface/10 overflow-hidden shadow-md">
-            <img 
+          <div className="relative h-[300px] md:h-[450px] rounded-lg border border-on-surface/10 overflow-hidden shadow-md">
+            <Image 
               src={post.featured_image} 
-              alt={post.title} 
-              className="w-full h-full object-cover"
+              alt={post.title || "Featured image"} 
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 896px"
+              quality={95}
+              className="object-cover"
             />
           </div>
         </div>

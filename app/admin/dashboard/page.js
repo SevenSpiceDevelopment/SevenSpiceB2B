@@ -49,7 +49,7 @@ export default async function AdminDashboardPage() {
             <AlertTriangle className="w-8 h-8" />
           </div>
           <div>
-            <h2 className="font-headline-md text-error font-bold font-serif text-2xl">Database Connection Error</h2>
+            <h2 className="font-headline-md text-error font-bold text-2xl">Database Connection Error</h2>
             <p className="text-sm text-on-surface-variant mt-1 font-mono">
               The Seven Spice logistics dashboard could not connect to the database.
             </p>
@@ -189,7 +189,7 @@ export default async function AdminDashboardPage() {
               <span className="text-xs font-mono text-on-surface-variant/70 uppercase tracking-wider block">
                 {stat.name}
               </span>
-              <p className="text-3xl font-bold font-serif text-primary">
+              <p className="text-3xl font-extrabold font-sans text-primary tracking-tight">
                 {stat.value}
               </p>
               <Link 

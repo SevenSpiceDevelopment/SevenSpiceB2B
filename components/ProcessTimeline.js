@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { Sprout, FlaskConical, PackageCheck, Ship } from "lucide-react";
 
 export default function ProcessTimeline({ locale = "en", steps }) {
@@ -116,7 +117,7 @@ export default function ProcessTimeline({ locale = "en", steps }) {
                 style={{ top: "50%", transform: "translate(-50%, -50%)" }}
               >
                 <div 
-                  className={`w-14 h-14 rounded-full flex items-center justify-center font-serif font-bold text-base border-2 transition-all duration-500 shadow-xl select-none ${
+                  className={`w-14 h-14 rounded-full flex items-center justify-center font-sans font-extrabold text-base border-2 transition-all duration-500 shadow-xl select-none ${
                     isPassedOrActive
                       ? "bg-secondary-container text-on-secondary-container border-secondary-fixed shadow-[0_0_35px_rgba(252,204,56,0.7)] scale-110 ring-4 ring-secondary/35"
                       : "bg-surface-container-high text-on-surface-variant/60 border-on-surface/20 scale-95"
@@ -140,10 +141,13 @@ export default function ProcessTimeline({ locale = "en", steps }) {
                   }`}
                 >
                   {/* Background High-Resolution Picture */}
-                  <img
+                  <Image
                     src={item.image}
                     alt={item.imageAlt}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    quality={90}
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                   
                   {/* Subtle top accent gradient */}

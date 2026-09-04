@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { Factory, UtensilsCrossed, Pill, Croissant, ShoppingBag, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function ProductApplicationsCollage({ locale = "en", translations = {} }) {
   const t = (key, fallback) => translations[key] || fallback;
@@ -94,14 +95,18 @@ export default function ProductApplicationsCollage({ locale = "en", translations
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 lg:mb-16">
-          <span className="font-label-md text-[11px] sm:text-xs text-secondary uppercase tracking-widest bg-secondary/10 px-3 py-1 rounded-full inline-block border border-secondary/20 mb-2.5 shadow-xs">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 lg:mb-16 reveal-on-scroll">
+          <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#a67c2e]">
             {t("home_applications_span", "Industries & Commercial Applications")}
           </span>
-          <h2 className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-primary mb-2.5">
+          {/* Minimalist Divider */}
+          <div className="flex items-center justify-center my-3 sm:my-3.5">
+            <span className="h-[1.5px] w-12 bg-[#d8c5a4]/80 rounded-full" />
+          </div>
+          <h2 className="font-sans text-2xl sm:text-3xl md:text-[34px] font-extrabold text-primary tracking-tight leading-snug mb-2">
             {t("home_applications_title", "Where Our Ingredients Power Global Brands")}
           </h2>
-          <p className="font-body-md text-xs sm:text-sm text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+          <p className="font-sans text-xs sm:text-sm text-on-surface-variant font-normal leading-relaxed max-w-xl mx-auto mt-2.5">
             {t("home_applications_subtitle", "From high-volume industrial food manufacturing to Michelin-starred dining, nutraceutical extracts, and private label packaging.")}
           </p>
         </div>
@@ -125,10 +130,13 @@ export default function ProductApplicationsCollage({ locale = "en", translations
                   className="group relative shrink-0 snap-center w-[86vw] max-w-[310px] sm:max-w-[350px] h-[340px] sm:h-[370px] rounded-2xl sm:rounded-3xl overflow-hidden border border-on-surface/10 shadow-md flex flex-col justify-between p-5 select-none"
                 >
                   {/* Background Image */}
-                  <img
+                  <Image
                     src={app.image}
                     alt={app.imageAlt}
-                    className="absolute inset-0 w-full h-full object-cover filter brightness-[0.90]"
+                    fill
+                    sizes="(max-width: 640px) 90vw, 350px"
+                    quality={90}
+                    className="object-cover filter brightness-[0.90]"
                   />
 
                   {/* Gradient Scrim */}
@@ -194,10 +202,13 @@ export default function ProductApplicationsCollage({ locale = "en", translations
                 className={`group relative rounded-3xl overflow-hidden border border-on-surface/10 shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-500 flex flex-col justify-between p-7 ${app.gridSpan}`}
               >
                 {/* Background Relevant Photograph */}
-                <img
+                <Image
                   src={app.image}
                   alt={app.imageAlt}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 filter brightness-[0.95]"
+                  fill
+                  sizes="(max-width: 1024px) 50vw, (max-width: 1280px) 58vw, 700px"
+                  quality={90}
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 filter brightness-[0.95]"
                 />
 
                 {/* Dark Vignette / Legibility Scrim */}

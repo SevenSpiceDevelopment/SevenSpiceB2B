@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { getProductSlug } from "@/lib/productPaths";
 import QuoteModal from "./QuoteModal";
 
@@ -32,13 +33,16 @@ export default function FeaturedProductCard({
           aria-label={`View ${product.name}`}
           className="relative w-full aspect-square bg-[#f5f5f7] rounded-2xl overflow-hidden flex items-center justify-center cursor-pointer p-4 sm:p-6"
         >
-          <img
+          <Image
             src={
               product.image_url ||
               "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"
             }
-            alt={product.name}
-            className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300 ease-out"
+            alt={product.name || "Spices"}
+            fill
+            sizes="(max-width: 640px) 85vw, (max-width: 1024px) 320px, 380px"
+            quality={95}
+            className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300 ease-out p-4 sm:p-6"
           />
         </Link>
 

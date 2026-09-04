@@ -73,15 +73,17 @@ module.exports = {
         "container-max": "1280px"
       },
       fontFamily: {
-        serif: ["Playfair Display", "Georgia", "serif"],
-        "headline-md": ["Google Sans", "sans-serif"],
-        "display-lg-mobile": ["Google Sans", "sans-serif"],
-        "body-lg": ["Google Sans", "sans-serif"],
-        "headline-md-mobile": ["Google Sans", "sans-serif"],
-        "body-md": ["Google Sans", "sans-serif"],
-        "display-lg": ["Google Sans", "sans-serif"],
-        "title-lg": ["Google Sans", "sans-serif"],
-        "label-md": ["Google Sans", "sans-serif"]
+        sans: ["'Plus Jakarta Sans'", "'Inter'", "system-ui", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "Roboto", "sans-serif"],
+        display: ["'Plus Jakarta Sans'", "'Inter'", "sans-serif"],
+        serif: ["'Plus Jakarta Sans'", "'Inter'", "sans-serif"],
+        "headline-md": ["'Plus Jakarta Sans'", "'Inter'", "sans-serif"],
+        "display-lg-mobile": ["'Plus Jakarta Sans'", "'Inter'", "sans-serif"],
+        "body-lg": ["'Plus Jakarta Sans'", "'Inter'", "sans-serif"],
+        "headline-md-mobile": ["'Plus Jakarta Sans'", "'Inter'", "sans-serif"],
+        "body-md": ["'Plus Jakarta Sans'", "'Inter'", "sans-serif"],
+        "display-lg": ["'Plus Jakarta Sans'", "'Inter'", "sans-serif"],
+        "title-lg": ["'Plus Jakarta Sans'", "'Inter'", "sans-serif"],
+        "label-md": ["'Plus Jakarta Sans'", "'Inter'", "sans-serif"]
       },
       fontSize: {
         "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "600" }],

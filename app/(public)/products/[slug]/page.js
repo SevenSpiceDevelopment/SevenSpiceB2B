@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { cookies } from "next/headers";
@@ -136,11 +137,15 @@ export default async function ProductDetailPage({ params }) {
 
             <div className="lg:col-span-5">
               <div className="bg-surface-container-lowest border border-on-surface/10 rounded-xl overflow-hidden shadow-[0_12px_40px_rgba(26,26,26,0.06)]">
-                <div className="h-[320px] md:h-[420px] bg-surface-container-high overflow-hidden">
-                  <img
+                <div className="relative h-[320px] md:h-[420px] bg-surface-container-high overflow-hidden">
+                  <Image
                     src={product.image_url || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=1200"}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
+                    alt={product.name || "Product"}
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    quality={95}
+                    className="object-cover"
                   />
                 </div>
                 <div className={`p-5 border-t border-on-surface/10 grid ${product.collection ? "grid-cols-3" : "grid-cols-2"} gap-3 text-sm`}>
@@ -198,11 +203,14 @@ export default async function ProductDetailPage({ params }) {
                     href={`/products/${getProductSlug(relatedProduct)}`}
                     className="group flex gap-3 border-b border-on-surface/5 pb-4 last:pb-0 last:border-b-0"
                   >
-                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-surface-container-high shrink-0 border border-on-surface/10">
-                      <img
+                    <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-surface-container-high shrink-0 border border-on-surface/10">
+                      <Image
                         src={relatedProduct.image_url || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=240"}
-                        alt={relatedProduct.name}
-                        className="w-full h-full object-cover"
+                        alt={relatedProduct.name || "Related product"}
+                        fill
+                        sizes="64px"
+                        quality={90}
+                        className="object-cover"
                       />
                     </div>
                     <div className="min-w-0 flex-1">

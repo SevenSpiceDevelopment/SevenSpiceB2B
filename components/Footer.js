@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Instagram, Facebook, Linkedin, Youtube } from "lucide-react";
 import { t } from "@/lib/translations";
 
@@ -10,11 +11,13 @@ export default function Footer({ locale = "en", settings = {} }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
           {/* Column 1: Brand / Description */}
           <div className="flex flex-col gap-4 lg:col-span-2">
-            <Link href="/" className="inline-flex h-16 w-[252px] overflow-hidden items-center hover:opacity-80 transition-opacity">
-              <img
+            <Link href="/" className="relative inline-flex h-16 w-[252px] overflow-hidden items-center hover:opacity-80 transition-opacity">
+              <Image
                 src="/images/logo/seven-spices-horizontal-header.png"
                 alt={t("brand", locale)}
-                className="block h-14 w-[240px] scale-[2.35] object-contain brightness-0 invert"
+                fill
+                quality={100}
+                className="scale-[2.35] object-contain brightness-0 invert"
               />
             </Link>
             <p className="text-white/70 text-sm leading-relaxed max-w-xs">

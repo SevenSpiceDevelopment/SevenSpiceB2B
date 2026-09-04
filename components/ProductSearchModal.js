@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Search, X, ArrowRight, Sparkles, Tag } from "lucide-react";
 import { t } from "@/lib/translations";
 
@@ -224,11 +225,13 @@ export default function ProductSearchModal({
                       {/* Product Thumbnail */}
                       <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-lg overflow-hidden shrink-0 bg-gray-100 border border-gray-200">
                         {product.image_url ? (
-                          <img
+                          <Image
                             src={product.image_url}
-                            alt={product.name}
-                            className="w-full h-full object-cover"
-                            loading="lazy"
+                            alt={product.name || "Product"}
+                            fill
+                            sizes="56px"
+                            quality={90}
+                            className="object-cover"
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-gray-400">

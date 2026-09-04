@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 const carouselImages = [
   "/images/images%20cureosel%20About%20us%20Hero/WhatsApp%20Image%202026-06-23%20at%2011.29.14%20PM.jpeg",
@@ -39,12 +40,15 @@ export default function AboutHeroCarousel() {
                   : 'opacity-0 z-0'
             }`}
           >
-            {/* Full-bleed background image with original clarity, no dark filters on top of the image */}
-            <img
+            {/* Full-bleed background image with original clarity, high quality */}
+            <Image
               src={src}
               alt={`About Us Background Slide ${index + 1}`}
-              className="w-full h-full object-cover select-none"
-              loading={index === 0 ? "eager" : "lazy"}
+              fill
+              sizes="100vw"
+              priority={index === 0}
+              quality={95}
+              className="object-cover select-none"
             />
           </div>
         );

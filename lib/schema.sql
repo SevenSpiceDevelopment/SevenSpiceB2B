@@ -102,3 +102,29 @@ VALUES (
   'Direct-from-Origin Premium B2B Wholesale Spices & Logistics',
   'Supplying high-grade wholesale whole seeds, ground spices, and single-origin botanicals directly to commercial food manufacturers.'
 ) ON CONFLICT (id) DO NOTHING;
+
+-- DISABLE RLS OR ALLOW FULL ACCESS FOR SEAMLESS OPERATION
+ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE collections ENABLE ROW LEVEL SECURITY;
+ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE inquiries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE quote_requests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
+
+-- Allow public read access
+CREATE POLICY "Allow public read on products" ON products FOR SELECT USING (true);
+CREATE POLICY "Allow public read on collections" ON collections FOR SELECT USING (true);
+CREATE POLICY "Allow public read on blog_posts" ON blog_posts FOR SELECT USING (true);
+CREATE POLICY "Allow public read on site_settings" ON site_settings FOR SELECT USING (true);
+
+-- Allow public insert on inquiries and quote requests
+CREATE POLICY "Allow public insert on inquiries" ON inquiries FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow public insert on quote_requests" ON quote_requests FOR INSERT WITH CHECK (true);
+
+-- Allow service role / admin full access on all tables
+CREATE POLICY "Allow full access for service role on products" ON products FOR ALL USING (true);
+CREATE POLICY "Allow full access for service role on collections" ON collections FOR ALL USING (true);
+CREATE POLICY "Allow full access for service role on blog_posts" ON blog_posts FOR ALL USING (true);
+CREATE POLICY "Allow full access for service role on inquiries" ON inquiries FOR ALL USING (true);
+CREATE POLICY "Allow full access for service role on quote_requests" ON quote_requests FOR ALL USING (true);
+CREATE POLICY "Allow full access for service role on site_settings" ON site_settings FOR ALL USING (true);

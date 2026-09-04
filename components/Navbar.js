@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, Globe, ChevronDown, Check, Search } from "lucide-react";
 import { t } from "@/lib/translations";
@@ -62,10 +63,13 @@ export default function Navbar({ locale = "en", initialProducts = [] }) {
             className="flex items-center hover:opacity-90 transition-opacity shrink-0"
           >
             <span className="relative block h-10 w-[140px] min-[375px]:w-[158px] sm:h-12 sm:w-[175px] md:h-14 md:w-[230px] overflow-hidden">
-              <img
+              <Image
                 src="/images/logo/seven-spices-horizontal-header.png"
                 alt={t("brand", locale)}
-                className="absolute inset-0 block h-full w-full scale-[2.35] object-contain"
+                fill
+                priority
+                quality={100}
+                className="scale-[2.35] object-contain"
               />
             </span>
           </Link>
@@ -145,7 +149,10 @@ export default function Navbar({ locale = "en", initialProducts = [] }) {
               )}
             </div>
 
-            <Link href="/contact" className="bg-secondary-container text-on-secondary-container font-label-md text-label-md px-6 py-2.5 rounded hover:opacity-90 transition-all shadow-sm">
+            <Link
+              href="/contact"
+              className="bg-[#fccc38] hover:bg-[#eab308] text-[#2d1f00] font-bold text-xs uppercase tracking-widest px-6 py-2.5 rounded-md transition-all duration-200 shadow-[0_4px_18px_rgba(252,204,56,0.35)] hover:shadow-[0_6px_24px_rgba(252,204,56,0.5)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 inline-flex items-center justify-center cursor-pointer"
+            >
               {t("nav_cta", locale)}
             </Link>
           </div>
@@ -155,10 +162,10 @@ export default function Navbar({ locale = "en", initialProducts = [] }) {
             {/* Mobile Search Button */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container-lowest border border-on-surface/10 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all active:scale-95 shadow-sm"
+              className="p-2 text-on-surface hover:text-primary transition-colors focus:outline-none flex items-center justify-center cursor-pointer"
               aria-label={t("search", locale)}
             >
-              <Search size={18} className="text-primary" />
+              <Search size={22} className="text-primary" />
             </button>
 
             {/* Mobile Hamburger Button */}
@@ -175,22 +182,6 @@ export default function Navbar({ locale = "en", initialProducts = [] }) {
         {/* Mobile Drawer */}
         {isOpen && (
           <div className="relative z-50 lg:hidden bg-surface border-b border-on-surface/10 w-full px-margin-mobile py-6 flex flex-col gap-5 animate-fadeIn">
-            {/* Mobile Drawer Quick Search */}
-            <button
-              onClick={() => {
-                setIsOpen(false);
-                setIsSearchOpen(true);
-              }}
-              className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-surface-container-low hover:bg-surface-container border border-on-surface/10 text-on-surface-variant hover:text-primary transition-colors text-sm shadow-sm"
-            >
-              <div className="flex items-center gap-2.5">
-                <Search size={16} className="text-primary" />
-                <span className="font-medium">{t("search_placeholder", locale)}</span>
-              </div>
-              <span className="text-[11px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded uppercase">
-                {t("search", locale)}
-              </span>
-            </button>
 
             <div className="flex flex-col gap-1 pt-1">
               {navLinks.map((link) => {
@@ -225,7 +216,7 @@ export default function Navbar({ locale = "en", initialProducts = [] }) {
               <Link
                 href="/contact"
                 onClick={() => setIsOpen(false)}
-                className="bg-secondary-container text-on-secondary-container text-center font-label-md text-label-md px-6 py-3.5 rounded hover:opacity-90 transition-all w-full shadow-sm"
+                className="bg-[#fccc38] hover:bg-[#eab308] text-[#2d1f00] text-center font-bold text-xs uppercase tracking-widest px-6 py-3.5 rounded-md transition-all duration-200 shadow-[0_4px_18px_rgba(252,204,56,0.35)] hover:shadow-[0_6px_24px_rgba(252,204,56,0.5)] active:scale-95 w-full inline-flex items-center justify-center cursor-pointer"
               >
                 {t("nav_cta", locale)}
               </Link>

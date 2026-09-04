@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import DealHeadlineBanner from "@/components/DealHeadlineBanner";
 import MarqueeTicker from "@/components/MarqueeTicker";
+import ScrollAnimationProvider from "@/components/ScrollAnimationProvider";
 import { getSiteSettings, getProducts } from "@/lib/db";
 import { translateProducts } from "@/lib/translations";
 import { getProductSlug } from "@/lib/productPaths";
@@ -34,9 +35,18 @@ export const metadata = {
     type: "website",
   },
   icons: {
-    icon: [{ url: "/favicon.png?v=2", type: "image/png", sizes: "512x512" }],
-    apple: "/apple-touch-icon.png"
+    icon: [
+      { url: "/favicon.ico?v=5", sizes: "any" },
+      { url: "/favicon.png?v=5", type: "image/png", sizes: "512x512" },
+      { url: "/android-chrome-192x192.png?v=5", type: "image/png", sizes: "192x192" },
+      { url: "/android-chrome-512x512.png?v=5", type: "image/png", sizes: "512x512" }
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png?v=5", sizes: "180x180", type: "image/png" }
+    ],
+    shortcut: ["/favicon.ico?v=5"]
   },
+  manifest: "/site.webmanifest",
   robots: {
     index: true,
     follow: true,
@@ -69,6 +79,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang={locale} dir={direction} className="light scroll-smooth">
       <body className="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col selection:bg-primary/10 selection:text-primary">
+        <ScrollAnimationProvider />
         <DealHeadlineBanner settings={settings} />
         <Navbar locale={locale} initialProducts={searchProducts} />
         <MarqueeTicker settings={settings} />

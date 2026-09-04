@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ShieldCheck, Award, HeartHandshake } from "lucide-react";
 import { cookies } from "next/headers";
 import { t } from "@/lib/translations";
@@ -64,7 +65,7 @@ export default function AboutPage() {
 
 
       {/* Brand Story (2 Columns) */}
-      <section className="py-20 bg-background max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+      <section className="py-20 bg-background max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop reveal-on-scroll">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
           {/* Text Content */}
           <div className="lg:col-span-7 flex flex-col gap-6 text-left">
@@ -84,10 +85,13 @@ export default function AboutPage() {
 
           {/* Visual Area */}
           <div className="lg:col-span-5 relative h-96 rounded-lg border border-on-surface/10 overflow-hidden bg-surface-container shadow-sm">
-            <img 
+            <Image 
               src="https://images.unsplash.com/photo-1602237514002-c2d8ae2da393?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
               alt="Artisanal spice sorting process, showcasing premium dry herbs and spices." 
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              quality={90}
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent"></div>
             <div className="absolute bottom-4 left-4 bg-surface/90 backdrop-blur-sm px-4 py-2 rounded border border-on-surface/10">
@@ -101,7 +105,7 @@ export default function AboutPage() {
       {/* Core Values Section */}
       <section className="py-16 sm:py-20 bg-surface-container-low border-t border-b border-on-surface/10 relative overflow-hidden">
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14 reveal-on-scroll">
             <span className="font-label-md text-label-md text-secondary uppercase tracking-widest bg-secondary/10 px-3.5 py-1.5 rounded-full inline-block border border-secondary/20 mb-3">
               {locale === "ur" ? "ہمارے بنیادی اصول" : "Enterprise Governance"}
             </span>
@@ -117,7 +121,7 @@ export default function AboutPage() {
             {coreValues.map((value, idx) => (
               <div 
                 key={idx} 
-                className="flex flex-col justify-between gap-5 p-6 sm:p-7 rounded-2xl bg-white border border-on-surface/10 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 text-left"
+                className={`reveal-on-scroll ${idx === 0 ? "delay-100" : idx === 1 ? "delay-200" : "delay-300"} flex flex-col justify-between gap-5 p-6 sm:p-7 rounded-2xl bg-white border border-on-surface/10 shadow-sm hover:shadow-lg hover:-translate-y-1.5 transition-all duration-300 text-left`}
               >
                 {/* Header Bar */}
                 <div className="flex items-center justify-between gap-2">
@@ -150,7 +154,7 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-subtle-pattern opacity-10 pointer-events-none" />
         
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+          <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20 reveal-on-scroll">
             <span className="font-label-md text-label-md text-secondary uppercase tracking-widest bg-secondary/10 px-3.5 py-1.5 rounded-full inline-block border border-secondary/20">
               {locale === "ur" ? "سپلائی چین سائیکل" : "Supply Chain Lifecycle"}
             </span>
@@ -169,7 +173,7 @@ export default function AboutPage() {
 
       {/* CTA Section */}
       <section className="pt-20 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop w-full">
-        <div className="bg-primary text-on-primary rounded-lg p-10 md:p-16 relative overflow-hidden flex flex-col items-center text-center gap-6 shadow-md">
+        <div className="bg-primary text-on-primary rounded-2xl p-10 md:p-16 relative overflow-hidden flex flex-col items-center text-center gap-6 shadow-md reveal-on-scroll">
           <div className="absolute inset-0 bg-subtle-pattern opacity-10 pointer-events-none"></div>
           <h2 className="font-headline-md-mobile md:font-headline-md text-headline-md-mobile md:text-headline-md text-on-primary max-w-2xl leading-tight relative z-10">
             {t("about_cta_title", locale)}
