@@ -31,8 +31,9 @@ export async function generateStaticParams() {
   }
 }
 
-// Revalidate this path every 60 seconds
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+export const revalidate = 0;
 
 export default async function BlogPostPage({ params }) {
   // Fetch post and related posts data in parallel to reduce network round-trips

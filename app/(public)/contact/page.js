@@ -9,6 +9,9 @@ export const metadata = {
   description: "Connect with our wholesale accounts team. Inquire about bulk spice supplies, customized formulations, or private label programs."
 };
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function ContactPage() {
   const settings = await getSiteSettings();
   const cookieStore = cookies();

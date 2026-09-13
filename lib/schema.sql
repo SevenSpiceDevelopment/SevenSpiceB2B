@@ -90,6 +90,14 @@ CREATE TABLE IF NOT EXISTS site_settings (
   deal_headline_text TEXT,
   deal_headline_link TEXT,
   deal_headline_link_text TEXT,
+  social_facebook TEXT,
+  social_twitter TEXT,
+  social_instagram TEXT,
+  social_linkedin TEXT,
+  social_youtube TEXT,
+  marquee_ticker_enabled BOOLEAN DEFAULT TRUE,
+  marquee_ticker_items TEXT,
+  admin_password TEXT,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 

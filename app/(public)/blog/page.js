@@ -9,8 +9,8 @@ export const metadata = {
   description: "Read updates on spice trade logistics, crop yields, import standards, safety regulations, and wholesale purchasing playbooks."
 };
 
-// Revalidate this page every 60 seconds
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function BlogPage() {
   const posts = await getBlogPosts();

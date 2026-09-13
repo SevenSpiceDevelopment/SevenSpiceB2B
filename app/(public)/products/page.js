@@ -9,8 +9,8 @@ export const metadata = {
   description: "Browse our dynamic B2B catalog of premium spices, herbs, powders, and customized blends. Secure packaging specs, laboratory audits, and request instant commercial margin quotes."
 };
 
-// Revalidate this page every 60 seconds (Incremental Static Regeneration)
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function ProductsPage() {
   const cookieStore = cookies();

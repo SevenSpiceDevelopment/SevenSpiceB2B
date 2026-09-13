@@ -4,12 +4,13 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import bcrypt from "bcryptjs";
 import { 
-  saveProduct, deleteProduct, batchSaveProducts,
+  saveProduct, deleteProduct, batchSaveProducts, getProductById,
   saveCollection, deleteCollection,
   saveBlogPost, deleteBlogPost, 
   saveInquiry, updateInquiryStatus, 
   saveQuoteRequest, updateQuoteRequestStatus, 
-  getSiteSettingsFresh, saveSiteSettings 
+  getSiteSettingsFresh, saveSiteSettings,
+  uploadMediaFile
 } from "@/lib/db";
 import { revalidatePath, revalidateTag } from "next/cache";
 
@@ -169,32 +170,46 @@ export async function saveProductAction(formData) {
     const category = normalizeText(formData.get("category"));
     const collection = normalizeText(formData.get("collection"));
     const description = normalizeText(formData.get("description"));
-    const price_moq = "Available on inquiry";
-    const packaging_info = "Bulk export packaging available on request";
     const is_visible = formData.get("is_visible") === "true";
     
     const imageFile = formData.get("image");
     let image_url = formData.get("existing_image_url") || null;
 
-    // Convert file to base64 if a new one is uploaded
+    // Upload to Supabase storage if a new file is uploaded, fallback to base64
     if (imageFile && imageFile instanceof File && imageFile.size > 0) {
-      image_url = await fileToBase64(imageFile);
+      const uploadedUrl = await uploadMediaFile(imageFile, "products");
+      image_url = uploadedUrl || (await fileToBase64(imageFile));
     }
 
     if (!name || !category || !description) {
       return { success: false, error: "Please fill in all required product fields." };
     }
 
+    // Preserve existing product details if updating
+    let existingProduct = null;
+    if (id) {
+      try {
+        existingProduct = await getProductById(id);
+      } catch (e) {
+        console.warn("Could not fetch existing product for preservation:", e.message);
+      }
+    }
+
+    const price_moq = formData.get("price_moq") || existingProduct?.price_moq || "Available on inquiry";
+    const packaging_info = formData.get("packaging_info") || existingProduct?.packaging_info || "Bulk export packaging available on request";
+    const specifications = existingProduct?.specifications || {};
+
     const product = {
+      ...(existingProduct || {}),
       name,
       category,
       collection: collection || "",
       description,
       price_moq,
       packaging_info,
-      image_url,
+      image_url: image_url || existingProduct?.image_url || null,
       is_visible,
-      specifications: "{}"
+      specifications
     };
 
     if (id) product.id = id;
@@ -204,8 +219,11 @@ export async function saveProductAction(formData) {
     revalidateTag("products");
     revalidateTag("collections");
     
+    revalidatePath("/", "layout");
     revalidatePath("/products");
+    revalidatePath("/products/[slug]", "page");
     revalidatePath("/admin/products");
+    revalidatePath("/admin/dashboard");
     revalidatePath("/");
     
     return { success: true, message: id ? "Product updated successfully." : "Product created successfully." };
@@ -247,8 +265,10 @@ export async function batchSaveProductsAction(formData) {
     revalidateTag("products");
     revalidateTag("collections");
 
+    revalidatePath("/", "layout");
     revalidatePath("/products");
     revalidatePath("/admin/products");
+    revalidatePath("/admin/dashboard");
     revalidatePath("/");
 
     return { 
@@ -270,13 +290,16 @@ export async function deleteProductAction(id) {
     revalidateTag("products");
     revalidateTag("collections");
 
+    revalidatePath("/", "layout");
     revalidatePath("/products");
+    revalidatePath("/products/[slug]", "page");
     revalidatePath("/admin/products");
+    revalidatePath("/admin/dashboard");
     revalidatePath("/");
     return { success: true, message: "Product deleted successfully." };
   } catch (err) {
     console.error("Error deleting product:", err);
-    return { success: false, error: "Failed to delete product." };
+    return { success: false, error: err.message || "Failed to delete product." };
   }
 }
 
@@ -300,7 +323,8 @@ export async function saveCollectionAction(formData) {
     let image_url = formData.get("existing_image_url") || null;
 
     if (imageFile && imageFile instanceof File && imageFile.size > 0) {
-      image_url = await fileToBase64(imageFile);
+      const uploadedUrl = await uploadMediaFile(imageFile, "collections");
+      image_url = uploadedUrl || (await fileToBase64(imageFile));
     }
 
     if (!name || !category) {
@@ -322,8 +346,10 @@ export async function saveCollectionAction(formData) {
     revalidateTag("collections");
     revalidateTag("products");
 
+    revalidatePath("/", "layout");
     revalidatePath("/products");
     revalidatePath("/admin/products");
+    revalidatePath("/admin/dashboard");
     revalidatePath("/");
 
     return { success: true, message: id ? "Collection updated successfully." : "Collection created successfully." };
@@ -342,13 +368,15 @@ export async function deleteCollectionAction(id) {
     revalidateTag("collections");
     revalidateTag("products");
 
+    revalidatePath("/", "layout");
     revalidatePath("/products");
     revalidatePath("/admin/products");
+    revalidatePath("/admin/dashboard");
     revalidatePath("/");
     return { success: true, message: "Collection deleted successfully." };
   } catch (err) {
     console.error("Error deleting collection:", err);
-    return { success: false, error: "Failed to delete collection." };
+    return { success: false, error: err.message || "Failed to delete collection." };
   }
 }
 
@@ -370,7 +398,8 @@ export async function saveBlogPostAction(formData) {
     let featured_image = formData.get("existing_featured_image") || null;
 
     if (imageFile && imageFile instanceof File && imageFile.size > 0) {
-      featured_image = await fileToBase64(imageFile);
+      const uploadedUrl = await uploadMediaFile(imageFile, "blog");
+      featured_image = uploadedUrl || (await fileToBase64(imageFile));
     }
 
     if (!title || !slug || !category || !content || !author) {
@@ -401,9 +430,12 @@ export async function saveBlogPostAction(formData) {
 
     revalidateTag("blog-posts");
 
+    revalidatePath("/", "layout");
     revalidatePath("/blog");
     revalidatePath(`/blog/${slug}`);
     revalidatePath("/admin/blog");
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/");
     
     return { success: true, message: id ? "Blog post updated successfully." : "Blog post created successfully." };
   } catch (err) {
@@ -420,12 +452,15 @@ export async function deleteBlogPostAction(id) {
 
     revalidateTag("blog-posts");
 
+    revalidatePath("/", "layout");
     revalidatePath("/blog");
     revalidatePath("/admin/blog");
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/");
     return { success: true, message: "Blog post deleted successfully." };
   } catch (err) {
     console.error("Error deleting blog post:", err);
-    return { success: false, error: "Failed to delete blog post." };
+    return { success: false, error: err.message || "Failed to delete blog post." };
   }
 }
 
@@ -520,11 +555,17 @@ export async function saveSiteSettingsAction(formData) {
 
     revalidatePath("/", "layout");
     revalidatePath("/admin/settings");
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/products");
+    revalidatePath("/contact");
+    revalidatePath("/about");
+    revalidatePath("/blog");
+    revalidatePath("/");
 
     return { success: true, message: "Site configurations and continuous moving ticker updated successfully." };
   } catch (err) {
     console.error("Error saving site settings:", err);
-    return { success: false, error: "Failed to save site settings." };
+    return { success: false, error: err.message || "Failed to save site settings." };
   }
 }
 

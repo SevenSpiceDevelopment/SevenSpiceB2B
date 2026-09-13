@@ -10,6 +10,8 @@ import ScrollAnimationProvider from "@/components/ScrollAnimationProvider";
 import { getSiteSettings, getProducts } from "@/lib/db";
 import { translateProducts } from "@/lib/translations";
 import { getProductSlug } from "@/lib/productPaths";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata = {
   title: {

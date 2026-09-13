@@ -12,6 +12,9 @@ import ProductApplicationsCollage from "@/components/ProductApplicationsCollage"
 import StatsBanner from "@/components/StatsBanner";
 import HeroSection from "@/components/HeroSection";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function HomePage() {
   const cookieStore = cookies();
   const locale = cookieStore.get("locale")?.value || "en";
@@ -168,68 +171,68 @@ export default async function HomePage() {
 
             <div className="reveal-on-scroll delay-150">
               <MobileCardCarousel count={featuredBlogPosts.length} className="home-blog-cards">
-              {featuredBlogPosts.map((post) => {
-                const plainText = post.content
-                  .replace(/<[^>]+>/g, " ")
-                  .replace(/\s+/g, " ")
-                  .trim();
-                const excerpt = plainText.length > 150 ? plainText.substring(0, 150) + "..." : plainText;
+                {featuredBlogPosts.map((post) => {
+                  const plainText = post.content
+                    .replace(/<[^>]+>/g, " ")
+                    .replace(/\s+/g, " ")
+                    .trim();
+                  const excerpt = plainText.length > 150 ? plainText.substring(0, 150) + "..." : plainText;
 
-                return (
-                  <Link
-                    key={post.id}
-                    href={`/blog/${post.slug}`}
-                    className="w-[85vw] max-w-[85vw] min-w-[85vw] sm:w-[320px] sm:max-w-[320px] sm:min-w-[320px] snap-start shrink-0 md:w-auto md:max-w-none md:min-w-0 bg-surface-container-lowest rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-between hover:shadow-[0_20px_45px_rgba(87,0,19,0.08)] hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer text-left outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 select-none min-h-[440px] shadow-sm"
-                  >
-                    <article className="flex flex-col justify-between h-full">
-                      <div className="min-w-0 flex flex-col flex-grow">
-                        {/* 1. SEAMLESS IMAGE CANVAS (Zero image border) */}
-                        <div className="relative p-4 sm:p-5 pb-2">
-                          <div className="relative w-full h-44 sm:h-50 rounded-xl sm:rounded-2xl overflow-hidden bg-surface-container-high/40 flex items-center justify-center">
-                            <Image
-                              src={post.featured_image || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"}
-                              alt={post.title || "Blog post"}
-                              fill
-                              sizes="(max-width: 640px) 85vw, (max-width: 1024px) 320px, 380px"
-                              quality={90}
-                              className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                            />
-                            {post.category && (
-                              <span className="absolute top-3.5 left-3.5 z-10 inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md text-secondary-fixed text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
-                                <Tag size={10} className="text-secondary-fixed" />
-                                <span>{post.category}</span>
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* 2. BLOG CONTENT */}
-                        <div className="p-5 sm:p-6 pt-3 flex-grow flex flex-col justify-between gap-4">
-                          <div className="space-y-2">
-                            <h3 className="text-slate-900 font-bold text-lg sm:text-xl leading-snug line-clamp-2 group-hover:text-primary transition-colors tracking-tight">
-                              {post.title}
-                            </h3>
-                            {excerpt && (
-                              <p className="text-xs sm:text-[13px] text-slate-500 font-normal leading-relaxed line-clamp-2">
-                                {excerpt}
-                              </p>
-                            )}
+                  return (
+                    <Link
+                      key={post.id}
+                      href={`/blog/${post.slug}`}
+                      className="w-[85vw] max-w-[85vw] min-w-[85vw] sm:w-[320px] sm:max-w-[320px] sm:min-w-[320px] snap-start shrink-0 md:w-auto md:max-w-none md:min-w-0 bg-surface-container-lowest rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-between hover:shadow-[0_20px_45px_rgba(87,0,19,0.08)] hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer text-left outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 select-none min-h-[440px] shadow-sm"
+                    >
+                      <article className="flex flex-col justify-between h-full">
+                        <div className="min-w-0 flex flex-col flex-grow">
+                          {/* 1. SEAMLESS IMAGE CANVAS (Zero image border) */}
+                          <div className="relative p-4 sm:p-5 pb-2">
+                            <div className="relative w-full h-44 sm:h-50 rounded-xl sm:rounded-2xl overflow-hidden bg-surface-container-high/40 flex items-center justify-center">
+                              <Image
+                                src={post.featured_image || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"}
+                                alt={post.title || "Blog post"}
+                                fill
+                                sizes="(max-width: 640px) 85vw, (max-width: 1024px) 320px, 380px"
+                                quality={90}
+                                className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                              />
+                              {post.category && (
+                                <span className="absolute top-3.5 left-3.5 z-10 inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md text-secondary-fixed text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
+                                  <Tag size={10} className="text-secondary-fixed" />
+                                  <span>{post.category}</span>
+                                </span>
+                              )}
+                            </div>
                           </div>
 
-                          {/* 3. POLISHED READ ARTICLE PILL BUTTON */}
-                          <div className="pt-2">
-                            <div className="w-full bg-primary hover:bg-primary/90 text-white py-3 sm:py-3.5 px-4 rounded-full text-center text-sm sm:text-[15px] font-semibold flex items-center justify-center gap-2 shadow-xs hover:shadow-md transition-all duration-200">
-                              <span>{t("home_blog_read_post", locale)}</span>
-                              <ArrowRight size={14} className={locale === "ur" ? "rotate-180" : "group-hover:translate-x-1 transition-transform"} />
+                          {/* 2. BLOG CONTENT */}
+                          <div className="p-5 sm:p-6 pt-3 flex-grow flex flex-col justify-between gap-4">
+                            <div className="space-y-2">
+                              <h3 className="text-slate-900 font-bold text-lg sm:text-xl leading-snug line-clamp-2 group-hover:text-primary transition-colors tracking-tight">
+                                {post.title}
+                              </h3>
+                              {excerpt && (
+                                <p className="text-xs sm:text-[13px] text-slate-500 font-normal leading-relaxed line-clamp-2">
+                                  {excerpt}
+                                </p>
+                              )}
+                            </div>
+
+                            {/* 3. POLISHED READ ARTICLE PILL BUTTON */}
+                            <div className="pt-2">
+                              <div className="w-full bg-primary hover:bg-primary/90 text-white py-3 sm:py-3.5 px-4 rounded-full text-center text-sm sm:text-[15px] font-semibold flex items-center justify-center gap-2 shadow-xs hover:shadow-md transition-all duration-200">
+                                <span>{t("home_blog_read_post", locale)}</span>
+                                <ArrowRight size={14} className={locale === "ur" ? "rotate-180" : "group-hover:translate-x-1 transition-transform"} />
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </article>
-                  </Link>
-                );
-              })}
-            </MobileCardCarousel>
+                      </article>
+                    </Link>
+                  );
+                })}
+              </MobileCardCarousel>
             </div>
           </div>
         </section>
