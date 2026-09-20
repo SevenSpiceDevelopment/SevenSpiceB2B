@@ -3,7 +3,13 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { cookies } from "next/headers";
-import { ArrowLeft, ArrowRight, Package, ShieldCheck, BadgePercent, Layers } from "lucide-react";
+import { 
+  ArrowLeft, 
+  Package, 
+  ShieldCheck, 
+  BadgePercent, 
+  Layers 
+} from "lucide-react";
 import { getProductById as dbGetProductById, getProducts, getSiteSettings } from "@/lib/db";
 import { t, translateProduct, translateProducts } from "@/lib/translations";
 import { getProductIdFromSlug, getProductSlug } from "@/lib/productPaths";
@@ -30,14 +36,48 @@ export async function generateMetadata({ params }) {
   const product = await getProductById(productId);
   if (!product) return {};
 
+  const title = product.seo_title || `${product.name} | Seven Spice`;
+  const description = product.meta_description || (product.description || "").replace(/[#*]/g, "").slice(0, 160).trim();
+  const secondaryKeywordsArray = typeof product.secondary_keywords === "string"
+    ? product.secondary_keywords.split(",").map((k) => k.trim())
+    : Array.isArray(product.secondary_keywords)
+    ? product.secondary_keywords
+    : [];
+  const keywords = [product.primary_keyword, ...secondaryKeywordsArray].filter(Boolean);
+
   return {
-    title: product.name,
-    description: product.description.substring(0, 160),
+    title,
+    description,
+    keywords,
+    openGraph: {
+      title,
+      description,
+      images: product.image_url ? [{ url: product.image_url }] : [],
+    },
+    alternates: {
+      canonical: `/products/${product.slug || params.slug}`,
+    }
   };
 }
+
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
 export const revalidate = 0;
+
+function renderFormattedText(text) {
+  if (!text) return null;
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={i} className="font-semibold text-primary">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return part;
+  });
+}
 
 export default async function ProductDetailPage({ params }) {
   const cookieStore = cookies();
@@ -71,22 +111,28 @@ export default async function ProductDetailPage({ params }) {
 
   const relatedProducts = translateProducts(rawRelated, locale).slice(0, 3);
   const salesEmail = settings?.business_email || "sales@thesevenspice.com";
-  const descriptionPreview = (product.description || "").replace(/\s+/g, " ").trim();
-  const summaryText = descriptionPreview
-    ? descriptionPreview.length > 240
-      ? `${descriptionPreview.slice(0, 240).trimEnd()}...`
-      : descriptionPreview
-    : "Commercial product details are available below for procurement teams and wholesale buyers.";
+
+  // Parse all clean paragraphs for the complete description - never truncated with ellipsis
+  const rawDescription = product.description || "";
+  const descriptionParagraphs = rawDescription
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter((p) => p.length > 0 && !p.startsWith("###") && !p.startsWith("##") && !p.startsWith("#") && !p.startsWith("*") && !p.startsWith("-"));
+
+  const paragraphsToRender = descriptionParagraphs.length > 0 
+    ? descriptionParagraphs 
+    : [rawDescription.replace(/[#*]/g, "").trim()];
 
   const buyerFit = [
     "Food manufacturers and private-label processors",
     "Wholesale distributors and importers",
     "Retail chains and specialty ingredient buyers",
-    "Hospitality and catering supply teams",
+    "Hospitality and commercial catering supply teams",
   ];
 
   return (
     <div className="bg-background pb-stack-lg">
+      {/* Hero Header Section */}
       <section className="relative overflow-hidden border-b border-on-surface/10 bg-surface">
         <div className="absolute inset-0 bg-subtle-pattern opacity-80 pointer-events-none"></div>
         <div className="absolute -right-24 top-10 h-56 w-56 rounded-full bg-secondary/10 blur-3xl pointer-events-none"></div>
@@ -98,7 +144,7 @@ export default async function ProductDetailPage({ params }) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
             <div className="lg:col-span-7">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 bg-secondary/10 text-primary text-xs uppercase font-bold tracking-[0.2em] px-3 py-1.5 rounded">
+                <span className="inline-flex items-center gap-1.5 bg-[#1A1A1A] text-[#C47029] border border-[#C47029]/30 text-xs uppercase font-bold tracking-[0.2em] px-3 py-1.5 rounded">
                   <BadgePercent size={12} /> {product.category}
                 </span>
                 {product.collection && (
@@ -115,15 +161,21 @@ export default async function ProductDetailPage({ params }) {
               <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mt-4 leading-tight max-w-3xl break-words">
                 {product.name}
               </h1>
-              <p className="font-body-lg text-body-lg text-on-surface-variant mt-5 max-w-3xl leading-relaxed break-words">
-                {summaryText}
-              </p>
+              
+              {/* Complete product description paragraphs - in full, never truncated */}
+              <div className="font-body-lg text-body-lg text-on-surface-variant mt-5 max-w-3xl leading-relaxed space-y-4">
+                {paragraphsToRender.map((paragraph, idx) => (
+                  <p key={idx} className="break-words">
+                    {renderFormattedText(paragraph)}
+                  </p>
+                ))}
+              </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <ProductQuoteButton
                   productName={product.name}
                   productId={product.id}
-                  businessPhone={settings?.business_phone || "+1 (800) 555-SPICE"}
+                  businessPhone={settings?.business_phone || "+92 3286828006"}
                   businessEmail={salesEmail}
                   locale={locale}
                 />
@@ -161,7 +213,7 @@ export default async function ProductDetailPage({ params }) {
                     </div>
                   )}
                   <div className="bg-surface-container-low rounded-lg p-3">
-                    <div className="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-bold">Sales Email</div>
+                    <div className="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-bold">Sales Desk</div>
                     <div className="mt-1 text-on-surface font-semibold text-xs sm:text-sm break-all">{salesEmail}</div>
                   </div>
                 </div>
@@ -230,7 +282,7 @@ export default async function ProductDetailPage({ params }) {
         </section>
       </div>
 
-      {/* Commercial Quote Call-to-Action Section - Positioned immediately above the footer */}
+      {/* Commercial Quote Call-to-Action Section */}
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mt-16 md:mt-20">
         <section className="bg-primary text-on-primary rounded-xl p-8 md:p-12 relative overflow-hidden shadow-lg">
           <div className="absolute inset-0 bg-subtle-pattern opacity-10 pointer-events-none"></div>
@@ -245,7 +297,7 @@ export default async function ProductDetailPage({ params }) {
               <ProductQuoteButton
                 productName={product.name}
                 productId={product.id}
-                businessPhone={settings?.business_phone || "+1 (800) 555-SPICE"}
+                businessPhone={settings?.business_phone || "+92 3286828006"}
                 businessEmail={salesEmail}
                 locale={locale}
                 variant="inverse"

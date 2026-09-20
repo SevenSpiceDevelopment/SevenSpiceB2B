@@ -14,34 +14,34 @@ if (!supabaseUrl || !supabaseKey) {
 console.log(`Connecting to Supabase at: ${supabaseUrl}`);
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const allowedCollectionIds = ["col_ground_spices", "col_pink_salt", "col_herbs_leaves"];
+const allowedCollectionIds = ["col_dried_herbs", "col_salts", "col_ground_spices"];
 
 const initialCollections = [
   {
-    id: "col_ground_spices",
-    name: "Pure Ground Spices",
-    slug: "pure-ground-spices",
-    category: "Powder",
-    description: "100% unadulterated ground spices slow-milled to retain rich natural aroma, deep authentic color, and essential volatile oils.",
-    image_url: "/images/turmeric_mortar.png",
+    id: "col_dried_herbs",
+    name: "Dried Herbs",
+    slug: "dried-herbs",
+    category: "Herbs",
+    description: "Sun-shade dried fragrant Kasuri Methi and botanical herbs cleaned and packaged to preserve authentic aroma.",
+    image_url: "/images/Methi Featured Product Image.jpg",
     is_featured: true
   },
   {
-    id: "col_pink_salt",
-    name: "Himalayan Pink Salt",
-    slug: "himalayan-pink-salt",
-    category: "Salt",
-    description: "100% natural, unrefined mineral-rich edible rock salt directly from the Khewra Salt Range in Pakistan.",
+    id: "col_salts",
+    name: "Salts",
+    slug: "salts",
+    category: "Spices",
+    description: "100% natural, unrefined mineral-rich edible rock salt directly from the ancient Khewra Salt Range in Pakistan.",
     image_url: "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&q=80&w=800",
     is_featured: true
   },
   {
-    id: "col_herbs_leaves",
-    name: "Herbs & Aromatic Leaves",
-    slug: "herbs-aromatic-leaves",
-    category: "Herbs",
-    description: "Sun-shade dried fragrant Kasuri Methi cleaned and packaged to lock in authentic aroma.",
-    image_url: "/images/Methi Featured Product Image.jpg",
+    id: "col_ground_spices",
+    name: "Ground Spices",
+    slug: "ground-spices",
+    category: "Powder",
+    description: "100% pure ground turmeric and garlic powders slow-milled to retain rich natural aroma, color, and volatile oils.",
+    image_url: "/images/turmeric_mortar.png",
     is_featured: true
   }
 ];
@@ -49,100 +49,103 @@ const initialCollections = [
 const allowedProductIds = [
   "p_kasuri_methi_02",
   "p_himalayan_salt_01",
-  "p_red_chilli_05",
-  "p_garlic_powder_04",
-  "p_turmeric_haldi_03"
+  "p_turmeric_haldi_03",
+  "p_garlic_powder_04"
 ];
 
 const initialProducts = [
   {
     id: "p_kasuri_methi_02",
-    name: "Premium Kasuri Methi (Dried Fenugreek Leaves)",
+    name: "Methi Leaves",
     category: "Herbs",
-    collection: "Herbs & Aromatic Leaves",
-    description: "Authentic, sun-shade dried Kasuri Methi grown in the fertile agricultural fields of Kasur, Punjab. Known worldwide for its distinctive aromatic sweetness and vivid natural green color. Destoned, Sortex machine-cleaned, and 100% free from dust, sand, or stem debris.",
-    price_moq: "PKR 850 / kg (MOQ: 100kg)",
-    packaging_info: "10kg / 20kg moisture-lock corrugated master cartons with inner poly-barrier liner",
+    collection: "Dried Herbs",
+    description: `Seven Spice Methi Leaves are carefully selected fenugreek leaves valued for their distinctive aroma, earthy character, and traditional culinary appeal. Methi, also known as fenugreek, is widely used in South Asian, Middle Eastern, and international food applications where an authentic herbal aroma and characteristic flavor are required.
+
+Our methi leaves are suitable for commercial food production, spice blending, seasoning formulations, restaurants, catering businesses, food service companies, wholesalers, and distributors. The product can be incorporated into a wide range of applications, including curry seasonings, ready-to-cook products, spice mixes, sauces, savory snacks, bakery applications, and traditional culinary preparations.
+
+For B2B buyers, consistent product quality is an important part of reliable spice and herb sourcing. Seven Spice focuses on careful product selection and handling to help buyers maintain dependable quality across their supply requirements. Methi leaves can be supplied according to agreed commercial specifications, packaging requirements, and order quantities.`,
+    price_moq: "Custom B2B Quotation (MOQ: 100 kg)",
+    packaging_info: "10kg / 20kg moisture-lock corrugated master cartons with food-grade poly liner or customized packing",
     image_url: "/images/Methi Featured Product Image.jpg",
     is_visible: true,
     specifications: {
-      "Origin": "Kasur, Punjab, Pakistan",
-      "Purity": "Sortex Cleaned (99.5%)",
-      "Moisture": "<7.0%",
-      "Extraneous Matter": "<0.5%",
-      "Aroma": "Intense Sweet Botanical"
+      "slug": "methi-leaves",
+      "seo_title": "Premium Methi Leaves Supplier | Fenugreek Leaves for Bulk & B2B",
+      "meta_description": "Source premium methi leaves and dried fenugreek leaves for food manufacturing, spice blending, restaurants, wholesalers, and bulk B2B requirements from Seven Spice.",
+      "primary_keyword": "Methi Leaves",
+      "secondary_keywords": "Fenugreek Leaves, Dried Methi Leaves, Kasuri Methi, Dried Fenugreek, Methi Supplier, Fenugreek Leaves Supplier, Bulk Methi Leaves, Methi Exporter, B2B Herbs Supplier"
     }
   },
   {
     id: "p_himalayan_salt_01",
-    name: "Pure Himalayan Pink Salt (Fine Grain & Coarse Crystal)",
-    category: "Salt",
-    collection: "Himalayan Pink Salt",
-    description: "100% natural, unrefined mineral-rich pink rock salt extracted directly from the ancient Khewra Salt Range in Pakistan. Contains 84+ natural trace minerals with zero anti-caking chemicals, artificial additives, or bleaching agents. Ideal for food manufacturers, commercial hospitality, and private-label retail.",
-    price_moq: "PKR 120 / kg (MOQ: 500kg)",
+    name: "Himalayan Pink Salt",
+    category: "Spices",
+    collection: "Salts",
+    description: `Seven Spice Himalayan Pink Salt is a naturally distinctive salt recognized for its characteristic pink-to-rose color and crystalline appearance. It is widely used in food preparation, seasoning products, spice blends, food processing, restaurants, hospitality, and retail packaging.
+
+Our Himalayan Pink Salt is a versatile ingredient for businesses looking for a reliable bulk salt supply. It can be used as a standalone seasoning or incorporated into customized seasoning blends, spice mixes, snack seasonings, processed food formulations, and other commercial food applications.
+
+The natural color and recognizable appearance of pink salt have also made it a popular ingredient for specialty food products and consumer-facing packaged products. For commercial buyers, Seven Spice can work with customers on appropriate product specifications, quantities, and packaging requirements based on their intended application.
+
+We understand that B2B buyers require more than a product name. Consistent sourcing, clear specifications, suitable packaging, dependable communication, and scalable supply are important considerations when selecting a spice and ingredient supplier. Seven Spice is positioned to support wholesalers, distributors, food processors, restaurants, seasoning manufacturers, and other commercial buyers looking for Himalayan pink salt.`,
+    price_moq: "Custom B2B Quotation (MOQ: 500 kg)",
     packaging_info: "25kg / 50kg poly-woven moisture-barrier bags or 1 MT bulk jumbo bags",
     image_url: "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&q=80&w=800",
     is_visible: true,
     specifications: {
-      "Origin": "Khewra Salt Mines, Pakistan",
-      "Purity (NaCl)": ">98.5%",
-      "Moisture": "<0.2%",
-      "Grind Grades": "Fine Table & Coarse Crystal",
-      "Additives": "0% (Zero Chemicals)"
-    }
-  },
-  {
-    id: "p_red_chilli_05",
-    name: "Kunri Red Chilli Powder (Stemless Lal Mirch)",
-    category: "Powder",
-    collection: "Pure Ground Spices",
-    description: "Vibrant crimson red chilli ground from select stemless sun-dried chillies sourced directly from Kunri, Sindh—the red chilli hub of Asia. Delivers balanced culinary heat, deep natural color, and zero artificial dyes, added oil, or brick dust adulterants.",
-    price_moq: "PKR 800 / kg (MOQ: 200kg)",
-    packaging_info: "25kg double-walled poly-woven bags with food-grade moisture-barrier liner",
-    image_url: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&q=80&w=800",
-    is_visible: true,
-    specifications: {
-      "Origin": "Kunri, Sindh, Pakistan",
-      "Heat Level": "35,000 - 45,000 SHU",
-      "Color Value": "100 - 120 ASTA",
-      "Moisture": "<8.5%",
-      "Purity": "100% Pure (No Dyes)"
-    }
-  },
-  {
-    id: "p_garlic_powder_04",
-    name: "Pure Dehydrated Garlic Powder & Granules (Lehsan)",
-    category: "Powder",
-    collection: "Pure Ground Spices",
-    description: "100% pure dehydrated garlic powder ground from sound, peeled cloves with no added starches, anti-caking chemicals, or preservatives. Delivers sharp, pungent aroma and high natural allicin flavor for seasoning blends, marinades, sauces, and snack coating.",
-    price_moq: "PKR 750 / kg (MOQ: 150kg)",
-    packaging_info: "20kg vacuum-sealed aluminum foil barrier liner inside export-grade master carton",
-    image_url: "https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?auto=format&fit=crop&q=80&w=800",
-    is_visible: true,
-    specifications: {
-      "Origin": "Pakistan",
-      "Moisture": "<6.0%",
-      "Allicin Potential": ">0.3%",
-      "Mesh Size": "60-80 Mesh / Granules",
-      "Additives": "None (100% Pure)"
+      "slug": "himalayan-pink-salt",
+      "seo_title": "Himalayan Pink Salt Supplier | Bulk Pink Salt for B2B Buyers",
+      "meta_description": "Buy quality Himalayan Pink Salt in bulk from Seven Spice. Suitable for food manufacturers, seasoning companies, restaurants, wholesalers, distributors, and commercial applications.",
+      "primary_keyword": "Himalayan Pink Salt",
+      "secondary_keywords": "Pink Salt, Himalayan Salt Supplier, Pink Himalayan Salt, Bulk Pink Salt, Himalayan Pink Salt Supplier, Pink Salt Exporter, Wholesale Pink Salt, B2B Salt Supplier, Food Grade Pink Salt"
     }
   },
   {
     id: "p_turmeric_haldi_03",
-    name: "Pure Ground Turmeric Powder (Haldi)",
+    name: "Turmeric Powder (Haldi)",
     category: "Powder",
-    collection: "Pure Ground Spices",
-    description: "Bright, rich golden-yellow turmeric powder slow-milled from select cured finger rhizomes. Naturally high curcumin content delivers intense authentic color and warm earthy aroma. Certified 100% free from lead chromate, metanil yellow, or starch fillers.",
-    price_moq: "PKR 650 / kg (MOQ: 200kg)",
+    collection: "Ground Spices",
+    description: `Seven Spice Turmeric Powder is a finely ground spice made from carefully selected turmeric roots. Known for its vibrant golden-yellow appearance and characteristic earthy aroma, turmeric is one of the most widely used spices in South Asian cuisine and an important ingredient in commercial spice and food formulations.
+
+Our turmeric powder, commonly known as haldi powder, is suitable for food manufacturers, spice companies, seasoning producers, restaurants, wholesalers, distributors, caterers, and commercial kitchens. It can be used as a standalone culinary spice or as an ingredient in customized spice blends and food formulations.
+
+Turmeric is commonly incorporated into curry powders, seasoning mixes, sauces, marinades, ready-to-cook foods, savory products, and traditional culinary preparations. Its distinctive color and flavor make it an important component of many spice blends and food products.
+
+For B2B buyers, sourcing consistency and product specifications are essential. Seven Spice provides turmeric powder for commercial requirements and can discuss appropriate specifications, packaging formats, order quantities, and supply arrangements according to the buyer's application.`,
+    price_moq: "Custom B2B Quotation (MOQ: 200 kg)",
     packaging_info: "25kg multi-ply paper sacks with polyethylene food-grade inner barrier liner",
     image_url: "/images/turmeric_mortar.png",
     is_visible: true,
     specifications: {
-      "Origin": "Punjab, Pakistan",
-      "Curcumin Content": ">3.8%",
-      "Mesh Size": "80-100 Mesh",
-      "Moisture": "<9.0%",
-      "Purity": "100% Pure Turmeric"
+      "slug": "turmeric-powder",
+      "seo_title": "Turmeric Powder Supplier | Premium Haldi Powder in Bulk | Seven Spice",
+      "meta_description": "Source premium turmeric powder (haldi) in bulk from Seven Spice for food manufacturers, spice blenders, restaurants, wholesalers, distributors, and B2B food applications.",
+      "primary_keyword": "Turmeric Powder",
+      "secondary_keywords": "Haldi Powder, Turmeric Supplier, Turmeric Powder Supplier, Bulk Turmeric Powder, Wholesale Turmeric Powder, Ground Turmeric, Turmeric Exporter, B2B Turmeric Supplier, Food Grade Turmeric"
+    }
+  },
+  {
+    id: "p_garlic_powder_04",
+    name: "Garlic Powder",
+    category: "Powder",
+    collection: "Ground Spices",
+    description: `Seven Spice Garlic Powder is a finely processed garlic ingredient designed for convenient use across a wide range of food and seasoning applications. With its characteristic savory garlic aroma and flavor, garlic powder provides food manufacturers and commercial kitchens with a practical way to incorporate garlic into consistent recipes and formulations.
+
+Our garlic powder is suitable for food manufacturers, seasoning companies, spice blenders, restaurants, catering businesses, wholesalers, distributors, and food-service suppliers. It can be used as a standalone seasoning or combined with other ingredients to create customized spice blends and seasoning formulations.
+
+Garlic powder is commonly used in snack seasonings, sauces, marinades, meat and poultry seasonings, soups, savory mixes, ready-to-cook foods, spice blends, and a variety of processed food products. Its powdered format makes it particularly convenient for applications where uniform distribution and easy handling are important.
+
+For B2B customers, Seven Spice can support commercial sourcing requirements with product specifications and packaging arrangements based on the intended application and order volume. Buyers can discuss their requirements with our sales team to determine suitable specifications for their manufacturing, distribution, or food-service needs.`,
+    price_moq: "Custom B2B Quotation (MOQ: 150 kg)",
+    packaging_info: "20kg vacuum-sealed aluminum foil barrier liner inside export-grade master carton",
+    image_url: "https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?auto=format&fit=crop&q=80&w=800",
+    is_visible: true,
+    specifications: {
+      "slug": "garlic-powder",
+      "seo_title": "Garlic Powder Supplier | Bulk Garlic Powder for Food Manufacturers",
+      "meta_description": "Buy quality garlic powder in bulk from Seven Spice for seasoning, food manufacturing, sauces, snacks, restaurants, wholesalers, distributors, and commercial B2B applications.",
+      "primary_keyword": "Garlic Powder",
+      "secondary_keywords": "Garlic Powder Supplier, Bulk Garlic Powder, Wholesale Garlic Powder, Ground Garlic, Garlic Seasoning, Garlic Powder Exporter, B2B Garlic Supplier, Food Grade Garlic Powder, Commercial Garlic Powder"
     }
   }
 ];
@@ -179,26 +182,21 @@ async function seed() {
 
   // 1. Site Settings
   console.log("Upserting site settings...");
-  await supabase.from("site_settings").upsert({
-    id: "default",
-    business_phone: "+92 3286828006",
-    business_email: "sales@thesevenspice.com",
-    business_address: "Plot 42, Port Qasim Industrial Area, Karachi, Pakistan",
-    whatsapp_number: "+923286828006",
-    whatsapp_message: "Hello TheSevenSpice, I would like to inquire about wholesale bulk spices.",
-    hero_title: "Premium Pakistani Spices for Global Food Manufacturers & Importers",
-    hero_subtitle: "Export-quality spices, herbs, and seasoning ingredients supplied in bulk with consistent quality, competitive pricing, and worldwide container shipments.",
-    hero_cta_text: "Request Wholesale Quote",
-    hero_cta_link: "/contact",
-    hero_secondary_cta_text: "Explore Our Products",
-    hero_secondary_cta_link: "/products",
-    deal_headline_enabled: false,
-    deal_headline_badge: "Special Wholesale Rate",
-    deal_headline_text: "Special volume discounts available on bulk wholesale orders over 1,000kg.",
-    deal_headline_link: "/contact",
-    deal_headline_link_text: "Inquire Now",
-    updated_at: new Date().toISOString()
-  });
+  const { data: existingSettings } = await supabase.from("site_settings").select("id").limit(1);
+  if (!existingSettings || existingSettings.length === 0) {
+    await supabase.from("site_settings").insert({
+      id: "default",
+      hero_title: "Premium Pakistani Spices for Global Food Manufacturers & Importers",
+      hero_subtitle: "Export-quality spices, herbs, and seasoning ingredients supplied in bulk with consistent quality, competitive pricing, and worldwide container shipments.",
+      business_phone: "+92 3286828006",
+      business_email: "sales@thesevenspice.com",
+      business_address: "Plot 42, Port Qasim Industrial Area, Karachi, Pakistan",
+      whatsapp_number: "+923286828006",
+      whatsapp_message: "Hello TheSevenSpice, I would like to inquire about wholesale bulk spices.",
+      deal_headline_enabled: false,
+      marquee_ticker_enabled: true
+    });
+  }
 
   // 2. Collections Cleanup & Upsert
   console.log("Cleaning up and upserting collections...");
@@ -217,8 +215,8 @@ async function seed() {
     await supabase.from("collections").upsert(col);
   }
 
-  // 3. Products Cleanup & Upsert (Methi, Pink Salt, Red Chilli, Garlic, Haldi ONLY)
-  console.log("Cleaning up and upserting the 5 correct products...");
+  // 3. Products Cleanup & Upsert
+  console.log("Cleaning up and upserting the 4 exact products...");
   const { data: existingProducts } = await supabase.from("products").select("id");
   if (existingProducts && existingProducts.length > 0) {
     const toDeleteProducts = existingProducts
@@ -240,7 +238,7 @@ async function seed() {
     await supabase.from("blog_posts").upsert(blog);
   }
 
-  console.log("✅ Supabase sync completed successfully with the 5 exact products!");
+  console.log("✅ Supabase sync completed successfully with the 4 exact products!");
 }
 
 seed().catch(err => {
