@@ -54,72 +54,63 @@ export default function TrustSignals({
             {/* Custom Luxury Line-Art Illustration Icon */}
             <div className="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center select-none transition-transform duration-300 hover:scale-105">
               {index === 0 && (
-                /* Icon 1: Wireframe Globe with Sprouting Botanical Spice Leaves */
+                /* Icon 1: Quality Assurance & Laboratory Purity Seal */
                 <svg viewBox="0 0 100 100" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="50" cy="50" r="44" fill="#f5ede0" />
-                  {/* Globe outer & latitude arcs */}
+                  {/* Outer Seal Circle */}
                   <circle cx="50" cy="50" r="34" stroke="#a67c2e" strokeWidth="1.75" />
-                  <line x1="16" y1="50" x2="84" y2="50" stroke="#a67c2e" strokeWidth="1.35" strokeOpacity="0.75" />
-                  <path d="M22 36 Q50 42 78 36" stroke="#a67c2e" strokeWidth="1.35" strokeOpacity="0.75" fill="none" />
-                  <path d="M22 64 Q50 58 78 64" stroke="#a67c2e" strokeWidth="1.35" strokeOpacity="0.75" fill="none" />
-                  <ellipse cx="50" cy="50" rx="16" ry="34" stroke="#a67c2e" strokeWidth="1.35" strokeOpacity="0.75" fill="none" />
-                  {/* Botanical spice sprout emerging upwards */}
-                  <line x1="50" y1="72" x2="50" y2="35" stroke="#a67c2e" strokeWidth="2.25" strokeLinecap="round" />
-                  <path d="M50 58 C38 52 34 40 48 38 C49 46 50 54 50 58 Z" fill="#f5ede0" stroke="#a67c2e" strokeWidth="2" strokeLinejoin="round" />
-                  <path d="M50 58 C62 52 66 40 52 38 C51 46 50 54 50 58 Z" fill="#f5ede0" stroke="#a67c2e" strokeWidth="2" strokeLinejoin="round" />
-                  <path d="M50 42 C45 34 47 24 50 22 C53 24 55 34 50 42 Z" fill="#f5ede0" stroke="#a67c2e" strokeWidth="2" strokeLinejoin="round" />
+                  <circle cx="50" cy="50" r="30" stroke="#a67c2e" strokeWidth="1" strokeDasharray="3 3" strokeOpacity="0.7" />
+                  {/* Lab Flask / Beaker Purity Analysis */}
+                  <path d="M46 30 L54 30 M50 30 L50 44 L38 64 C36 68 39 72 44 72 L56 72 C61 72 64 68 62 64 L50 44" stroke="#a67c2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="#f5ede0" />
+                  {/* Liquid line & bubble */}
+                  <path d="M41 61 Q50 58 59 61" stroke="#a67c2e" strokeWidth="1.5" />
+                  <circle cx="48" cy="65" r="1.5" fill="#a67c2e" />
+                  <circle cx="53" cy="64" r="1" fill="#a67c2e" />
+                  {/* Purity check sparkle badge */}
+                  <path d="M68 28 L70 32 L74 34 L70 36 L68 40 L66 36 L62 34 L66 32 Z" fill="#a67c2e" />
                 </svg>
               )}
 
               {index === 1 && (
-                /* Icon 2: Cargo Vessel, Shipping Container, and Cold-Chain Snowflake Badge */
+                /* Icon 2: Direct Farm Sourcing & Agricultural Origin */
                 <svg viewBox="0 0 100 100" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="50" cy="50" r="44" fill="#f5ede0" />
-                  {/* Globe background grid arc */}
-                  <path d="M28 42 C30 25 44 15 62 15 C74 15 82 23 85 35" stroke="#a67c2e" strokeWidth="1.35" strokeOpacity="0.55" fill="none" />
-                  <ellipse cx="52" cy="28" rx="12" ry="13" stroke="#a67c2e" strokeWidth="1.2" strokeOpacity="0.5" fill="none" />
-                  <line x1="40" y1="28" x2="64" y2="28" stroke="#a67c2e" strokeWidth="1.2" strokeOpacity="0.5" />
-                  {/* Cargo Container Ship (Left) */}
-                  <path d="M16 63 L22 73 L48 73 L50 63 Z" fill="#f5ede0" stroke="#a67c2e" strokeWidth="2" strokeLinejoin="round" />
-                  <path d="M14 76 Q20 74 26 76 T38 76 T50 76" stroke="#a67c2e" strokeWidth="1.5" strokeLinecap="round" />
-                  <path d="M20 63 L20 55 L25 55 L25 63" stroke="#a67c2e" strokeWidth="1.75" />
-                  <rect x="22" y="51" width="1.5" height="4" fill="#a67c2e" />
-                  <rect x="27" y="56" width="9" height="7" fill="#f5ede0" stroke="#a67c2e" strokeWidth="1.5" />
-                  <rect x="37" y="56" width="9" height="7" fill="#f5ede0" stroke="#a67c2e" strokeWidth="1.5" />
-                  {/* Shipping Container (Right) */}
-                  <rect x="52" y="51" width="30" height="22" rx="1" fill="#f5ede0" stroke="#a67c2e" strokeWidth="2" />
-                  <line x1="58" y1="51" x2="58" y2="73" stroke="#a67c2e" strokeWidth="1.4" />
-                  <line x1="64" y1="51" x2="64" y2="73" stroke="#a67c2e" strokeWidth="1.4" />
-                  <line x1="70" y1="51" x2="70" y2="73" stroke="#a67c2e" strokeWidth="1.4" />
-                  <line x1="76" y1="51" x2="76" y2="73" stroke="#a67c2e" strokeWidth="1.4" />
-                  {/* Snowflake / Temperature Control Badge */}
-                  <circle cx="73" cy="27" r="10" fill="#f5ede0" stroke="#a67c2e" strokeWidth="1.75" />
-                  <line x1="73" y1="20" x2="73" y2="34" stroke="#a67c2e" strokeWidth="1.4" strokeLinecap="round" />
-                  <line x1="67" y1="23.5" x2="79" y2="30.5" stroke="#a67c2e" strokeWidth="1.4" strokeLinecap="round" />
-                  <line x1="67" y1="30.5" x2="79" y2="23.5" stroke="#a67c2e" strokeWidth="1.4" strokeLinecap="round" />
-                  <path d="M71 22 L73 20 L75 22" stroke="#a67c2e" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M71 32 L73 34 L75 32" stroke="#a67c2e" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  {/* Sun / Horizon arc */}
+                  <path d="M26 64 C26 48 37 36 50 36 C63 36 74 48 74 64" stroke="#a67c2e" strokeWidth="1.25" strokeDasharray="3 3" strokeOpacity="0.6" fill="none" />
+                  {/* Direct Farmer Partnership Handshake silhouette */}
+                  <path d="M22 52 L36 44 L44 50 L38 58 L28 58 Z" fill="#f5ede0" stroke="#a67c2e" strokeWidth="1.75" strokeLinejoin="round" />
+                  <path d="M78 52 L64 44 L56 50 L62 58 L72 58 Z" fill="#f5ede0" stroke="#a67c2e" strokeWidth="1.75" strokeLinejoin="round" />
+                  <path d="M44 50 L50 56 L56 50" stroke="#a67c2e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M40 54 L47 61 L53 55" stroke="#a67c2e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  {/* Sprouting Botanical Leaves Emerging Upward */}
+                  <path d="M50 44 L50 24" stroke="#a67c2e" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M50 34 C42 30 38 22 48 20 C49 26 50 31 50 34 Z" fill="#f5ede0" stroke="#a67c2e" strokeWidth="1.75" strokeLinejoin="round" />
+                  <path d="M50 34 C58 30 62 22 52 20 C51 26 50 31 50 34 Z" fill="#f5ede0" stroke="#a67c2e" strokeWidth="1.75" strokeLinejoin="round" />
+                  {/* Ground furrow lines */}
+                  <path d="M28 72 Q50 68 72 72" stroke="#a67c2e" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.8" />
+                  <path d="M34 78 Q50 75 66 78" stroke="#a67c2e" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.6" />
                 </svg>
               )}
 
               {index === 2 && (
-                /* Icon 3: Laboratory Conical Flask & Botanical Leaves */
+                /* Icon 3: Flexible Bulk Export Packaging (PP Bags, Multi-layer Sacks) */
                 <svg viewBox="0 0 100 100" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="50" cy="50" r="44" fill="#f5ede0" />
-                  {/* Conical Flask */}
-                  <rect x="42" y="24" width="16" height="3" rx="1.5" fill="#f5ede0" stroke="#a67c2e" strokeWidth="1.75" />
-                  <path d="M45 27 L45 38 L31 66 C29 70 32 74 37 74 L63 74 C68 74 71 70 69 66 L55 38 L55 27 Z" fill="#f5ede0" stroke="#a67c2e" strokeWidth="2" strokeLinejoin="round" />
-                  <path d="M36 57 Q50 61 64 57" stroke="#a67c2e" strokeWidth="1.4" strokeOpacity="0.7" />
-                  {/* Bubbling Solution Drops */}
-                  <circle cx="44" cy="65" r="2" fill="none" stroke="#a67c2e" strokeWidth="1.25" />
-                  <circle cx="53" cy="62" r="1.5" fill="none" stroke="#a67c2e" strokeWidth="1.25" />
-                  <circle cx="48" cy="69" r="1.5" fill="none" stroke="#a67c2e" strokeWidth="1.25" />
-                  <circle cx="58" cy="67" r="2" fill="none" stroke="#a67c2e" strokeWidth="1.25" />
-                  {/* Natural Botanical Spice Leaves */}
-                  <path d="M68 52 C78 50 84 60 76 68 C72 65 69 58 68 52 Z" fill="#f5ede0" stroke="#a67c2e" strokeWidth="1.75" strokeLinejoin="round" />
-                  <line x1="68" y1="52" x2="76" y2="68" stroke="#a67c2e" strokeWidth="1.25" strokeOpacity="0.6" />
-                  <path d="M72 64 C82 66 86 78 77 82 C72 80 70 72 72 64 Z" fill="#f5ede0" stroke="#a67c2e" strokeWidth="1.75" strokeLinejoin="round" />
-                  <line x1="72" y1="64" x2="77" y2="82" stroke="#a67c2e" strokeWidth="1.25" strokeOpacity="0.6" />
+                  {/* Industrial Woven Spice Sack */}
+                  <path d="M36 40 C36 34 40 32 50 32 C60 32 64 34 64 40 L66 68 C66 73 60 76 50 76 C40 76 34 73 34 68 Z" fill="#f5ede0" stroke="#a67c2e" strokeWidth="2" strokeLinejoin="round" />
+                  {/* Sack Tie / Neck at top */}
+                  <ellipse cx="50" cy="33" rx="8" ry="3" fill="#a67c2e" />
+                  <path d="M47 30 Q50 25 53 30" stroke="#a67c2e" strokeWidth="2" strokeLinecap="round" />
+                  {/* Packaging grade stripes / Texture lines */}
+                  <path d="M36 50 Q50 54 64 50" stroke="#a67c2e" strokeWidth="1.5" strokeOpacity="0.8" />
+                  <path d="M35 58 Q50 62 65 58" stroke="#a67c2e" strokeWidth="1.5" strokeOpacity="0.8" />
+                  {/* Seven Spice Quality Star Seal on Bag */}
+                  <circle cx="50" cy="44" r="4" stroke="#a67c2e" strokeWidth="1.25" fill="#f5ede0" />
+                  <path d="M50 41 L51 43 L53 43 L51.5 44.5 L52 46.5 L50 45 L48 46.5 L48.5 44.5 L47 43 L49 43 Z" fill="#a67c2e" />
+                  {/* Pallet support base beneath sack */}
+                  <rect x="28" y="76" width="44" height="4" rx="1" fill="#f5ede0" stroke="#a67c2e" strokeWidth="1.5" />
+                  <line x1="38" y1="76" x2="38" y2="80" stroke="#a67c2e" strokeWidth="1.5" />
+                  <line x1="62" y1="76" x2="62" y2="80" stroke="#a67c2e" strokeWidth="1.5" />
                 </svg>
               )}
             </div>

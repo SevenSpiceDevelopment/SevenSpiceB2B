@@ -12,7 +12,6 @@ import {
   Layers,
   Search,
   X,
-  Sparkles,
   FolderOpen,
   Package,
   Boxes
@@ -220,89 +219,69 @@ export default function ProductCatalog({
         role="link"
         tabIndex={0}
         aria-label={`Open details for ${product.name}`}
-        className="reveal-on-scroll w-[85vw] max-w-[85vw] min-w-[85vw] xs:w-[280px] xs:max-w-[280px] xs:min-w-[280px] sm:w-[320px] sm:max-w-[320px] sm:min-w-[320px] md:w-full md:max-w-none md:min-w-0 snap-start shrink-0 bg-surface-container-lowest rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-between hover:shadow-[0_20px_45px_rgba(87,0,19,0.08)] hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer text-left outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 select-none h-full shadow-sm border border-on-surface/5"
+        className="reveal-on-scroll w-[78vw] max-w-[78vw] min-w-[78vw] xs:w-[260px] xs:max-w-[260px] xs:min-w-[260px] sm:w-[280px] sm:max-w-[280px] sm:min-w-[280px] md:w-full md:max-w-none md:min-w-0 snap-start shrink-0 bg-surface-container-lowest rounded-2xl overflow-hidden flex flex-col justify-between hover:shadow-[0_16px_36px_rgba(87,0,19,0.08)] hover:-translate-y-1 transition-all duration-300 group cursor-pointer text-left rtl:text-right outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 select-none h-full shadow-sm border border-on-surface/10 p-3.5 sm:p-4"
       >
         <div className="flex flex-col flex-grow">
           {/* Product Image Canvas */}
-          <div className="relative p-3.5 sm:p-4 pb-2">
-            <div className="relative w-full aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden flex items-center justify-center bg-surface-container-high/40">
-              <div className="absolute top-2.5 inset-x-2.5 sm:top-3 sm:inset-x-3 z-10 flex items-start justify-between gap-2 pointer-events-none">
-                <div className="flex flex-col gap-1 items-start min-w-0 max-w-[65%]">
-                  {product.category && (
-                    <span className="inline-flex items-center gap-1 bg-black/65 backdrop-blur-md text-secondary-fixed text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 sm:py-1 rounded-full shadow-xs max-w-full truncate">
-                      <Tag size={10} className="text-secondary-fixed shrink-0" />
-                      <span className="truncate">{product.category}</span>
-                    </span>
-                  )}
-
-                  {product.collection && (
-                    <span className="inline-flex items-center gap-1 bg-secondary-container/95 backdrop-blur-md text-on-secondary-container text-[9px] sm:text-[10px] font-semibold tracking-wide px-2 py-0.5 rounded-full shadow-xs border border-secondary/20 max-w-full truncate">
-                      <Layers size={9} className="text-secondary shrink-0" />
-                      <span className="truncate">{product.collection}</span>
-                    </span>
-                  )}
-                </div>
-
-                <span className="shrink-0 inline-flex items-center gap-1 bg-white/95 backdrop-blur-md text-primary text-[9px] sm:text-[10px] font-bold tracking-wider px-2.5 py-0.5 sm:py-1 rounded-full shadow-xs">
-                  <ShieldCheck size={11} className="text-secondary shrink-0" />
-                  <span className="uppercase">{locale === "ur" ? "پریمیئم" : "Grade A"}</span>
-                </span>
+          <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden flex items-center justify-center bg-[#f7f5f2] p-2">
+            <div className="absolute top-2 inset-x-2 z-10 flex items-start justify-between gap-1.5 pointer-events-none">
+              <div className="flex flex-col gap-1 items-start min-w-0 max-w-[65%]">
+                {product.category && (
+                  <span className="inline-flex items-center gap-1 bg-black/65 backdrop-blur-md text-secondary-fixed text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs max-w-full truncate">
+                    <Tag size={9} className="text-secondary-fixed shrink-0" />
+                    <span className="truncate">{product.category}</span>
+                  </span>
+                )}
               </div>
 
-              <Image
-                src={product.image_url || "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"}
-                alt={product.name || "Product"}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                quality={95}
-                className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-              />
+              <span className="shrink-0 inline-flex items-center gap-1 bg-white/95 backdrop-blur-md text-primary text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-full shadow-xs border border-slate-100">
+                <ShieldCheck size={10} className="text-secondary shrink-0" />
+                <span className="uppercase">{locale === "ur" ? "خالص" : "Grade A"}</span>
+              </span>
             </div>
+
+            <Image
+              src={product.image_url || "/images/turmeric_mortar.png"}
+              alt={product.name || "Product"}
+              fill
+              sizes="(max-width: 640px) 78vw, (max-width: 1024px) 280px, 320px"
+              quality={90}
+              className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300 ease-out p-2"
+            />
           </div>
 
-          {/* Product Info */}
-          <div className="p-4 sm:p-5 pt-2 flex-grow flex flex-col justify-between gap-3">
-            <div className="space-y-1.5">
-              <h3 className="text-slate-900 font-bold text-base sm:text-lg md:text-xl leading-snug line-clamp-1 group-hover:text-primary transition-colors tracking-tight">
+          {/* Product Info (No Prices shown) */}
+          <div className="pt-3 pb-1 flex-grow flex flex-col justify-between">
+            <div className="space-y-1">
+              <h3 className="text-slate-900 font-bold text-base leading-snug line-clamp-1 group-hover:text-primary transition-colors tracking-tight">
                 {product.name}
               </h3>
               {previewDescription && (
-                <p className="text-xs sm:text-[13px] text-slate-500 font-normal leading-relaxed line-clamp-2">
+                <p className="text-xs text-slate-500 font-normal leading-relaxed line-clamp-2">
                   {previewDescription}
                 </p>
               )}
             </div>
-
-            {product.price_moq && (
-              <div className="flex items-center justify-between pt-1">
-                <span className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
-                  {product.price_moq}
-                </span>
-                <span className="text-[10px] sm:text-[11px] font-semibold text-secondary bg-secondary/10 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                  {locale === "ur" ? "تھوک سپلائی" : "Wholesale"}
-                </span>
-              </div>
-            )}
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="p-4 sm:p-5 pt-0 flex flex-col gap-2.5">
+        {/* Compact Action Buttons */}
+        <div className="pt-2 mt-auto flex items-center gap-2">
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
               openQuote(product);
             }}
-            className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 sm:py-3.5 rounded-full text-center text-sm sm:text-[15px] transition-all duration-200 shadow-xs hover:shadow-md cursor-pointer active:scale-[0.98]"
+            className="flex-1 bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-3 rounded-full text-center text-xs sm:text-[13px] transition-all duration-200 shadow-xs hover:shadow-md cursor-pointer active:scale-[0.98]"
           >
-            {locale === "ur" ? "کمرشل کوٹیشن طلب کریں" : "Request Commercial Quote"}
+            {locale === "ur" ? "کوٹیشن طلب کریں" : "Request Quote"}
           </button>
 
           <div
-            className="w-full bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 hover:border-slate-300 font-medium py-3 sm:py-3.5 rounded-full text-center text-sm sm:text-[15px] transition-all duration-200 cursor-pointer block active:scale-[0.98]"
+            className="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-full text-center text-xs transition-all duration-200 cursor-pointer shrink-0"
           >
-            <span>{locale === "ur" ? "مصنوعات دیکھیں" : "View Product"}</span>
+            <span>{locale === "ur" ? "تفصیلات" : "Details"}</span>
           </div>
         </div>
       </div>

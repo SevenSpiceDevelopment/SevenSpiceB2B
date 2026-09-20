@@ -13,82 +13,80 @@ export default function FeaturedProductCard({
   businessEmail
 }) {
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
-
   const productSlug = getProductSlug(product);
 
   const cleanDescription = String(product.description || "")
     .replace(/\s+/g, " ")
     .trim();
-  const previewDescription = cleanDescription.length > 90
-    ? `${cleanDescription.slice(0, 90).trim()}...`
+  const previewDescription = cleanDescription.length > 80
+    ? `${cleanDescription.slice(0, 80).trim()}...`
     : cleanDescription;
 
   return (
     <>
-      <div className="w-[85vw] max-w-[85vw] min-w-[85vw] xs:w-[290px] xs:max-w-[290px] xs:min-w-[290px] sm:w-[320px] sm:max-w-[320px] sm:min-w-[320px] md:w-full md:max-w-none md:min-w-0 snap-start shrink-0 bg-white rounded-3xl p-4 sm:p-5 flex flex-col justify-between hover:shadow-[0_20px_45px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 group select-none border border-slate-100 shadow-sm">
+      <div className="w-[78vw] max-w-[78vw] min-w-[78vw] xs:w-[260px] xs:max-w-[260px] xs:min-w-[260px] sm:w-[280px] sm:max-w-[280px] sm:min-w-[280px] md:w-full md:max-w-none md:min-w-0 snap-start shrink-0 bg-white rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between hover:shadow-[0_16px_36px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 group select-none border border-slate-100 shadow-sm">
         
-        {/* 1. TOP IMAGE CANVAS (Clean minimalist rounded container) */}
+        {/* 1. TOP IMAGE CANVAS (Reduced height, crisp presentation) */}
         <Link
           href={`/products/${productSlug}`}
           aria-label={`View ${product.name}`}
-          className="relative w-full aspect-square bg-[#f5f5f7] rounded-2xl overflow-hidden flex items-center justify-center cursor-pointer p-4 sm:p-6"
+          className="relative w-full aspect-[4/3] bg-[#f7f5f2] rounded-xl overflow-hidden flex items-center justify-center cursor-pointer p-3"
         >
           <Image
             src={
               product.image_url ||
-              "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=800"
+              "/images/turmeric_mortar.png"
             }
             alt={product.name || "Spices"}
             fill
-            sizes="(max-width: 640px) 85vw, (max-width: 1024px) 320px, 380px"
-            quality={95}
-            className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300 ease-out p-4 sm:p-6"
+            sizes="(max-width: 640px) 78vw, (max-width: 1024px) 280px, 320px"
+            quality={90}
+            className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300 ease-out p-2"
           />
+
+          {/* Clean Category Badge */}
+          {product.category && (
+            <span className="absolute top-2.5 left-2.5 z-10 text-[10px] font-bold uppercase tracking-wider text-secondary-fixed bg-black/75 backdrop-blur-md px-2.5 py-0.5 rounded-full shadow-xs border border-white/15">
+              {product.category}
+            </span>
+          )}
+
+          {/* Grade A Badge */}
+          <span className="absolute top-2.5 right-2.5 z-10 text-[9px] font-bold uppercase tracking-wider text-primary bg-white/95 backdrop-blur-md px-2 py-0.5 rounded-full shadow-xs border border-slate-100">
+            {locale === "ur" ? "100% خالص" : "100% Pure"}
+          </span>
         </Link>
 
-        {/* 2. PRODUCT INFO & DETAILS */}
-        <div className="pt-4 flex flex-col flex-grow text-left">
-          {/* Main Title */}
+        {/* 2. PRODUCT INFO (No prices shown, compact clean typography) */}
+        <div className="pt-3 flex flex-col flex-grow text-left rtl:text-right">
           <Link href={`/products/${productSlug}`}>
-            <h3 className="text-slate-900 font-bold text-lg sm:text-xl leading-tight line-clamp-1 hover:text-primary transition-colors">
+            <h3 className="text-slate-900 font-bold text-base leading-snug line-clamp-1 hover:text-primary transition-colors tracking-tight">
               {product.name}
             </h3>
           </Link>
 
-          {/* Short Description */}
           {previewDescription && (
-            <p className="text-xs sm:text-[13px] text-slate-500 font-normal leading-relaxed line-clamp-2 mt-1.5 mb-3">
+            <p className="text-xs text-slate-500 font-normal leading-relaxed line-clamp-2 mt-1 mb-2.5">
               {previewDescription}
             </p>
           )}
 
-          {/* Price & Wholesale Badge */}
-          <div className="flex items-center justify-between mt-auto mb-4 pt-1">
-            <span className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
-              {product.price_moq || (locale === "ur" ? "قیمت معلوم کریں" : "Inquire for MOQ")}
-            </span>
-            <span className="text-[11px] font-semibold text-secondary bg-secondary/10 px-2.5 py-1 rounded-full uppercase tracking-wider">
-              {locale === "ur" ? "تھوک سپلائی" : "Wholesale"}
-            </span>
-          </div>
-
-          {/* 3. DUAL PILL ACTION BUTTONS */}
-          <div className="flex flex-col gap-2.5">
-            {/* Primary "Request Commercial Quote" Button */}
+          {/* 3. COMPACT ACTION BUTTONS (Single sleek row, replaces tall stacked buttons) */}
+          <div className="mt-auto pt-1 flex items-center gap-2">
             <button
               type="button"
               onClick={() => setIsQuoteOpen(true)}
-              className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 sm:py-3.5 rounded-full text-center text-sm sm:text-[15px] transition-all duration-200 shadow-xs hover:shadow-md cursor-pointer active:scale-[0.98]"
+              className="flex-1 bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-3 rounded-full text-center text-xs sm:text-[13px] transition-all duration-200 shadow-xs hover:shadow-md cursor-pointer active:scale-[0.98]"
             >
-              {locale === "ur" ? "کمرشل کوٹیشن طلب کریں" : "Request Commercial Quote"}
+              {locale === "ur" ? "کوٹیشن طلب کریں" : "Request Quote"}
             </button>
 
-            {/* Secondary "View Product" Button */}
             <Link
               href={`/products/${productSlug}`}
-              className="w-full bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 hover:border-slate-300 font-medium py-3 sm:py-3.5 rounded-full text-center text-sm sm:text-[15px] transition-all duration-200 cursor-pointer block active:scale-[0.98]"
+              className="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-full text-center text-xs transition-all duration-200 cursor-pointer shrink-0"
+              aria-label={`Details for ${product.name}`}
             >
-              {locale === "ur" ? "مصنوعات دیکھیں" : "View Product"}
+              {locale === "ur" ? "تفصیلات" : "Details"}
             </Link>
           </div>
         </div>

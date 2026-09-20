@@ -40,49 +40,49 @@ export default function ProcessTimeline({ locale = "en", steps }) {
       stepNumber: "01",
       icon: Sprout,
       stageLabel: locale === "ur" ? "مرحلہ اول" : "Stage 01",
-      stageCategory: locale === "ur" ? "ماخذ" : "Origin Sourcing",
-      title: steps?.[0]?.title || (locale === "ur" ? "فارم سے براہ راست حصول" : "Direct Farm Sourcing"),
+      stageCategory: locale === "ur" ? "فارم سورسنگ" : "Farm Sourcing",
+      title: steps?.[0]?.title || (locale === "ur" ? "فارم سے براہِ راست چناؤ" : "Direct Farm Harvest"),
       desc: steps?.[0]?.desc || (locale === "ur" 
-        ? "کشمیر، کیرالہ اور سری لنکا میں تصدیق شدہ زرعی کوآپریٹیو کے ساتھ براہ راست اخلاقی شراکت داری۔" 
-        : "Direct partnerships with certified farming cooperatives across Kashmir, Kerala, and Sri Lanka to ensure ethical harvesting and premier crop purity."),
+        ? "کنری، قصور، کھیوڑہ اور پنجاب کے منتخب زرعی فارمز سے تازہ ترین سیزنل فصل کا براہِ راست چناؤ۔" 
+        : "Direct partnerships with verified growers in Kunri, Kasur, Khewra, and fertile agricultural belts across Pakistan for fresh seasonal harvest."),
       image: "/images/methi-farm-real.jpg",
-      imageAlt: "Authentic lush green fenugreek (methi) crop cultivation in farming fields"
+      imageAlt: "Authentic lush green spice and herb cultivation fields in Pakistan"
     },
     {
       stepNumber: "02",
       icon: FlaskConical,
       stageLabel: locale === "ur" ? "مرحلہ دوم" : "Stage 02",
-      stageCategory: locale === "ur" ? "تجزیہ" : "ISO Lab Analysis",
-      title: steps?.[1]?.title || (locale === "ur" ? "ISO لیب ٹیسٹنگ اور گریڈنگ" : "ISO Lab Testing & Grading"),
+      stageCategory: locale === "ur" ? "صفائی و جانچ" : "Sortex & Lab Testing",
+      title: steps?.[1]?.title || (locale === "ur" ? "سارٹیکس صفائی اور لیب جانچ" : "Sortex Cleaning & Lab Inspection"),
       desc: steps?.[1]?.desc || (locale === "ur" 
-        ? "کروسین، پائپرین اور ضروری تیلوں کے ارتکاز کی تصدیق اور بین الاقوامی معیارات پر مکمل لیب آڈٹ۔" 
-        : "Chemical analysis measuring active volatile oil concentrations, moisture thresholds, and complete ISO batch verification."),
+        ? "جدید سارٹیکس مشینوں سے گرد اور کنکر کی صفائی، اور لیبارٹری میں نمی، پاکیزگی اور قدرتی تیل کی جانچ۔" 
+        : "Advanced optical Sortex cleaning, mechanical destoning, and laboratory verification for moisture levels, volatile oils, and zero adulteration."),
       image: "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&q=80&w=1200",
-      imageAlt: "Scientific laboratory spectrometry analysis and quality control of spices"
+      imageAlt: "Quality control inspection and cleanliness laboratory testing of spices"
     },
     {
       stepNumber: "03",
       icon: PackageCheck,
       stageLabel: locale === "ur" ? "مرحلہ سوم" : "Stage 03",
-      stageCategory: locale === "ur" ? "پیکیجنگ" : "Barrier Packing",
-      title: steps?.[2]?.title || (locale === "ur" ? "نمی سے محفوظ پیکیجنگ" : "Climate-Controlled Packaging"),
+      stageCategory: locale === "ur" ? "کولڈ گرائنڈنگ" : "Aroma-Lock Milling",
+      title: steps?.[2]?.title || (locale === "ur" ? "دھیمی گرائنڈنگ اور ایئر ٹائٹ پیکنگ" : "Cold-Milling & Aroma-Lock Packing"),
       desc: steps?.[2]?.desc || (locale === "ur" 
-        ? "طویل فاصلے کے سمندری ٹرانزٹ کے دوران تازگی، رنگ اور خوشبو کے مکمل تحفظ کے لیے ویکیوم سیلنگ۔" 
-        : "Food-grade multi-wall Kraft barrier packing with vacuum-sealed inner liners to eliminate humidity risks during transit."),
+        ? "دھیمی گرائنڈنگ تاکہ قدرتی تیل اور مہک برقرار رہے، اور فوڈ گریڈ نمی سے محفوظ بیگز میں فوری سیلنگ۔" 
+        : "Slow stone-grinding to prevent overheating natural oils, sealed immediately in food-grade moisture-barrier bags to preserve aroma and long shelf life."),
       image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1200",
-      imageAlt: "Clean, sanitary food packaging facility with high-barrier vacuum sealing"
+      imageAlt: "Hygienic food packaging facility with high-barrier moisture sealing"
     },
     {
       stepNumber: "04",
       icon: Ship,
       stageLabel: locale === "ur" ? "مرحلہ چہارم" : "Stage 04",
-      stageCategory: locale === "ur" ? "ترسیل" : "Global Export",
-      title: steps?.[3]?.title || (locale === "ur" ? "عالمی لاجسٹکس اور فریٹ" : "Global Export Freight"),
+      stageCategory: locale === "ur" ? "ترسیل و ایکسپورٹ" : "Nationwide & Export",
+      title: steps?.[3]?.title || (locale === "ur" ? "محفوظ ملک گیر اور ایکسپورٹ ترسیل" : "Prompt Nationwide & Export Delivery"),
       desc: steps?.[3]?.desc || (locale === "ur" 
-        ? "درجہ حرارت کے کنٹرول والے کنٹینرز اور فائٹوسینٹری کلیئرنس کے ساتھ دنیا بھر میں برآمد۔" 
-        : "FOB, CIF, and DDP international logistics coordination with full phytosanitary clearance and automated refrigerated tracking."),
+        ? "پاکستان کے تمام بڑے شہروں میں فوری کارگو اور کراچی پورٹ سے دنیا بھر میں محفوظ کنٹینر شپمنٹ۔" 
+        : "Fast wholesale freight delivery across Karachi, Lahore, Islamabad, and Faisalabad, plus full containerized export (FOB/CIF) with Halal documentation."),
       image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=1200",
-      imageAlt: "International container shipping port and freight logistics for bulk spice export"
+      imageAlt: "Commercial wholesale freight delivery and container shipping for bulk spices"
     }
   ];
 

@@ -13,12 +13,12 @@ export default function StatsBanner({
 
   const stats = [
     {
-      number: "50",
+      number: "20",
       suffix: "+",
-      title: locale === "ur" ? "ممالک میں سپلائی" : "Countries Served",
+      title: locale === "ur" ? "فارم کوآپریٹیوز" : "Farm Cooperatives",
       desc: locale === "ur" 
-        ? "شمالی امریکہ، یورپ اور مشرق وسطیٰ کے اہم بین الاقوامی پورٹس پر براہ راست کنٹینرائزڈ ترسیل۔"
-        : "Direct containerized freight across major commercial ports in North America, Europe, Asia & Middle East.",
+        ? "براہ راست زرعی شراکت داریاں، اخلاقی خریداری اور اعلیٰ ترین معیار کی فصل کا انتخاب۔"
+        : "Direct agricultural partnerships ensuring ethical sourcing, fair trade, and premium harvest selection.",
     },
     {
       number: "100",
@@ -48,7 +48,7 @@ export default function StatsBanner({
 
   return (
     <>
-      <div className="mt-14 sm:mt-18 w-full reveal-on-scroll">
+      <div className="w-full reveal-on-scroll">
         {/* White Rounded Card aligned with website brand colors & borders */}
         <div className="w-full bg-white rounded-[28px] sm:rounded-[36px] md:rounded-[40px] border border-[#e8dfd5] shadow-[0_20px_50px_rgba(87,0,19,0.04)] p-6 sm:p-10 md:p-14 transition-all duration-300">
           
@@ -56,12 +56,12 @@ export default function StatsBanner({
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-2">
             <div className="max-w-2xl text-left rtl:text-right">
               <h2 className="text-2xl sm:text-3xl lg:text-[34px] font-bold text-primary tracking-tight leading-tight">
-                {locale === "ur" ? "ہم صرف شاندار نتائج دیتے ہیں۔" : "We only deliver results."}
+                {locale === "ur" ? "ہر لاٹ میں یکساں معیار اور اعتماد" : "Consistent Quality for Every Wholesale Order"}
               </h2>
               <p className="text-on-surface-variant text-sm sm:text-base font-normal mt-2 leading-relaxed">
                 {locale === "ur" 
-                  ? "معیار، برآمدی تقاضوں اور بروقت ترسیل کے اصولوں پر کوئی سمجھوتہ نہیں۔"
-                  : "We don't use excuses or cut corners. Premium grade spices delivered with absolute precision."}
+                  ? "سارٹیکس صاف شدہ 100% خالص مصالحہ جات، ملک گیر ہول سیل ترسیل اور محفوظ ایکسپورٹ سپلائی۔"
+                  : "Sortex-cleaned, 100% unadulterated spices delivered on schedule across Pakistan and international export ports."}
               </p>
             </div>
 

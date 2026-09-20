@@ -7,9 +7,9 @@ import QuoteModal from "./QuoteModal";
 
 export default function HeroSection({
   locale = "en",
-  heroSpan = "AUTHENTIC BULK SPICES",
-  heroTitle = "Spices that Reflect The Richness of Our Culture",
-  heroSubtitle = "Our authentic wholesale spices deliver unmatched purity, volatile oil richness, and deep natural flavor to food manufacturers, executive chefs, and global distributors worldwide.",
+  heroSpan = "EXPORT-GRADE PAKISTANI BULK SPICES",
+  heroTitle = "Premium Pakistani Spices for Global Food Manufacturers & Importers",
+  heroSubtitle = "Export-quality spices, herbs, and seasoning ingredients supplied in bulk with consistent quality, competitive pricing, and worldwide container shipments.",
   heroCtaText = "Request a Quote",
   heroBrowseText = "Discover More",
   businessPhone,
@@ -43,7 +43,7 @@ export default function HeroSection({
           
           {/* Eyebrow / Category Tag */}
           <span className="animate-fade-in-down text-[10px] sm:text-[11px] font-semibold tracking-[0.28em] uppercase text-[#ffdf90] mb-2.5 sm:mb-3 drop-shadow-md select-none">
-            {locale === "ur" ? "• مستند بین الاقوامی مصالحہ جات •" : `• ${heroSpan} •`}
+            {locale === "ur" ? "• 100% خالص پاکستانی مصالحہ جات •" : `• ${heroSpan} •`}
           </span>
 
           {/* Main Centered Headline with Staggered Entrance */}
@@ -58,21 +58,21 @@ export default function HeroSection({
 
           {/* 3. PROPER ACTION BUTTONS MATCHING SAMPLE */}
           <div className="animate-fade-in-up delay-300 flex flex-wrap items-center justify-center gap-3 sm:gap-4 mt-6 sm:mt-8 w-full sm:w-auto">
-            {/* Primary Golden Yellow "Discover More" Button matching Website Branding */}
+            {/* Primary Golden Yellow "Explore Our Products" Button */}
             <Link
               href="/products"
               className="bg-[#fccc38] hover:bg-[#eab308] text-[#2d1f00] font-bold text-xs sm:text-[13px] uppercase tracking-widest px-8 py-3.5 sm:py-4 rounded-md transition-all duration-200 shadow-[0_4px_22px_rgba(252,204,56,0.38)] hover:shadow-[0_6px_28px_rgba(252,204,56,0.55)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 inline-flex items-center justify-center cursor-pointer"
             >
-              <span>{locale === "ur" ? "کیٹلاگ دیکھیں" : (heroBrowseText?.trim() || "Discover More")}</span>
+              <span>{locale === "ur" ? "ہماری مصنوعات دیکھیں" : (heroBrowseText?.trim() || "Explore Our Products")}</span>
             </Link>
 
-            {/* Secondary Transparent/Bordered "Request Commercial Quote" Button */}
+            {/* Secondary Transparent/Bordered "Request Wholesale Quote" Button */}
             <button
               type="button"
               onClick={() => setIsQuoteOpen(true)}
               className="border border-white/70 hover:border-white bg-black/40 hover:bg-black/60 text-white font-bold text-xs sm:text-[13px] uppercase tracking-widest px-8 py-3.5 sm:py-4 rounded-md transition-all duration-200 backdrop-blur-md shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 inline-flex items-center justify-center cursor-pointer"
             >
-              <span>{locale === "ur" ? "کوٹیشن طلب کریں" : (heroCtaText?.trim() || "Request Commercial Quote")}</span>
+              <span>{locale === "ur" ? "ہول سیل ریٹ معلوم کریں" : (heroCtaText?.trim() || "Request Wholesale Quote")}</span>
             </button>
           </div>
         </div>

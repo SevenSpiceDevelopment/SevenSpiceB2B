@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -14,7 +14,7 @@ export default function Navbar({ locale = "en", initialProducts = [] }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
 
-  // Listen for global keyboard shortcut (Cmd+K or Ctrl+K or /)
+  // Listen for global keyboard shortcut (Cmd+K or Ctrl+K)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -26,18 +26,10 @@ export default function Navbar({ locale = "en", initialProducts = [] }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Hide main navbar on admin dashboard pages
-  const isAdminPage = pathname?.startsWith("/admin");
-
-  if (isAdminPage) return null;
-
-  const navLinks = [
-    { name: t("home", locale), href: "/" },
-    { name: t("products", locale), href: "/products" },
-    { name: t("about", locale), href: "/about" },
-    { name: t("blog", locale), href: "/blog" },
-    { name: t("contact", locale), href: "/contact" }
-  ];
+  // Close mobile drawer on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   const handleSelectLanguage = (newLocale) => {
     document.cookie = `locale=${newLocale}; path=/; max-age=31536000`;
@@ -46,100 +38,144 @@ export default function Navbar({ locale = "en", initialProducts = [] }) {
 
   return (
     <>
-      {/* Backdrop overlay to close drawer on click outside */}
+      {/* Backdrop overlay for mobile drawer */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-inverse-surface/20 backdrop-blur-sm z-40 md:hidden"
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
 
-      <nav className="bg-surface/80 backdrop-blur-md w-full top-0 sticky border-b border-on-surface/10 z-50 shadow-[0_4px_30px_rgba(87,0,19,0.02)]">
-        <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
-          {/* Brand Name */}
+      <nav className="bg-surface/90 backdrop-blur-md w-full top-0 sticky border-b border-on-surface/10 z-50 shadow-[0_2px_15px_rgba(87,0,19,0.03)]">
+        <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-18 sm:h-20 flex-nowrap gap-3">
+          
+          {/* 1. BRAND LOGO (Shrink-0 to prevent compression) */}
           <Link
             href="/"
             onClick={() => setIsOpen(false)}
             className="flex items-center hover:opacity-90 transition-opacity shrink-0"
           >
-            <span className="relative block h-10 w-[140px] min-[375px]:w-[158px] sm:h-12 sm:w-[175px] md:h-14 md:w-[230px] overflow-hidden">
+            <span className="relative block h-9 w-[130px] min-[375px]:w-[145px] sm:h-11 sm:w-[170px] md:h-12 md:w-[190px] overflow-hidden">
               <Image
                 src="/images/logo/seven-spices-horizontal-header.png"
                 alt={t("brand", locale)}
                 fill
                 priority
                 quality={100}
-                className="scale-[2.35] object-contain"
+                className="scale-[2.2] object-contain"
               />
             </span>
           </Link>
 
-          {/* Desktop Links */}
-          <div className="hidden lg:flex gap-gutter items-center">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`font-medium transition-colors duration-200 ${isActive
-                      ? "text-primary border-b-2 border-primary pb-1 font-bold"
-                      : "text-on-surface-variant hover:text-primary"
-                    }`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
+          {/* 2. DESKTOP NAV LINKS (Single Clean Row with No-Wrap & Drill-Down Dropdown) */}
+          <div className="hidden lg:flex items-center gap-5 xl:gap-7 shrink-0">
+            {/* Home Link */}
+            <Link
+              href="/"
+              className={`text-sm font-semibold transition-colors duration-200 whitespace-nowrap py-2 ${
+                pathname === "/"
+                  ? "text-primary font-bold border-b-2 border-primary"
+                  : "text-on-surface-variant hover:text-primary"
+              }`}
+            >
+              {t("home", locale)}
+            </Link>
+
+            <Link
+              href="/products"
+              className={`text-sm font-semibold transition-colors duration-200 whitespace-nowrap ${
+                pathname.startsWith("/products")
+                  ? "text-primary font-bold border-b-2 border-primary"
+                  : "text-on-surface-variant hover:text-primary"
+              }`}
+            >
+              {t("products", locale)}
+            </Link>
+
+            {/* About Us */}
+            <Link
+              href="/about"
+              className={`text-sm font-semibold transition-colors duration-200 whitespace-nowrap py-2 ${
+                pathname === "/about"
+                  ? "text-primary font-bold border-b-2 border-primary"
+                  : "text-on-surface-variant hover:text-primary"
+              }`}
+            >
+              {t("about", locale)}
+            </Link>
+
+            {/* Spice Journal (Blog) */}
+            <Link
+              href="/blog"
+              className={`text-sm font-semibold transition-colors duration-200 whitespace-nowrap py-2 ${
+                pathname === "/blog"
+                  ? "text-primary font-bold border-b-2 border-primary"
+                  : "text-on-surface-variant hover:text-primary"
+              }`}
+            >
+              {t("blog", locale)}
+            </Link>
+
+            {/* Contact Us */}
+            <Link
+              href="/contact"
+              className={`text-sm font-semibold transition-colors duration-200 whitespace-nowrap py-2 ${
+                pathname === "/contact"
+                  ? "text-primary font-bold border-b-2 border-primary"
+                  : "text-on-surface-variant hover:text-primary"
+              }`}
+            >
+              {t("contact", locale)}
+            </Link>
           </div>
 
-          {/* CTA & Actions (Desktop) */}
-          <div className="hidden lg:flex items-center gap-4">
-            {/* Desktop Search Button */}
+          {/* 3. CTA & ACTIONS (Sleek, Compact, Always Single-Row on Desktop) */}
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
+            {/* Compact Search Button */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center gap-2 text-on-surface-variant hover:text-primary hover:bg-on-surface/5 transition-all duration-200 border border-on-surface/10 rounded-full px-4 py-2 bg-surface-container-lowest text-xs font-semibold shadow-[0_1px_3px_rgba(0,0,0,0.02)] focus:outline-none"
+              className="flex items-center gap-2 text-on-surface-variant hover:text-primary hover:bg-slate-100 transition-all duration-200 border border-slate-200 rounded-full px-3.5 py-2 bg-surface-container-lowest text-xs font-semibold shadow-xs focus:outline-none whitespace-nowrap shrink-0 cursor-pointer"
               aria-label={t("search", locale)}
             >
-              <Search size={14} className="text-primary" />
-              <span>{t("search_products", locale)}</span>
+              <Search size={14} className="text-primary shrink-0" />
+              <span className="hidden xl:inline text-slate-600">{locale === "ur" ? "تلاش کریں..." : "Search spices..."}</span>
+              <span className="xl:hidden text-slate-600">{t("search", locale)}</span>
             </button>
 
-            {/* Custom Language Dropdown (Desktop) */}
-            <div className="relative">
+            {/* Compact Language Switcher */}
+            <div className="relative shrink-0">
               <button
                 onClick={() => setIsLangOpen(!isLangOpen)}
-                className="flex items-center gap-2 text-on-surface-variant hover:text-primary hover:bg-on-surface/5 transition-all duration-200 border border-on-surface/10 rounded-full px-4 py-2 bg-surface-container-lowest text-xs font-semibold shadow-[0_1px_3px_rgba(0,0,0,0.02)] focus:outline-none"
+                className="flex items-center gap-1.5 text-on-surface-variant hover:text-primary hover:bg-slate-100 transition-all duration-200 border border-slate-200 rounded-full px-3 py-2 bg-surface-container-lowest text-xs font-semibold shadow-xs focus:outline-none whitespace-nowrap cursor-pointer"
                 aria-label={t("select_lang", locale)}
               >
-                <Globe size={14} className="text-on-surface-variant/60" />
+                <Globe size={13} className="text-slate-500 shrink-0" />
                 <span>{locale === "ur" ? "اردو" : "English"}</span>
-                <ChevronDown size={12} className={`transition-transform duration-200 ${isLangOpen ? "rotate-180" : ""}`} />
+                <ChevronDown size={11} className={`transition-transform duration-200 ${isLangOpen ? "rotate-180" : ""}`} />
               </button>
 
               {isLangOpen && (
                 <>
-                  {/* Invisible background overlay to trigger click outside close */}
                   <div className="fixed inset-0 z-10 cursor-default" onClick={() => setIsLangOpen(false)} />
-
-                  {/* Dropdown Card Popover */}
-                  <div className="absolute right-0 mt-2 w-36 bg-surface/95 backdrop-blur-md border border-on-surface/10 rounded-lg shadow-xl py-1.5 z-20 animate-fadeIn flex flex-col gap-0.5">
+                  <div className="absolute right-0 mt-2 w-32 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 z-20 animate-fadeIn flex flex-col gap-0.5">
                     <button
                       onClick={() => handleSelectLanguage("en")}
-                      className={`flex items-center justify-between px-3.5 py-2 text-xs font-semibold transition-colors duration-150 ${locale === "en"
+                      className={`flex items-center justify-between px-3.5 py-2 text-xs font-semibold transition-colors duration-150 cursor-pointer ${
+                        locale === "en"
                           ? "text-primary bg-primary/5 font-bold"
-                          : "text-on-surface-variant hover:text-primary hover:bg-on-surface/5"
-                        }`}
+                          : "text-slate-700 hover:text-primary hover:bg-slate-50"
+                      }`}
                     >
                       <span>English</span>
                       {locale === "en" && <Check size={12} className="text-primary" />}
                     </button>
                     <button
                       onClick={() => handleSelectLanguage("ur")}
-                      className={`flex items-center justify-between px-3.5 py-2 text-xs font-semibold transition-colors duration-150 ${locale === "ur"
+                      className={`flex items-center justify-between px-3.5 py-2 text-xs font-semibold transition-colors duration-150 cursor-pointer ${
+                        locale === "ur"
                           ? "text-primary bg-primary/5 font-bold"
-                          : "text-on-surface-variant hover:text-primary hover:bg-on-surface/5"
-                        }`}
+                          : "text-slate-700 hover:text-primary hover:bg-slate-50"
+                      }`}
                     >
                       <span className="font-urdu">اردو (Urdu)</span>
                       {locale === "ur" && <Check size={12} className="text-primary" />}
@@ -149,78 +185,121 @@ export default function Navbar({ locale = "en", initialProducts = [] }) {
               )}
             </div>
 
+            {/* Wholesale Inquiry Button (Sleek, Compact, No-Wrap) */}
             <Link
               href="/contact"
-              className="bg-[#fccc38] hover:bg-[#eab308] text-[#2d1f00] font-bold text-xs uppercase tracking-widest px-6 py-2.5 rounded-md transition-all duration-200 shadow-[0_4px_18px_rgba(252,204,56,0.35)] hover:shadow-[0_6px_24px_rgba(252,204,56,0.5)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 inline-flex items-center justify-center cursor-pointer"
+              className="bg-[#fccc38] hover:bg-[#eab308] text-[#2d1f00] font-bold text-xs uppercase tracking-wider px-5 py-2.5 rounded-md transition-all duration-200 shadow-[0_4px_16px_rgba(252,204,56,0.3)] hover:shadow-[0_6px_22px_rgba(252,204,56,0.45)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 whitespace-nowrap shrink-0 inline-flex items-center justify-center cursor-pointer"
             >
               {t("nav_cta", locale)}
             </Link>
           </div>
 
-          {/* Mobile Actions (Search + Hamburger) */}
-          <div className="flex items-center gap-2 lg:hidden">
-            {/* Mobile Search Button */}
+          {/* 4. MOBILE ACTIONS (Search + Hamburger) */}
+          <div className="flex items-center gap-1.5 lg:hidden">
             <button
               onClick={() => setIsSearchOpen(true)}
               className="p-2 text-on-surface hover:text-primary transition-colors focus:outline-none flex items-center justify-center cursor-pointer"
               aria-label={t("search", locale)}
             >
-              <Search size={22} className="text-primary" />
+              <Search size={20} className="text-primary" />
             </button>
 
-            {/* Mobile Hamburger Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="w-10 h-10 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-lowest transition-colors focus:outline-none"
+              className="w-9 h-9 rounded-full flex items-center justify-center text-on-surface hover:bg-slate-100 transition-colors focus:outline-none cursor-pointer"
               aria-label="Toggle menu"
             >
-              {isOpen ? <X size={22} /> : <Menu size={22} />}
+              {isOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Drawer */}
+        {/* 5. MOBILE DRAWER */}
         {isOpen && (
-          <div className="relative z-50 lg:hidden bg-surface border-b border-on-surface/10 w-full px-margin-mobile py-6 flex flex-col gap-5 animate-fadeIn">
+          <div className="relative z-50 lg:hidden bg-surface border-b border-on-surface/10 w-full px-margin-mobile py-5 flex flex-col gap-4 animate-fadeIn">
+            <div className="flex flex-col gap-1">
+              <Link
+                href="/"
+                onClick={() => setIsOpen(false)}
+                className={`text-base font-semibold py-2 transition-colors ${
+                  pathname === "/" ? "text-primary font-bold" : "text-slate-700 hover:text-primary"
+                }`}
+              >
+                {t("home", locale)}
+              </Link>
 
-            <div className="flex flex-col gap-1 pt-1">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href;
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className={`text-base font-medium transition-colors duration-200 py-2 ${isActive
-                        ? locale === "ur"
-                          ? "text-primary border-r-4 border-primary pr-3 font-bold text-right"
-                          : "text-primary border-l-4 border-primary pl-3 font-bold text-left"
-                        : "text-on-surface-variant hover:text-primary"
-                      }`}
-                  >
-                    {link.name}
-                  </Link>
-                );
-              })}
-            </div>
+              <Link
+                href="/products"
+                onClick={() => setIsOpen(false)}
+                className={`text-base font-semibold py-2 transition-colors ${
+                  pathname.startsWith("/products") ? "text-primary font-bold" : "text-slate-700 hover:text-primary"
+                }`}
+              >
+                {t("products", locale)}
+              </Link>
 
-            <div className="flex items-center justify-between gap-4 pt-4 border-t border-on-surface/10">
-              <span className="text-sm font-semibold text-on-surface-variant">Language</span>
-              <div className="flex h-9 bg-surface-container border border-on-surface/10 rounded-full p-0.5">
-                <button onClick={() => handleSelectLanguage("en")} className={`!min-h-0 h-8 px-3 rounded-full text-[11px] font-semibold ${locale === "en" ? "bg-primary text-on-primary shadow-sm" : "text-on-surface-variant"}`}>EN</button>
-                <button onClick={() => handleSelectLanguage("ur")} className={`!min-h-0 h-8 px-3 rounded-full text-[11px] font-semibold ${locale === "ur" ? "bg-primary text-on-primary shadow-sm" : "text-on-surface-variant"}`}>اردو</button>
-              </div>
-            </div>
-            
-            <div className="flex flex-col gap-4 pt-2">
+              <Link
+                href="/about"
+                onClick={() => setIsOpen(false)}
+                className={`text-base font-semibold py-2 transition-colors ${
+                  pathname === "/about" ? "text-primary font-bold" : "text-slate-700 hover:text-primary"
+                }`}
+              >
+                {t("about", locale)}
+              </Link>
+
+              <Link
+                href="/blog"
+                onClick={() => setIsOpen(false)}
+                className={`text-base font-semibold py-2 transition-colors ${
+                  pathname === "/blog" ? "text-primary font-bold" : "text-slate-700 hover:text-primary"
+                }`}
+              >
+                {t("blog", locale)}
+              </Link>
+
               <Link
                 href="/contact"
                 onClick={() => setIsOpen(false)}
-                className="bg-[#fccc38] hover:bg-[#eab308] text-[#2d1f00] text-center font-bold text-xs uppercase tracking-widest px-6 py-3.5 rounded-md transition-all duration-200 shadow-[0_4px_18px_rgba(252,204,56,0.35)] hover:shadow-[0_6px_24px_rgba(252,204,56,0.5)] active:scale-95 w-full inline-flex items-center justify-center cursor-pointer"
+                className={`text-base font-semibold py-2 transition-colors ${
+                  pathname === "/contact" ? "text-primary font-bold" : "text-slate-700 hover:text-primary"
+                }`}
               >
-                {t("nav_cta", locale)}
+                {t("contact", locale)}
               </Link>
             </div>
+
+            {/* Mobile Language Switcher */}
+            <div className="flex items-center justify-between gap-4 pt-3 border-t border-slate-100">
+              <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">Language</span>
+              <div className="flex h-8 bg-slate-100 border border-slate-200 rounded-full p-0.5">
+                <button
+                  onClick={() => handleSelectLanguage("en")}
+                  className={`!min-h-0 h-7 px-3 rounded-full text-[11px] font-semibold transition-all ${
+                    locale === "en" ? "bg-primary text-white shadow-xs" : "text-slate-600"
+                  }`}
+                >
+                  EN
+                </button>
+                <button
+                  onClick={() => handleSelectLanguage("ur")}
+                  className={`!min-h-0 h-7 px-3 rounded-full text-[11px] font-semibold transition-all ${
+                    locale === "ur" ? "bg-primary text-white shadow-xs" : "text-slate-600"
+                  }`}
+                >
+                  اردو
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile CTA */}
+            <Link
+              href="/contact"
+              onClick={() => setIsOpen(false)}
+              className="bg-[#fccc38] hover:bg-[#eab308] text-[#2d1f00] text-center font-bold text-xs uppercase tracking-wider py-3 rounded-md transition-all shadow-md active:scale-98 w-full inline-flex items-center justify-center cursor-pointer mt-1"
+            >
+              {t("nav_cta", locale)}
+            </Link>
           </div>
         )}
       </nav>

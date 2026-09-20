@@ -7,8 +7,8 @@ import AboutHeroCarousel from "@/components/AboutHeroCarousel";
 import ProcessTimeline from "@/components/ProcessTimeline";
 
 export const metadata = {
-  title: "About Our Heritage & Quality",
-  description: "Learn about TheSevenSpice's history, global supply networks, strict processing facilities, and commitment to fair trade B2B sourcing."
+  title: "About Seven Spice | Global Export & B2B Supply",
+  description: "Learn about SevenSpice's history, international bulk supply networks, strict processing facilities, and commitment to global export standards."
 };
 
 export default function AboutPage() {
@@ -20,19 +20,19 @@ export default function AboutPage() {
       icon: <ShieldCheck className="text-secondary w-7 h-7" />,
       title: t("about_value1_title", locale),
       desc: t("about_value1_desc", locale),
-      pill: locale === "ur" ? "شفافیت" : "100% Traceable"
+      pill: locale === "ur" ? "100% خالص و حلال" : "100% Pure & Halal"
     },
     {
       icon: <Award className="text-secondary w-7 h-7" />,
       title: t("about_value2_title", locale),
       desc: t("about_value2_desc", locale),
-      pill: locale === "ur" ? "بین الاقوامی معیارات" : "Global Compliance"
+      pill: locale === "ur" ? "سارٹیکس کلیننگ" : "Sortex Graded"
     },
     {
       icon: <HeartHandshake className="text-secondary w-7 h-7" />,
       title: t("about_value3_title", locale),
       desc: t("about_value3_desc", locale),
-      pill: locale === "ur" ? "براہ راست شراکت" : "Direct Co-ops"
+      pill: locale === "ur" ? "براہِ راست کسان" : "Direct Farm Origin"
     }
   ];
 
@@ -52,7 +52,10 @@ export default function AboutPage() {
 
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-20 text-left w-full">
           {/* Glassmorphism Card for text readability, keeping the rest of the image completely original and clear */}
-          <div className="max-w-2xl bg-black/40 backdrop-blur-md p-6 md:p-10 rounded-2xl border border-white/15 text-white flex flex-col gap-4 shadow-2xl">
+          <div className="max-w-2xl bg-black/40 backdrop-blur-md p-6 md:p-10 rounded-2xl border border-white/15 text-white flex flex-col gap-3 shadow-2xl">
+            <span className="font-label-md text-label-md text-secondary uppercase tracking-widest bg-secondary/20 backdrop-blur-md px-3 py-1 rounded w-fit">
+              {t("about_hero_span", locale)}
+            </span>
             <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-white leading-tight font-bold">
               {t("about_hero_title", locale)}
             </h1>

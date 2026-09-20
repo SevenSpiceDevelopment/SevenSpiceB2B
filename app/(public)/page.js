@@ -11,6 +11,7 @@ import MobileCardCarousel from "@/components/MobileCardCarousel";
 import ProductApplicationsCollage from "@/components/ProductApplicationsCollage";
 import StatsBanner from "@/components/StatsBanner";
 import HeroSection from "@/components/HeroSection";
+import CertificationsSection from "@/components/CertificationsSection";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -35,21 +36,21 @@ export default async function HomePage() {
   const latestPost = blogPosts.length > 0 ? blogPosts[0] : null;
   const featuredBlogPosts = blogPosts.slice(0, 3);
 
-  // Show first 3 visible products as featured
-  const featuredProducts = products.slice(0, 3);
+  // Show first 6 visible products as featured
+  const featuredProducts = products.slice(0, 6);
 
   // Handle default site settings localizations
-  const heroTitle = settings.hero_title === "Experience the Finest Fenugreek (Methi)"
-    ? t("home_hero_title", locale)
-    : settings.hero_title;
+  const heroTitle = locale === "ur"
+    ? t("home_hero_title", "ur")
+    : (settings.hero_title || t("home_hero_title", "en"));
 
-  const heroSubtitle = settings.hero_subtitle === "TheSevenSpice offers premium Fenugreek (Methi) seeds and powder, expertly sourced for exceptional freshness, rich aroma, and consistent quality—trusted by customers across local and global markets."
-    ? t("home_hero_subtitle", locale)
-    : settings.hero_subtitle;
+  const heroSubtitle = locale === "ur"
+    ? t("home_hero_subtitle", "ur")
+    : (settings.hero_subtitle || t("home_hero_subtitle", "en"));
 
-  const heroCtaText = settings.hero_cta_text === "Submit Wholesale Inquiry"
-    ? t("home_hero_cta", locale)
-    : settings.hero_cta_text;
+  const heroCtaText = locale === "ur"
+    ? t("home_hero_cta", "ur")
+    : (settings.hero_cta_text || t("home_hero_cta", "en"));
 
   const trustCards = [
     {
@@ -87,9 +88,7 @@ export default async function HomePage() {
         businessEmail={businessEmail}
       />
 
-
-      {/* 2. TRUST SIGNALS SECTION */}
-      {/* 2. OUR CAPABILITIES / ENTERPRISE VALUE PILLARS */}
+      {/* 2. TRUST SIGNALS / OUR EXPORT CAPABILITIES (QUALITY ASSURANCE, LOGISTICS, PACKAGING) */}
       <section className="relative py-16 sm:py-24 bg-[#faf7f2] border-b border-[#ebdcc9]/60 overflow-hidden">
         <div className="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
           <TrustSignals
@@ -98,13 +97,6 @@ export default async function HomePage() {
             subtitle={t("home_trust_subtitle", locale)}
             cards={trustCards}
             locale={locale}
-          />
-
-          {/* Stats Section matching the sample design */}
-          <StatsBanner
-            locale={locale}
-            businessPhone={businessPhone}
-            businessEmail={businessEmail}
           />
         </div>
       </section>
@@ -148,6 +140,9 @@ export default async function HomePage() {
           )}
         </div>
       </section>
+
+      {/* 3.5. CERTIFICATIONS & EXPORT STANDARDS SHOWCASE */}
+      <CertificationsSection locale={locale} />
 
       {/* LATEST BLOG SECTION */}
       {featuredBlogPosts.length > 0 && (
@@ -238,7 +233,18 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* 4. TESTIMONIALS SECTION */}
+      {/* 4. COMMERCIAL RESULTS & PERFORMANCE STATS BANNER */}
+      <section className="py-16 sm:py-24 bg-[#faf7f2] border-b border-[#ebdcc9]/60 overflow-hidden">
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+          <StatsBanner
+            locale={locale}
+            businessPhone={businessPhone}
+            businessEmail={businessEmail}
+          />
+        </div>
+      </section>
+
+      {/* 5. TESTIMONIALS SECTION */}
       <section className="py-20 bg-surface-container-low border-t border-b border-on-surface/10 relative overflow-hidden bg-subtle-pattern">
         <div className="max-w-4xl mx-auto px-margin-mobile text-center relative z-10">
           <span className="text-secondary font-bold text-5xl font-serif">“</span>
