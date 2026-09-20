@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { submitQuoteRequest } from "@/app/actions";
-import { X, CheckCircle2, Loader2, AlertCircle, ClipboardList, Phone, Clock, Mail } from "lucide-react";
+import { X, CheckCircle2, Loader2, AlertCircle, ClipboardList, Phone, Clock, Mail, Send } from "lucide-react";
 import { t } from "@/lib/translations";
 
 export default function QuoteModal({ 
@@ -14,27 +15,43 @@ export default function QuoteModal({
   businessEmail,
   locale = "en"
 }) {
+  const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [validationError, setValidationError] = useState("");
   const [activeTab, setActiveTab] = useState("form");
 
-  // Prevent background scrolling and reset states when modal is open
+  // Track hydration/client mount so createPortal safely attaches to document.body
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Handle ESC key to close modal
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === "Escape") {
+      onClose();
+    }
+  }, [onClose]);
+
+  // Lock body scroll and register ESC key
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
       setActiveTab("form");
       setResult(null);
       setValidationError("");
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen]);
+  }, [isOpen, handleKeyDown]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,57 +87,91 @@ export default function QuoteModal({
     </>
   ) : (
     <>
-      Your request for <strong>{productName}</strong> has been logged. Our commercial accounts team will review margins and email a custom catalog rate sheet within 1 business day.
+      Your wholesale quote request for <strong>{productName}</strong> has been logged. Our commercial sales desk will review quantities and provide an official quotation within 24 hours.
     </>
   );
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/40 backdrop-blur-sm p-4 animate-fadeIn">
-      {/* Modal Card */}
-      <div className="bg-surface w-full max-w-lg rounded-lg border border-on-surface/10 shadow-[0_20px_50px_rgba(26,26,26,0.15)] relative overflow-hidden flex flex-col max-h-[90vh]">
-        {/* Subtle background pattern */}
-        <div className="absolute inset-0 bg-subtle-pattern pointer-events-none opacity-40"></div>
-
-        {/* Modal Header */}
-        <div className="relative z-10 p-6 border-b border-on-surface/10 flex justify-between items-center bg-surface-container-low">
-          <div className="text-left">
-            <span className="text-xs font-semibold text-secondary uppercase tracking-wider">{t("modal_title_span", locale)}</span>
-            <h3 className="font-title-lg text-title-lg text-primary mt-1">{t("modal_title", locale)}</h3>
+  const modalContent = (
+    <div 
+      className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm animate-fadeIn"
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: "100vw",
+        height: "100vh",
+        zIndex: 99999
+      }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      {/* Modal Card - max-height ensures header and bottom buttons are ALWAYS visible on screen */}
+      <div 
+        className="bg-surface w-full max-w-lg rounded-2xl shadow-[0_25px_70px_rgba(0,0,0,0.5)] relative flex flex-col max-h-[86vh] sm:max-h-[82vh] overflow-hidden"
+        style={{ border: "none", outline: "none" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* 1. FIXED HEADER - Always pinned at top, never cut off */}
+        <div className="shrink-0 px-6 py-3.5 sm:py-4 border-b border-on-surface/10 flex justify-between items-center bg-surface">
+          <div className="text-left pr-4">
+            <span className="text-[11px] font-bold text-[#C47029] uppercase tracking-[0.2em] block">
+              {t("modal_title_span", locale)}
+            </span>
+            <h3 className="font-title-lg text-lg sm:text-xl font-bold text-primary mt-0.5">
+              {t("modal_title", locale)}
+            </h3>
           </div>
           <button 
+            type="button"
             onClick={onClose}
-            className="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-on-surface/5 transition-all"
+            className="text-on-surface-variant hover:text-primary p-2 rounded-lg hover:bg-on-surface/10 transition-colors shrink-0"
             aria-label="Close modal"
           >
             <X size={20} />
           </button>
         </div>
 
-        {/* Modal Body */}
-        <div className="relative z-10 p-6 overflow-y-auto flex-grow text-left">
+        {/* 2. SCROLLABLE BODY - Smooth native scrolling with sleek modern scrollbar */}
+        <div 
+          className="overflow-y-auto flex-1 px-6 py-4 sm:py-5 text-left overscroll-contain modal-custom-scrollbar min-h-0"
+        >
           {result?.success ? (
-            <div className="text-center py-8 flex flex-col items-center gap-4">
-              <CheckCircle2 className="text-secondary w-16 h-16 animate-bounce" />
-              <h4 className="font-headline-md-mobile text-primary font-semibold">{t("modal_success_title", locale)}</h4>
-              <p className="text-on-surface-variant max-w-sm text-sm">
+            <div className="text-center py-8 flex flex-col items-center gap-4 animate-fadeIn">
+              <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center">
+                <CheckCircle2 className="text-[#C47029] w-10 h-10" />
+              </div>
+              <h4 className="font-headline-md-mobile text-xl text-primary font-bold">
+                {t("modal_success_title", locale)}
+              </h4>
+              <p className="text-on-surface-variant max-w-md text-sm leading-relaxed">
                 {successDesc}
               </p>
               <button
+                type="button"
                 onClick={() => {
                   setResult(null);
                   onClose();
                 }}
-                className="mt-4 bg-secondary-container text-on-secondary-container font-label-md text-label-md px-6 py-2.5 rounded hover:opacity-90 transition-all"
+                className="mt-4 bg-[#C47029] hover:bg-[#A85B1C] text-white font-semibold text-sm px-7 py-2.5 rounded-lg shadow-sm transition-all cursor-pointer"
               >
                 {t("modal_success_close", locale)}
               </button>
             </div>
           ) : (
-            <div className="space-y-6">
-              {/* Product detail reminder */}
-              <div className="bg-surface-container border border-on-surface/5 p-3.5 rounded text-sm">
-                <span className="text-xs text-on-surface-variant font-semibold block animate-pulse">{t("modal_prod_interest", locale)}</span>
-                <span className="font-semibold text-primary">{productName}</span>
+            <div className="space-y-4 sm:space-y-5">
+              {/* Selected product reminder - seamless with NO borders */}
+              <div className="bg-surface-container-low px-4 py-2.5 rounded-lg flex items-center justify-between" style={{ border: "none" }}>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-on-surface-variant block">
+                    {t("modal_prod_interest", locale)}
+                  </span>
+                  <span className="font-bold text-primary text-sm sm:text-base block mt-0.5">
+                    {productName}
+                  </span>
+                </div>
               </div>
 
               {/* Tabs */}
@@ -128,10 +179,10 @@ export default function QuoteModal({
                 <button
                   type="button"
                   onClick={() => setActiveTab("form")}
-                  className={`pb-3 text-sm font-label-md transition-all border-b-2 flex items-center gap-2 ${
+                  className={`pb-2.5 text-sm font-semibold transition-all border-b-2 flex items-center gap-2 cursor-pointer ${
                     activeTab === "form"
-                      ? "border-primary text-primary font-bold"
-                      : "border-transparent text-on-surface-variant hover:text-primary hover:border-primary/20"
+                      ? "border-[#C47029] text-[#C47029] font-bold"
+                      : "border-transparent text-on-surface-variant hover:text-primary"
                   }`}
                 >
                   <ClipboardList size={16} />
@@ -140,10 +191,10 @@ export default function QuoteModal({
                 <button
                   type="button"
                   onClick={() => setActiveTab("call")}
-                  className={`pb-3 text-sm font-label-md transition-all border-b-2 flex items-center gap-2 ${
+                  className={`pb-2.5 text-sm font-semibold transition-all border-b-2 flex items-center gap-2 cursor-pointer ${
                     activeTab === "call"
-                      ? "border-primary text-primary font-bold"
-                      : "border-transparent text-on-surface-variant hover:text-primary hover:border-primary/20"
+                      ? "border-[#C47029] text-[#C47029] font-bold"
+                      : "border-transparent text-on-surface-variant hover:text-primary"
                   }`}
                 >
                   <Phone size={16} />
@@ -152,92 +203,94 @@ export default function QuoteModal({
               </div>
 
               {activeTab === "form" ? (
-                <form onSubmit={handleSubmit} className="space-y-4 animate-fadeIn">
+                <form id="quote-modal-form" onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4 animate-fadeIn">
                   <input type="hidden" name="product_id" value={productId || ""} />
                   <input type="hidden" name="product_name" value={productName} />
 
                   {result?.error && (
-                    <div className="bg-error-container border border-error/20 text-on-error-container p-3.5 rounded flex items-center gap-3 text-xs">
-                      <AlertCircle className="w-5 h-5 shrink-0 text-error" />
+                    <div className="bg-error-container/20 border border-error/30 text-error p-3 rounded-lg flex items-center gap-2.5 text-xs">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
                       <span>{result.error}</span>
                     </div>
                   )}
 
                   {validationError && (
-                    <div className="bg-error-container border border-error/20 text-on-error-container p-3.5 rounded flex items-center gap-3 text-xs">
-                      <AlertCircle className="w-5 h-5 shrink-0 text-error" />
+                    <div className="bg-error-container/20 border border-error/30 text-error p-3 rounded-lg flex items-center gap-2.5 text-xs">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
                       <span>{validationError}</span>
                     </div>
                   )}
 
-                  {/* Name */}
-                  <div className="flex flex-col">
-                    <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="modal-name">
-                      {t("modal_label_name", locale)}
-                    </label>
-                    <input
-                      id="modal-name"
-                      name="name"
-                      required
-                      placeholder="John Doe"
-                      type="text"
-                      disabled={loading}
-                      className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-1.5 font-body-md text-on-surface placeholder:text-on-surface/40 text-sm transition-colors"
-                    />
+                  {/* Row 1: Name & Company (clean underline, no left/right/top borders) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+                    <div>
+                      <label className="font-semibold text-xs text-primary mb-1 block" htmlFor="modal-name">
+                        {t("modal_label_name", locale)}
+                      </label>
+                      <input
+                        id="modal-name"
+                        name="name"
+                        required
+                        placeholder="e.g. Tariq Khan"
+                        type="text"
+                        disabled={loading}
+                        style={{ borderTop: "none", borderLeft: "none", borderRight: "none" }}
+                        className="w-full bg-transparent border-0 border-b border-on-surface/25 focus:border-[#C47029] focus:ring-0 rounded-none px-0 py-1.5 sm:py-2 text-sm text-on-surface placeholder:text-on-surface/35 outline-none transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="font-semibold text-xs text-primary mb-1 block" htmlFor="modal-company">
+                        {t("modal_label_company", locale)}
+                      </label>
+                      <input
+                        id="modal-company"
+                        name="company"
+                        required
+                        placeholder="e.g. Apex Foods Global"
+                        type="text"
+                        disabled={loading}
+                        style={{ borderTop: "none", borderLeft: "none", borderRight: "none" }}
+                        className="w-full bg-transparent border-0 border-b border-on-surface/25 focus:border-[#C47029] focus:ring-0 rounded-none px-0 py-1.5 sm:py-2 text-sm text-on-surface placeholder:text-on-surface/35 outline-none transition-colors"
+                      />
+                    </div>
                   </div>
 
-                  {/* Company */}
-                  <div className="flex flex-col">
-                    <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="modal-company">
-                      {t("modal_label_company", locale)}
-                    </label>
-                    <input
-                      id="modal-company"
-                      name="company"
-                      required
-                      placeholder="Acme Foods Inc."
-                      type="text"
-                      disabled={loading}
-                      className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-1.5 font-body-md text-on-surface placeholder:text-on-surface/40 text-sm transition-colors"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* Email */}
-                    <div className="flex flex-col">
-                      <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="modal-email">
+                  {/* Row 2: Email & Phone */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+                    <div>
+                      <label className="font-semibold text-xs text-primary mb-1 block" htmlFor="modal-email">
                         {t("modal_label_email", locale)}
                       </label>
                       <input
                         id="modal-email"
                         name="email"
                         required
-                        placeholder="john@acmefoods.com"
+                        placeholder="procurement@company.com"
                         type="email"
                         disabled={loading}
-                        className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-1.5 font-body-md text-on-surface placeholder:text-on-surface/40 text-sm transition-colors"
+                        style={{ borderTop: "none", borderLeft: "none", borderRight: "none" }}
+                        className="w-full bg-transparent border-0 border-b border-on-surface/25 focus:border-[#C47029] focus:ring-0 rounded-none px-0 py-1.5 sm:py-2 text-sm text-on-surface placeholder:text-on-surface/35 outline-none transition-colors"
                       />
                     </div>
-
-                    {/* Phone */}
-                    <div className="flex flex-col">
-                      <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="modal-phone">
+                    <div>
+                      <label className="font-semibold text-xs text-primary mb-1 block" htmlFor="modal-phone">
                         {t("modal_label_phone", locale)}
                       </label>
                       <input
                         id="modal-phone"
                         name="phone"
-                        placeholder="+1 (555) 000-0000"
+                        placeholder="+92 300 1234567"
                         type="tel"
                         disabled={loading}
-                        className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-1.5 font-body-md text-on-surface placeholder:text-on-surface/40 text-sm transition-colors"
+                        style={{ borderTop: "none", borderLeft: "none", borderRight: "none" }}
+                        className="w-full bg-transparent border-0 border-b border-on-surface/25 focus:border-[#C47029] focus:ring-0 rounded-none px-0 py-1.5 sm:py-2 text-sm text-on-surface placeholder:text-on-surface/35 outline-none transition-colors"
                       />
                     </div>
                   </div>
 
-                  {/* Quantity */}
-                  <div className="flex flex-col">
-                    <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="modal-qty">
+                  {/* Row 3: Estimated Quantity */}
+                  <div>
+                    <label className="font-semibold text-xs text-primary mb-1 block" htmlFor="modal-qty">
                       {t("modal_label_qty", locale)}
                     </label>
                     <input
@@ -247,112 +300,118 @@ export default function QuoteModal({
                       placeholder={t("modal_qty_placeholder", locale)}
                       type="text"
                       disabled={loading}
-                      className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-1.5 font-body-md text-on-surface placeholder:text-on-surface/40 text-sm transition-colors"
+                      style={{ borderTop: "none", borderLeft: "none", borderRight: "none" }}
+                      className="w-full bg-transparent border-0 border-b border-on-surface/25 focus:border-[#C47029] focus:ring-0 rounded-none px-0 py-1.5 sm:py-2 text-sm text-on-surface placeholder:text-on-surface/35 outline-none transition-colors"
                     />
                   </div>
 
-                  {/* Message */}
-                  <div className="flex flex-col">
-                    <label className="font-label-md text-xs text-on-surface-variant mb-1" htmlFor="modal-message">
+                  {/* Row 4: Additional Details */}
+                  <div>
+                    <label className="font-semibold text-xs text-primary mb-1 block" htmlFor="modal-message">
                       {t("modal_label_message", locale)}
                     </label>
                     <textarea
                       id="modal-message"
                       name="message"
                       placeholder={t("modal_msg_placeholder", locale)}
-                      rows={3}
+                      rows={2}
                       disabled={loading}
-                      className="bg-transparent border-0 border-b border-on-surface/20 focus:ring-0 focus:border-primary px-0 py-1.5 font-body-md text-on-surface placeholder:text-on-surface/40 text-sm transition-colors resize-y"
+                      style={{ borderTop: "none", borderLeft: "none", borderRight: "none" }}
+                      className="w-full bg-transparent border-0 border-b border-on-surface/25 focus:border-[#C47029] focus:ring-0 rounded-none px-0 py-1.5 sm:py-2 text-sm text-on-surface placeholder:text-on-surface/35 outline-none transition-colors resize-none"
                     />
-                  </div>
-
-                  {/* Actions */}
-                  <div className="pt-4 flex items-center justify-end gap-3 border-t border-on-surface/5">
-                    <button
-                      type="button"
-                      onClick={onClose}
-                      disabled={loading}
-                      className="px-5 py-2.5 rounded border border-on-surface/20 font-label-md text-xs text-on-surface-variant hover:bg-on-surface/5 transition-colors disabled:opacity-50"
-                    >
-                      {t("cancel", locale)}
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="bg-secondary-container text-on-secondary-container font-label-md text-xs px-6 py-2.5 rounded hover:opacity-90 transition-all flex items-center gap-2 disabled:bg-secondary-container/60 disabled:cursor-not-allowed"
-                    >
-                      {loading ? (
-                        <>
-                          {locale === "ur" ? "جمع کرایا جا رہا ہے..." : "Submitting..."}
-                          <Loader2 className="animate-spin w-3.5 h-3.5" />
-                        </>
-                      ) : (
-                        locale === "ur" ? "درخواست جمع کروائیں" : "Submit Request"
-                      )}
-                    </button>
                   </div>
                 </form>
               ) : (
-                <div className="space-y-6 py-2 animate-fadeIn">
-                  <div className="text-center bg-surface-container border border-on-surface/5 p-6 rounded-lg flex flex-col items-center gap-4 shadow-[0_4px_20px_rgba(26,26,26,0.02)]">
-                    <div className="bg-primary/5 p-4 rounded-full">
-                      <Phone className="w-8 h-8 text-primary animate-pulse" />
+                <div className="space-y-4 py-1 animate-fadeIn">
+                  <div className="text-center bg-surface-container-low p-5 rounded-lg flex flex-col items-center gap-3" style={{ border: "none" }}>
+                    <div className="bg-secondary/10 p-3 rounded-full">
+                      <Phone className="w-6 h-6 text-[#C47029]" />
                     </div>
                     <div className="space-y-1">
-                      <h4 className="font-title-lg text-primary font-bold">{t("modal_broker_title", locale)}</h4>
-                      <p className="text-xs text-on-surface-variant max-w-xs mx-auto">
+                      <h4 className="font-title-lg text-base font-bold text-primary">{t("modal_broker_title", locale)}</h4>
+                      <p className="text-xs text-on-surface-variant max-w-xs mx-auto leading-relaxed">
                         {t("modal_broker_desc", locale)}
                       </p>
                     </div>
                     
                     <a
-                      href={`tel:${businessPhone}`}
-                      className="mt-2 bg-secondary-container text-on-secondary-container font-title-lg px-8 py-3 rounded hover:opacity-90 transition-all shadow-md flex items-center gap-3 group hover:scale-[1.02]"
+                      href={`tel:${businessPhone || "+923286828006"}`}
+                      className="mt-1 bg-[#C47029] hover:bg-[#A85B1C] text-white font-bold text-sm px-6 py-2.5 rounded-lg transition-all shadow-sm flex items-center gap-2 cursor-pointer"
                     >
-                      <Phone className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                      {businessPhone}
+                      <Phone size={16} />
+                      <span>{businessPhone || "+92 328 6828006"}</span>
                     </a>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* Business Hours Card */}
-                    <div className="bg-surface-container-low border border-on-surface/10 p-4 rounded flex items-start gap-3">
-                      <Clock className="w-5 h-5 text-secondary mt-0.5 shrink-0" />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div className="bg-surface-container-low p-3 rounded-lg flex items-start gap-2.5" style={{ border: "none" }}>
+                      <Clock className="w-4 h-4 text-[#C47029] mt-0.5 shrink-0" />
                       <div>
-                        <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">{t("modal_hours_title", locale)}</span>
-                        <span className="text-sm font-semibold text-primary block mt-1">{t("modal_hours_val", locale)}</span>
-                        <span className="text-xs text-on-surface-variant">{t("modal_hours_closed", locale)}</span>
+                        <span className="font-bold text-primary block">{t("modal_hours_title", locale)}</span>
+                        <span className="text-on-surface-variant block mt-0.5">{t("modal_hours_val", locale)}</span>
                       </div>
                     </div>
 
-                    {/* Direct Email Card */}
-                    <div className="bg-surface-container-low border border-on-surface/10 p-4 rounded flex items-start gap-3">
-                      <Mail className="w-5 h-5 text-secondary mt-0.5 shrink-0" />
+                    <div className="bg-surface-container-low p-3 rounded-lg flex items-start gap-2.5" style={{ border: "none" }}>
+                      <Mail className="w-4 h-4 text-[#C47029] mt-0.5 shrink-0" />
                       <div>
-                        <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">{t("modal_direct_email", locale)}</span>
-                        <a href={`mailto:${businessEmail}`} className="text-sm font-semibold text-primary hover:underline block mt-1 break-all">
-                          {businessEmail}
+                        <span className="font-bold text-primary block">{t("modal_direct_email", locale)}</span>
+                        <a href={`mailto:${businessEmail || "sales@thesevenspice.com"}`} className="text-[#C47029] hover:underline block mt-0.5 break-all font-medium">
+                          {businessEmail || "sales@thesevenspice.com"}
                         </a>
-                        <span className="text-xs text-on-surface-variant">{t("modal_email_response", locale)}</span>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="border-t border-on-surface/5 pt-4 flex justify-end">
-                    <button
-                      type="button"
-                      onClick={onClose}
-                      className="px-6 py-2.5 rounded border border-on-surface/20 font-label-md text-xs text-on-surface-variant hover:bg-on-surface/5 transition-colors"
-                    >
-                      {t("close", locale)}
-                    </button>
                   </div>
                 </div>
               )}
             </div>
           )}
         </div>
+
+        {/* 3. FIXED STICKY FOOTER - ALWAYS 100% VISIBLE ON SCREEN, NEVER SCROLLED AWAY */}
+        {!result?.success && (
+          <div className="shrink-0 px-6 py-3 sm:py-3.5 border-t border-on-surface/10 flex items-center justify-end gap-3 bg-surface z-20">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={loading}
+              className="px-4 py-2 font-semibold text-xs text-on-surface-variant hover:text-primary transition-colors disabled:opacity-50 cursor-pointer"
+            >
+              {t("cancel", locale)}
+            </button>
+            {activeTab === "form" ? (
+              <button
+                type="submit"
+                form="quote-modal-form"
+                disabled={loading}
+                className="bg-[#C47029] hover:bg-[#A85B1C] text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-lg shadow-sm hover:shadow transition-all flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {loading ? (
+                  <>
+                    <span>{locale === "ur" ? "جمع کرایا جا رہا ہے..." : "Submitting..."}</span>
+                    <Loader2 className="animate-spin w-4 h-4" />
+                  </>
+                ) : (
+                  <>
+                    <Send size={14} />
+                    <span>{locale === "ur" ? "درخواست جمع کروائیں" : "Submit Quote Request"}</span>
+                  </>
+                )}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-5 py-2 rounded-lg font-semibold text-xs text-on-surface-variant hover:text-primary transition-colors cursor-pointer"
+              >
+                {t("close", locale)}
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }

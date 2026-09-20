@@ -296,3 +296,23 @@ p {
     transition: none !important;
   }
 }
+
+/* Sleek modal scrollbar */
+.modal-custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(196, 112, 41, 0.4) transparent;
+}
+.modal-custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal-custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(196, 112, 41, 0.35);
+  border-radius: 9999px;
+}
+.modal-custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(196, 112, 41, 0.65);
+}
+
