@@ -3,17 +3,20 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { cookies } from "next/headers";
-import { 
-  ArrowLeft, 
-  Package, 
-  ShieldCheck, 
-  BadgePercent, 
-  Layers 
+import {
+  ArrowLeft,
+  Package,
+  ShieldCheck,
+  BadgePercent,
+  Layers,
+  FileText,
+  CheckCircle2
 } from "lucide-react";
 import { getProductById as dbGetProductById, getProducts, getSiteSettings } from "@/lib/db";
 import { t, translateProduct, translateProducts } from "@/lib/translations";
 import { getProductIdFromSlug, getProductSlug } from "@/lib/productPaths";
 import ProductQuoteButton from "@/components/ProductQuoteButton";
+import FormattedContent from "@/components/FormattedContent";
 
 const getProductById = cache(dbGetProductById);
 
@@ -41,8 +44,8 @@ export async function generateMetadata({ params }) {
   const secondaryKeywordsArray = typeof product.secondary_keywords === "string"
     ? product.secondary_keywords.split(",").map((k) => k.trim())
     : Array.isArray(product.secondary_keywords)
-    ? product.secondary_keywords
-    : [];
+      ? product.secondary_keywords
+      : [];
   const keywords = [product.primary_keyword, ...secondaryKeywordsArray].filter(Boolean);
 
   return {
@@ -79,6 +82,7 @@ function renderFormattedText(text) {
   });
 }
 
+
 export default async function ProductDetailPage({ params }) {
   const cookieStore = cookies();
   const locale = cookieStore.get("locale")?.value || "en";
@@ -112,23 +116,13 @@ export default async function ProductDetailPage({ params }) {
   const relatedProducts = translateProducts(rawRelated, locale).slice(0, 3);
   const salesEmail = settings?.business_email || "sales@thesevenspice.com";
 
-  // Parse all clean paragraphs for the complete description - never truncated with ellipsis
-  const rawDescription = product.description || "";
-  const descriptionParagraphs = rawDescription
-    .split(/\n\s*\n/)
-    .map((p) => p.trim())
-    .filter((p) => p.length > 0 && !p.startsWith("###") && !p.startsWith("##") && !p.startsWith("#") && !p.startsWith("*") && !p.startsWith("-"));
-
-  const paragraphsToRender = descriptionParagraphs.length > 0 
-    ? descriptionParagraphs 
-    : [rawDescription.replace(/[#*]/g, "").trim()];
-
   const buyerFit = [
     "Food manufacturers and private-label processors",
     "Wholesale distributors and importers",
     "Retail chains and specialty ingredient buyers",
     "Hospitality and commercial catering supply teams",
   ];
+
 
   return (
     <div className="bg-background pb-stack-lg">
@@ -148,7 +142,7 @@ export default async function ProductDetailPage({ params }) {
                   <BadgePercent size={12} /> {product.category}
                 </span>
                 {product.collection && (
-                  <Link 
+                  <Link
                     href={`/products?category=${encodeURIComponent(product.category)}&collection=${encodeURIComponent(product.collection)}`}
                     className="inline-flex items-center gap-1.5 bg-secondary-container text-on-secondary-container text-xs font-semibold px-3 py-1.5 rounded hover:opacity-90 transition-opacity border border-secondary/20"
                   >
@@ -161,17 +155,9 @@ export default async function ProductDetailPage({ params }) {
               <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mt-4 leading-tight max-w-3xl break-words">
                 {product.name}
               </h1>
-              
-              {/* Complete product description paragraphs - in full, never truncated */}
-              <div className="font-body-lg text-body-lg text-on-surface-variant mt-5 max-w-3xl leading-relaxed space-y-4">
-                {paragraphsToRender.map((paragraph, idx) => (
-                  <p key={idx} className="break-words">
-                    {renderFormattedText(paragraph)}
-                  </p>
-                ))}
-              </div>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              {/* Action Buttons */}
+              <div className="mt-6 mb-8 flex flex-wrap gap-3">
                 <ProductQuoteButton
                   productName={product.name}
                   productId={product.id}
@@ -186,9 +172,15 @@ export default async function ProductDetailPage({ params }) {
                   {t("product_detail_browse", locale)}
                 </Link>
               </div>
+
+              {/* Full Description with exact WordPress spacing, headings, and lists */}
+              <div className="border-t border-on-surface/10 pt-6">
+                <FormattedContent content={product.description} />
+              </div>
             </div>
 
-            <div className="lg:col-span-5">
+            {/* Right Column: Sticky Product Image & Badges */}
+            <div className="lg:col-span-5 lg:sticky lg:top-8">
               <div className="bg-surface-container-lowest border border-on-surface/10 rounded-xl overflow-hidden shadow-[0_12px_40px_rgba(26,26,26,0.06)]">
                 <div className="relative h-[320px] md:h-[420px] bg-surface-container-high overflow-hidden">
                   <Image
@@ -201,7 +193,7 @@ export default async function ProductDetailPage({ params }) {
                     className="object-cover"
                   />
                 </div>
-                <div className={`p-5 border-t border-on-surface/10 grid ${product.collection ? "grid-cols-3" : "grid-cols-2"} gap-3 text-sm`}>
+                <div className={`p-5 border-t border-on-surface/10 grid ${product.collection ? "grid-cols-2" : "grid-cols-1"} gap-3 text-sm`}>
                   <div className="bg-surface-container-low rounded-lg p-3">
                     <div className="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-bold">Category</div>
                     <div className="mt-1 text-on-surface font-semibold text-xs sm:text-sm">{product.category}</div>
@@ -212,10 +204,6 @@ export default async function ProductDetailPage({ params }) {
                       <div className="mt-1 text-primary font-semibold text-xs sm:text-sm truncate" title={product.collection}>{product.collection}</div>
                     </div>
                   )}
-                  <div className="bg-surface-container-low rounded-lg p-3">
-                    <div className="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-bold">Sales Desk</div>
-                    <div className="mt-1 text-on-surface font-semibold text-xs sm:text-sm break-all">{salesEmail}</div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -234,7 +222,7 @@ export default async function ProductDetailPage({ params }) {
             <ul className="mt-5 space-y-3.5 text-sm text-on-surface-variant">
               {buyerFit.map((item) => (
                 <li key={item} className="flex items-start gap-2.5">
-                  <span className="mt-1.5 h-2 w-2 rounded-full bg-secondary shrink-0"></span>
+                  <CheckCircle2 size={16} className="text-secondary shrink-0 mt-0.5" />
                   <span>{item}</span>
                 </li>
               ))}

@@ -53,9 +53,6 @@ export default function AboutPage() {
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-20 text-left w-full">
           {/* Glassmorphism Card for text readability, keeping the rest of the image completely original and clear */}
           <div className="max-w-2xl bg-black/40 backdrop-blur-md p-6 md:p-10 rounded-2xl border border-white/15 text-white flex flex-col gap-3 shadow-2xl">
-            <span className="font-label-md text-label-md text-secondary uppercase tracking-widest bg-secondary/20 backdrop-blur-md px-3 py-1 rounded w-fit">
-              {t("about_hero_span", locale)}
-            </span>
             <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-white leading-tight font-bold">
               {t("about_hero_title", locale)}
             </h1>

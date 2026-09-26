@@ -4,13 +4,13 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 const carouselImages = [
-  "/images/images%20cureosel%20About%20us%20Hero/WhatsApp%20Image%202026-06-23%20at%2011.29.14%20PM.jpeg",
-  "/images/images%20cureosel%20About%20us%20Hero/WhatsApp%20Image%202026-06-23%20at%2011.29.14%20PM%20(1).jpeg",
-  "/images/images%20cureosel%20About%20us%20Hero/WhatsApp%20Image%202026-06-23%20at%2011.29.14%20PM%20(2).jpeg",
-  "/images/images%20cureosel%20About%20us%20Hero/WhatsApp%20Image%202026-06-23%20at%2011.29.14%20PM%20(4).jpeg",
-  "/images/images%20cureosel%20About%20us%20Hero/WhatsApp%20Image%202026-06-23%20at%2011.29.14%20PM%20(6).jpeg",
-  "/images/images%20cureosel%20About%20us%20Hero/860c800b-4bc7-4e14-943c-121861501476.png",
-  "/images/images%20cureosel%20About%20us%20Hero/pexels-bilal-ahmed-297238753-14020705.jpg"
+  "/images/about/WhatsApp%20Image%202026-06-23%20at%2011.29.14%20PM%20(2).jpeg",
+  "/images/about/WhatsApp%20Image%202026-06-23%20at%2011.29.14%20PM%20(4).jpeg",
+  "/images/about/WhatsApp%20Image%202026-06-23%20at%2011.29.14%20PM%20(6).jpeg",
+  "/images/about/860c800b-4bc7-4e14-943c-121861501476.png",
+  "/images/about/pexels-bilal-ahmed-297238753-14020705.jpg",
+  "/images/about/spice-farm-origin.png",
+  "/images/about/quality-inspection.png"
 ];
 
 export default function AboutHeroCarousel() {

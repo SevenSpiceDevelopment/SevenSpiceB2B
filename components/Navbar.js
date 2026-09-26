@@ -47,7 +47,7 @@ export default function Navbar({ locale = "en", initialProducts = [] }) {
       )}
 
       <nav className="bg-surface/90 backdrop-blur-md w-full top-0 sticky border-b border-on-surface/10 z-50 shadow-[0_2px_15px_rgba(87,0,19,0.03)]">
-        <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-18 sm:h-20 flex-nowrap gap-3">
+        <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-[68px] sm:h-20 flex-nowrap gap-3">
           
           {/* 1. BRAND LOGO (Shrink-0 to prevent compression) */}
           <Link
@@ -55,7 +55,7 @@ export default function Navbar({ locale = "en", initialProducts = [] }) {
             onClick={() => setIsOpen(false)}
             className="flex items-center hover:opacity-90 transition-opacity shrink-0"
           >
-            <span className="relative block h-9 w-[130px] min-[375px]:w-[145px] sm:h-11 sm:w-[170px] md:h-12 md:w-[190px] overflow-hidden">
+            <span className="relative block h-10 w-[140px] min-[375px]:w-[155px] sm:h-11 sm:w-[170px] md:h-12 md:w-[190px] overflow-hidden">
               <Image
                 src="/images/logo/seven-spices-horizontal-header.png"
                 alt={t("brand", locale)}
@@ -195,10 +195,10 @@ export default function Navbar({ locale = "en", initialProducts = [] }) {
           </div>
 
           {/* 4. MOBILE ACTIONS (Search + Hamburger) */}
-          <div className="flex items-center gap-1.5 lg:hidden">
+          <div className="flex items-center gap-1.5 lg:hidden shrink-0">
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="p-2 text-on-surface hover:text-primary transition-colors focus:outline-none flex items-center justify-center cursor-pointer"
+              className="w-11 h-11 text-on-surface hover:text-primary transition-colors focus:outline-none flex items-center justify-center cursor-pointer"
               aria-label={t("search", locale)}
             >
               <Search size={20} className="text-primary" />
@@ -206,7 +206,7 @@ export default function Navbar({ locale = "en", initialProducts = [] }) {
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="w-9 h-9 rounded-full flex items-center justify-center text-on-surface hover:bg-slate-100 transition-colors focus:outline-none cursor-pointer"
+              className="w-11 h-11 rounded-full flex items-center justify-center text-on-surface hover:bg-slate-100 transition-colors focus:outline-none cursor-pointer"
               aria-label="Toggle menu"
             >
               {isOpen ? <X size={20} /> : <Menu size={20} />}

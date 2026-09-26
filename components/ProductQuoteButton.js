@@ -18,9 +18,9 @@ export default function ProductQuoteButton({
     variant === "compact"
       ? "w-full bg-secondary-container text-on-secondary-container py-3 rounded text-center font-label-md hover:opacity-90 transition-all block text-sm"
       :
-    variant === "inverse"
-      ? "bg-secondary-container text-on-secondary-container px-4 py-2.5 rounded font-label-md text-xs hover:opacity-90 transition-all inline-flex items-center gap-2"
-      : "bg-secondary-container text-on-secondary-container px-5 py-3 rounded font-label-md text-sm hover:opacity-90 transition-all inline-flex items-center gap-2";
+      variant === "inverse"
+        ? "bg-secondary-container text-on-secondary-container px-4 py-2.5 rounded font-label-md text-xs hover:opacity-90 transition-all inline-flex items-center gap-2"
+        : "bg-secondary-container text-on-secondary-container px-5 py-3 rounded font-label-md text-sm hover:opacity-90 transition-all inline-flex items-center gap-2";
 
   return (
     <>

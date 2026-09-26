@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import { 
   saveProductAction, 
   deleteProductAction, 
@@ -28,6 +29,7 @@ import {
   Boxes,
   ArrowRight
 } from "lucide-react";
+import WysiwygEditor from "@/components/admin/WysiwygEditor";
 
 export default function ProductManager({ initialProducts = [], initialCollections = [] }) {
   const [activeTab, setActiveTab] = useState("products"); // "products" | "collections"
@@ -43,6 +45,8 @@ export default function ProductManager({ initialProducts = [], initialCollection
   const [isProductFormOpen, setIsProductFormOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [productImagePreview, setProductImagePreview] = useState(null);
+  const [descValue, setDescValue] = useState("");
+  const [isSpecsOpen, setIsSpecsOpen] = useState(false);
 
   // Batch Add Form states
   const [isBatchFormOpen, setIsBatchFormOpen] = useState(false);
@@ -122,6 +126,8 @@ export default function ProductManager({ initialProducts = [], initialCollection
   // Open single product form
   const openAddProductForm = () => {
     setEditingProduct(null);
+    setDescValue("");
+    setIsSpecsOpen(false);
     setProductImagePreview(null);
     setError("");
     setSuccess("");
@@ -130,6 +136,8 @@ export default function ProductManager({ initialProducts = [], initialCollection
 
   const openEditProductForm = (product) => {
     setEditingProduct(product);
+    setDescValue(product.description || "");
+    setIsSpecsOpen(true);
     setProductImagePreview(product.image_url);
     setError("");
     setSuccess("");
@@ -374,13 +382,13 @@ export default function ProductManager({ initialProducts = [], initialCollection
                 <span>Batch Add to Collection</span>
               </button>
 
-              {/* Single Product Add */}
-              <button
-                onClick={openAddProductForm}
+              {/* Single Product Add (Full Page) */}
+              <Link
+                href="/admin/products/new"
                 className="bg-secondary-container text-on-secondary-container font-label-md text-xs px-4 py-2.5 rounded-lg hover:opacity-90 transition-all flex items-center gap-1.5 shadow-sm"
               >
                 <Plus size={15} /> Add Single Product
-              </button>
+              </Link>
             </>
           ) : (
             <button
@@ -518,14 +526,13 @@ export default function ProductManager({ initialProducts = [], initialCollection
                         </td>
                         <td className="px-5 py-3.5 text-right">
                           <div className="flex items-center justify-end gap-1.5">
-                            <button
-                              onClick={() => openEditProductForm(product)}
-                              className="p-1.5 border border-on-surface/10 rounded-lg text-on-surface-variant hover:border-primary hover:text-primary hover:bg-primary/5 transition-all"
-                              title="Edit Product"
-                              disabled={loading}
+                            <Link
+                              href={`/admin/products/${product.id}/edit`}
+                              className="p-1.5 border border-on-surface/10 rounded-lg text-on-surface-variant hover:border-primary hover:text-primary hover:bg-primary/5 transition-all inline-flex items-center"
+                              title="Edit Product (Full Page)"
                             >
                               <Edit size={13} />
-                            </button>
+                            </Link>
                             <button
                               onClick={() => handleDeleteProduct(product.id)}
                               className="p-1.5 border border-on-surface/10 rounded-lg text-on-surface-variant hover:border-error hover:text-error hover:bg-error/5 transition-all"
@@ -649,8 +656,8 @@ export default function ProductManager({ initialProducts = [], initialCollection
         </div>
       )}
 
-      {/* 4. MODAL: SINGLE PRODUCT ADD / EDIT */}
-      {isProductFormOpen && (
+      {/* 4. MODAL: SINGLE PRODUCT ADD / EDIT (Moved to dedicated full-page routes /admin/products/new and /admin/products/[id]/edit) */}
+      {false && isProductFormOpen && (
         <div className="fixed inset-0 z-50 bg-inverse-surface/30 backdrop-blur-xs flex justify-end animate-fadeIn">
           <div className="w-full max-w-xl bg-surface border-l border-on-surface/10 shadow-[0_20px_50px_rgba(26,26,26,0.15)] flex flex-col h-full animate-slideIn">
             <div className="p-6 border-b border-on-surface/10 bg-surface-container-low flex justify-between items-center">
@@ -733,21 +740,149 @@ export default function ProductManager({ initialProducts = [], initialCollection
                 </div>
               </div>
 
-              {/* Description */}
+              {/* Description with WordPress-style WYSIWYG Editor */}
               <div className="flex flex-col">
-                <label className="font-label-md text-xs text-on-surface-variant mb-1 font-semibold" htmlFor="prod-desc">
-                  Product Description *
-                </label>
-                <textarea
-                  id="prod-desc"
-                  name="description"
-                  required
-                  placeholder="Detailed commercial description, origin, volatile oil percentages, aroma notes..."
-                  rows={4}
-                  defaultValue={editingProduct?.description || ""}
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="font-label-md text-xs text-on-surface-variant font-semibold">
+                    Product Description (WordPress Visual Editor) *
+                  </label>
+                  <span className="text-[10px] text-secondary font-mono">Preserves Exact Spacing & Formatting</span>
+                </div>
+
+                {/* Hidden input to pass value into FormData */}
+                <input type="hidden" name="description" value={descValue} />
+
+                <WysiwygEditor
+                  value={descValue}
+                  onChange={(html) => setDescValue(html)}
                   disabled={loading}
-                  className="bg-surface-container-low border border-on-surface/15 rounded-lg px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary resize-y"
                 />
+                <p className="mt-1.5 text-[11px] leading-relaxed text-on-surface-variant/75">
+                  Type naturally: Press <strong>Enter</strong> for new paragraphs, use tool buttons for Headings (H2/H3), Bold text, and Bullet lists. Everything is preserved on the public product page.
+                </p>
+              </div>
+
+              {/* Commercial Fields: MOQ & Packaging */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex flex-col">
+                  <label className="font-label-md text-xs text-on-surface-variant mb-1 font-semibold" htmlFor="prod-moq">
+                    Minimum Order Quantity (MOQ)
+                  </label>
+                  <input
+                    id="prod-moq"
+                    name="price_moq"
+                    placeholder="e.g. Custom B2B Quotation (MOQ: 150 kg)"
+                    defaultValue={editingProduct?.price_moq || ""}
+                    disabled={loading}
+                    className="bg-surface-container-low border border-on-surface/15 rounded-lg px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary"
+                  />
+                </div>
+
+                <div className="flex flex-col">
+                  <label className="font-label-md text-xs text-on-surface-variant mb-1 font-semibold" htmlFor="prod-pack">
+                    Export Packaging Info
+                  </label>
+                  <input
+                    id="prod-pack"
+                    name="packaging_info"
+                    placeholder="e.g. 20kg vacuum-sealed aluminum foil inner liner in carton"
+                    defaultValue={editingProduct?.packaging_info || ""}
+                    disabled={loading}
+                    className="bg-surface-container-low border border-on-surface/15 rounded-lg px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              {/* Collapsible Technical Specifications Section */}
+              <div className="border border-on-surface/15 rounded-xl bg-surface-container-low overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setIsSpecsOpen(!isSpecsOpen)}
+                  className="w-full px-4 py-3 flex items-center justify-between text-xs font-semibold text-primary hover:bg-surface-container transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    <Sparkles size={14} className="text-secondary" />
+                    <span>Technical & Laboratory Specifications (Export Data Sheet)</span>
+                  </span>
+                  <span className="text-[11px] text-secondary font-mono">{isSpecsOpen ? "Collapse ▲" : "Expand ▼"}</span>
+                </button>
+
+                {isSpecsOpen && (
+                  <div className="p-4 pt-2 border-t border-on-surface/10 space-y-3 bg-surface text-xs">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[11px] text-on-surface-variant font-semibold mb-1">Geographic Origin</label>
+                        <input
+                          name="spec_origin"
+                          placeholder="e.g. Pakistan / Kasur, Punjab"
+                          defaultValue={editingProduct?.specifications?.origin || "Pakistan"}
+                          disabled={loading}
+                          className="w-full bg-surface-container-low border border-on-surface/15 rounded px-2.5 py-1.5 text-xs text-on-surface"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] text-on-surface-variant font-semibold mb-1">Botanical / Scientific Name</label>
+                        <input
+                          name="spec_botanical"
+                          placeholder="e.g. Allium sativum / Curcuma longa"
+                          defaultValue={editingProduct?.specifications?.botanical_name || ""}
+                          disabled={loading}
+                          className="w-full bg-surface-container-low border border-on-surface/15 rounded px-2.5 py-1.5 text-xs text-on-surface"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] text-on-surface-variant font-semibold mb-1">Physical Form / Appearance</label>
+                        <input
+                          name="spec_form"
+                          placeholder="e.g. Fine Dehydrated Powder / Coarse Crystal"
+                          defaultValue={editingProduct?.specifications?.form || ""}
+                          disabled={loading}
+                          className="w-full bg-surface-container-low border border-on-surface/15 rounded px-2.5 py-1.5 text-xs text-on-surface"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] text-on-surface-variant font-semibold mb-1">Granulation / Mesh Size</label>
+                        <input
+                          name="spec_mesh"
+                          placeholder="e.g. 80 – 100 Mesh / 0.2 – 0.8 mm"
+                          defaultValue={editingProduct?.specifications?.mesh_size || ""}
+                          disabled={loading}
+                          className="w-full bg-surface-container-low border border-on-surface/15 rounded px-2.5 py-1.5 text-xs text-on-surface"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] text-on-surface-variant font-semibold mb-1">Moisture Content</label>
+                        <input
+                          name="spec_moisture"
+                          placeholder="e.g. Max 6.0%"
+                          defaultValue={editingProduct?.specifications?.moisture || ""}
+                          disabled={loading}
+                          className="w-full bg-surface-container-low border border-on-surface/15 rounded px-2.5 py-1.5 text-xs text-on-surface"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] text-on-surface-variant font-semibold mb-1">Commercial Shelf Life</label>
+                        <input
+                          name="spec_shelf_life"
+                          placeholder="e.g. 24 Months"
+                          defaultValue={editingProduct?.specifications?.shelf_life || "24 Months"}
+                          disabled={loading}
+                          className="w-full bg-surface-container-low border border-on-surface/15 rounded px-2.5 py-1.5 text-xs text-on-surface"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-[11px] text-on-surface-variant font-semibold mb-1">Certifications & Compliance</label>
+                      <input
+                        name="spec_certifications"
+                        placeholder="e.g. 100% Halal, HACCP & ISO 22000 compliant"
+                        defaultValue={editingProduct?.specifications?.certifications || "100% Halal, HACCP & ISO 22000 compliant"}
+                        disabled={loading}
+                        className="w-full bg-surface-container-low border border-on-surface/15 rounded px-2.5 py-1.5 text-xs text-on-surface"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Image Upload */}

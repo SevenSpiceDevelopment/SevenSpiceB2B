@@ -164,12 +164,21 @@ export async function saveProductAction(formData) {
       if (typeof value !== "string") return "";
       return value.replace(/\s+/g, " ").trim();
     };
+    const normalizeMultilineText = (value) => {
+      if (typeof value !== "string") return "";
+      return value
+        .replace(/\r\n?/g, "\n")
+        .replace(/[ \t]+\n/g, "\n")
+        .replace(/\n[ \t]+/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+    };
 
     const id = formData.get("id") || null;
     const name = normalizeText(formData.get("name"));
     const category = normalizeText(formData.get("category"));
     const collection = normalizeText(formData.get("collection"));
-    const description = normalizeText(formData.get("description"));
+    const description = normalizeMultilineText(formData.get("description"));
     const is_visible = formData.get("is_visible") === "true";
     
     const imageFile = formData.get("image");
@@ -195,9 +204,23 @@ export async function saveProductAction(formData) {
       }
     }
 
-    const price_moq = formData.get("price_moq") || existingProduct?.price_moq || "Available on inquiry";
-    const packaging_info = formData.get("packaging_info") || existingProduct?.packaging_info || "Bulk export packaging available on request";
-    const specifications = existingProduct?.specifications || {};
+    const price_moq = normalizeText(formData.get("price_moq")) || existingProduct?.price_moq || "Custom B2B Quotation (MOQ on request)";
+    const packaging_info = normalizeText(formData.get("packaging_info")) || existingProduct?.packaging_info || "Bulk export packaging available on request";
+
+    const existingSpecs = typeof existingProduct?.specifications === "object"
+      ? (existingProduct.specifications || {})
+      : JSON.parse(existingProduct?.specifications || "{}");
+
+    const updatedSpecs = {
+      ...existingSpecs,
+      origin: normalizeText(formData.get("spec_origin")) || existingSpecs.origin || "Pakistan",
+      botanical_name: normalizeText(formData.get("spec_botanical")) || existingSpecs.botanical_name || "",
+      form: normalizeText(formData.get("spec_form")) || existingSpecs.form || "",
+      mesh_size: normalizeText(formData.get("spec_mesh")) || existingSpecs.mesh_size || "",
+      moisture: normalizeText(formData.get("spec_moisture")) || existingSpecs.moisture || "",
+      shelf_life: normalizeText(formData.get("spec_shelf_life")) || existingSpecs.shelf_life || "24 Months",
+      certifications: normalizeText(formData.get("spec_certifications")) || existingSpecs.certifications || "100% Halal, HACCP and ISO 22000 compliant"
+    };
 
     const product = {
       ...(existingProduct || {}),
@@ -209,7 +232,7 @@ export async function saveProductAction(formData) {
       packaging_info,
       image_url: image_url || existingProduct?.image_url || null,
       is_visible,
-      specifications
+      specifications: updatedSpecs
     };
 
     if (id) product.id = id;

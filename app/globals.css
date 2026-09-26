@@ -191,6 +191,26 @@ p {
   }
 }
 
+@keyframes certificationMarquee {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* A seamless right-moving certification strip. It pauses for comfortable reading. */
+.certification-marquee-track {
+  animation: certificationMarquee 32s linear infinite;
+  will-change: transform;
+}
+
+.certification-marquee:hover .certification-marquee-track,
+.certification-marquee:focus-within .certification-marquee-track {
+  animation-play-state: paused;
+}
+
 /* Base animation utility classes */
 .animate-fade-in-up {
   animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -295,6 +315,10 @@ p {
     transform: none !important;
     transition: none !important;
   }
+  .certification-marquee-track {
+    animation: none;
+    transform: none;
+  }
 }
 
 /* Sleek modal scrollbar */
@@ -316,3 +340,106 @@ p {
   background-color: rgba(196, 112, 41, 0.65);
 }
 
+/* ==========================================================================
+   WordPress-Style Content & WYSIWYG Typography
+   Preserves natural paragraph spacing, headings, and lists identically
+   ========================================================================== */
+.wp-content {
+  color: #1c1b1b;
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+.wp-content p {
+  margin-bottom: 1.25rem;
+  line-height: 1.75;
+  color: #433939;
+}
+
+.wp-content p:last-child {
+  margin-bottom: 0;
+}
+
+.wp-content h2 {
+  color: #570013;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-top: 1.85rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.wp-content h2:first-child {
+  margin-top: 0;
+}
+
+.wp-content h3 {
+  color: #570013;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 1.45rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.wp-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.wp-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.wp-content li {
+  margin-bottom: 0.45rem;
+  line-height: 1.6;
+  color: #4b463c;
+}
+
+.wp-content li::marker {
+  color: #c47029;
+}
+
+.wp-content strong,
+.wp-content b {
+  font-weight: 600;
+  color: #570013;
+}
+
+.wp-content blockquote {
+  border-left: 4px solid #c47029;
+  background-color: rgba(252, 204, 56, 0.08);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  margin-top: 1rem;
+  margin-bottom: 1.25rem;
+  font-style: italic;
+  color: #584141;
+}
+
+.wp-content hr {
+  border: 0;
+  border-top: 1px solid rgba(28, 27, 27, 0.12);
+  margin: 1.75rem 0;
+}
+
+/* TipTap Editor Surface */
+.tiptap {
+  outline: none;
+  min-height: 220px;
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #a09797;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

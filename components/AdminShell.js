@@ -64,7 +64,7 @@ export default function AdminShell({ children }) {
         {/* Navigation links */}
         <nav className="flex-grow p-4 space-y-1.5 overflow-y-auto">
           {navItems.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = pathname === item.href || (item.href !== "/admin/dashboard" && pathname.startsWith(item.href));
             return (
               <Link
                 key={item.href}
