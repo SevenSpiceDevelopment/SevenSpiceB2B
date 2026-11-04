@@ -85,6 +85,26 @@ export default async function RootLayout({ children }) {
   return (
     <html lang={locale} dir={direction} className="light scroll-smooth">
       <body className="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col selection:bg-primary/10 selection:text-primary">
+        {/* Google Analytics 4 (GA4) */}
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-JRJZM49ZG6"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-JRJZM49ZG6', {
+                page_path: window.location.pathname,
+              });
+            `,
+          }}
+        />
+
         {/* Google Tag Manager (noscript fallback) */}
         <noscript>
           <iframe
@@ -95,7 +115,7 @@ export default async function RootLayout({ children }) {
           />
         </noscript>
 
-        {/* Google Tag Manager & dataLayer Script */}
+        {/* Google Tag Manager Script */}
         <Script
           id="google-tag-manager"
           strategy="afterInteractive"
@@ -106,9 +126,6 @@ export default async function RootLayout({ children }) {
               j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
               })(window,document,'script','dataLayer','GTM-TS3G84HK');
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
             `,
           }}
         />
