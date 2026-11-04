@@ -24,7 +24,7 @@ export default function FeaturedProductCard({
 
   return (
     <>
-      <div className="w-[78vw] max-w-[78vw] min-w-[78vw] xs:w-[260px] xs:max-w-[260px] xs:min-w-[260px] sm:w-[280px] sm:max-w-[280px] sm:min-w-[280px] md:w-full md:max-w-none md:min-w-0 snap-start shrink-0 bg-white rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between hover:shadow-[0_16px_36px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 group select-none border border-slate-100 shadow-sm">
+      <div className="w-[78vw] max-w-[78vw] min-w-[78vw] xs:w-[260px] xs:max-w-[260px] xs:min-w-[260px] sm:w-[280px] sm:max-w-[280px] sm:min-w-[280px] md:w-full md:max-w-none md:min-w-0 snap-start shrink-0 bg-white rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between hover:shadow-[0_20px_40px_rgba(87,0,19,0.08)] hover:-translate-y-2 hover:border-primary/20 transition-all duration-300 ease-out group select-none border border-slate-100 shadow-sm">
         
         {/* 1. TOP IMAGE CANVAS (Reduced height, crisp presentation) */}
         <Link
@@ -41,7 +41,7 @@ export default function FeaturedProductCard({
             fill
             sizes="(max-width: 640px) 78vw, (max-width: 1024px) 280px, 320px"
             quality={90}
-            className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300 ease-out p-2"
+            className="object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500 ease-out p-2"
           />
 
           {/* Clean Category Badge */}

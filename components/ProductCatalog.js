@@ -219,7 +219,7 @@ export default function ProductCatalog({
         role="link"
         tabIndex={0}
         aria-label={`Open details for ${product.name}`}
-        className="reveal-on-scroll w-[78vw] max-w-[78vw] min-w-[78vw] xs:w-[260px] xs:max-w-[260px] xs:min-w-[260px] sm:w-[280px] sm:max-w-[280px] sm:min-w-[280px] md:w-full md:max-w-none md:min-w-0 snap-start shrink-0 bg-surface-container-lowest rounded-2xl overflow-hidden flex flex-col justify-between hover:shadow-[0_16px_36px_rgba(87,0,19,0.08)] hover:-translate-y-1 transition-all duration-300 group cursor-pointer text-left rtl:text-right outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 select-none h-full shadow-sm border border-on-surface/10 p-3.5 sm:p-4"
+        className="reveal-on-scroll card-interactive w-[78vw] max-w-[78vw] min-w-[78vw] xs:w-[260px] xs:max-w-[260px] xs:min-w-[260px] sm:w-[280px] sm:max-w-[280px] sm:min-w-[280px] md:w-full md:max-w-none md:min-w-0 snap-start shrink-0 bg-surface-container-lowest rounded-2xl overflow-hidden flex flex-col justify-between hover:shadow-[0_20px_40px_rgba(87,0,19,0.12)] hover:-translate-y-2 hover:border-primary/25 transition-all duration-300 ease-out group cursor-pointer text-left rtl:text-right outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 select-none h-full shadow-sm border border-on-surface/10 p-3.5 sm:p-4"
       >
         <div className="flex flex-col flex-grow">
           {/* Product Image Canvas */}
@@ -227,14 +227,14 @@ export default function ProductCatalog({
             <div className="absolute top-2 inset-x-2 z-10 flex items-start justify-between gap-1.5 pointer-events-none">
               <div className="flex flex-col gap-1 items-start min-w-0 max-w-[65%]">
                 {product.category && (
-                  <span className="inline-flex items-center gap-1 bg-black/65 backdrop-blur-md text-secondary-fixed text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs max-w-full truncate">
+                  <span className="inline-flex items-center gap-1 bg-black/65 backdrop-blur-md text-secondary-fixed text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs max-w-full truncate group-hover:scale-105 transition-transform duration-200">
                     <Tag size={9} className="text-secondary-fixed shrink-0" />
                     <span className="truncate">{product.category}</span>
                   </span>
                 )}
               </div>
 
-              <span className="shrink-0 inline-flex items-center gap-1 bg-white/95 backdrop-blur-md text-primary text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-full shadow-xs border border-slate-100">
+              <span className="shrink-0 inline-flex items-center gap-1 bg-white/95 backdrop-blur-md text-primary text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-full shadow-xs border border-slate-100 group-hover:scale-105 transition-transform duration-200">
                 <ShieldCheck size={10} className="text-secondary shrink-0" />
                 <span className="uppercase">{locale === "ur" ? "خالص" : "Grade A"}</span>
               </span>
@@ -246,7 +246,7 @@ export default function ProductCatalog({
               fill
               sizes="(max-width: 640px) 78vw, (max-width: 1024px) 280px, 320px"
               quality={90}
-              className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300 ease-out p-2"
+              className="object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500 ease-out p-2"
             />
           </div>
 
@@ -289,118 +289,72 @@ export default function ProductCatalog({
   };
 
   return (
-    <div className="space-y-stack-md animate-fadeIn">
-      {/* 1. DISTINCT SECTION TABS: PRODUCTS vs COLLECTIONS */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-on-surface/10">
-        <div className="inline-flex p-1.5 bg-surface-container-low border border-on-surface/10 rounded-2xl shadow-xs self-start">
-          {/* Products Tab Button */}
-          <button
-            type="button"
-            onClick={() => handleTabChange("products")}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
-              activeTab === "products"
-                ? "bg-primary text-white shadow-sm"
-                : "text-on-surface-variant hover:text-primary hover:bg-surface-container-high/60"
-            }`}
-          >
-            <Package size={17} />
-            <span>{t("tab_products", locale)}</span>
-            <span className={`text-[10px] sm:text-xs px-2 py-0.5 rounded-full font-semibold ${
-              activeTab === "products" ? "bg-white/20 text-white" : "bg-on-surface/10 text-on-surface-variant"
-            }`}>
-              {initialProducts.length}
-            </span>
-          </button>
+    <div className="space-y-6 animate-fadeIn">
+      {/* ------------------------------------------------------------- */}
+      {/* SINGLE UNIFIED FILTER & SEARCH TOOLBAR                         */}
+      {/* ------------------------------------------------------------- */}
+      <div className="bg-surface-container-lowest border border-on-surface/10 rounded-2xl p-3 sm:p-4 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3.5">
+        {/* Category Filter Chips */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+          {categories.map((cat) => {
+            const count = cat === "All"
+              ? initialProducts.length
+              : initialProducts.filter(p => p.category?.toLowerCase() === cat.toLowerCase()).length;
+            const isActive = activeCategory.toLowerCase() === cat.toLowerCase();
 
-          {/* Collections Tab Button */}
-          <button
-            type="button"
-            onClick={() => handleTabChange("collections")}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
-              activeTab === "collections"
-                ? "bg-primary text-white shadow-sm"
-                : "text-on-surface-variant hover:text-primary hover:bg-surface-container-high/60"
-            }`}
-          >
-            <Layers size={17} />
-            <span>{t("tab_collections", locale)}</span>
-            <span className={`text-[10px] sm:text-xs px-2 py-0.5 rounded-full font-semibold ${
-              activeTab === "collections" ? "bg-white/20 text-white" : "bg-on-surface/10 text-on-surface-variant"
-            }`}>
-              {processedCollections.length}
-            </span>
-          </button>
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => {
+                  setActiveCategory(cat);
+                  setActiveTab("products");
+                }}
+                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 shrink-0 flex items-center gap-2 cursor-pointer ${
+                  isActive
+                    ? "bg-primary text-white shadow-xs"
+                    : "bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-primary border border-on-surface/5"
+                }`}
+              >
+                <span>{cat === "All" ? (locale === "ur" ? "تمام مصنوعات" : "All") : cat}</span>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                  isActive ? "bg-white/20 text-white" : "bg-on-surface/10 text-on-surface-variant"
+                }`}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Status indicator on desktop */}
-        <div className="hidden sm:flex items-center gap-2 text-xs text-on-surface-variant font-medium">
-          {activeTab === "products" ? (
-            <span>Showing wholesale catalog specifications & individual ingredients</span>
-          ) : (
-            <span>Curated themed selections & regional harvest collections</span>
+        {/* Keyword Search Bar */}
+        <div className="relative w-full md:w-72 shrink-0">
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant/60" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={locale === "ur" ? "مصالحہ تلاش کریں..." : "Search spices..."}
+            className="w-full bg-surface-container-low border border-on-surface/10 rounded-xl pl-9 pr-8 py-2 text-xs sm:text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-on-surface-variant/50"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary p-0.5"
+              aria-label="Clear search"
+            >
+              <X size={14} />
+            </button>
           )}
         </div>
       </div>
 
       {/* ------------------------------------------------------------- */}
-      {/* SECTION A: PRODUCTS SECTION                                  */}
+      {/* PRODUCTS SECTION                                              */}
       {/* ------------------------------------------------------------- */}
       {activeTab === "products" && (
-        <div className="space-y-6 animate-fadeIn">
-          {/* Products Filter & Search Toolbar */}
-          <div className="bg-surface-container-lowest border border-on-surface/10 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-            {/* Category Filter Chips */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1.5 md:pb-0 scrollbar-none">
-              {categories.map((cat) => {
-                const count = cat === "All"
-                  ? initialProducts.length
-                  : initialProducts.filter(p => p.category?.toLowerCase() === cat.toLowerCase()).length;
-                const isActive = activeCategory.toLowerCase() === cat.toLowerCase();
-
-                return (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => setActiveCategory(cat)}
-                    className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all shrink-0 flex items-center gap-1.5 cursor-pointer ${
-                      isActive
-                        ? "bg-primary text-on-primary shadow-sm scale-100"
-                        : "bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-primary border border-on-surface/5"
-                    }`}
-                  >
-                    <span>{cat === "All" ? t("all_categories", locale) : cat}</span>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                      isActive ? "bg-white/20 text-white" : "bg-on-surface/10 text-on-surface-variant"
-                    }`}>
-                      {count}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Keyword Search Bar */}
-            <div className="relative w-full md:w-72 shrink-0">
-              <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant/60" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t("catalog_search_placeholder", locale) || "Search products..."}
-                className="w-full bg-surface-container-low border border-on-surface/10 rounded-xl pl-9 pr-8 py-2 text-xs sm:text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-on-surface-variant/50"
-              />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary p-0.5"
-                  aria-label="Clear search"
-                >
-                  <X size={14} />
-                </button>
-              )}
-            </div>
-          </div>
+        <div className="space-y-6">
 
           {/* Products Grid */}
           <MobileCardCarousel count={filteredProducts.length} className="md:grid-cols-2 lg:grid-cols-3">
