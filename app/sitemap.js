@@ -2,7 +2,7 @@ import { getBlogPosts, getProducts } from "@/lib/db";
 import { getProductSlug } from "@/lib/productPaths";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 3600;
+export const revalidate = 0;
 
 export default async function sitemap() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thesevenspice.com";
