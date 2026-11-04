@@ -19,7 +19,7 @@ export const metadata = {
     template: "%s | TheSevenSpice"
   },
   description: "Direct-from-source bulk spices, custom blending, and international wholesale solutions for gourmet retailers, food manufacturers, and distributors.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://thesevenspice-b2b.vercel.app"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://thesevenspice.com"),
   verification: {
     google: "f9fm4urE0EURH8vtPZTz6KroBKZ0FWp3UN8sbGwOXSA",
   },
